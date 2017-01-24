@@ -88,6 +88,14 @@ if ( ! function_exists('base_url'))
 	}
 }
 
+if ( ! function_exists('base_url_port'))
+{
+    function base_url_port($uri = '', $protocol = NULL)
+	{
+		return get_instance()->config->base_url_port($uri, $protocol);
+	}
+}
+
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('current_url'))

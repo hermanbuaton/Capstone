@@ -321,6 +321,26 @@ class CI_Config {
 
 		return $base_url.ltrim($this->_uri_string($uri), '/');
 	}
+    
+    public function base_url_port($uri = '', $protocol = NULL)
+	{
+		$base_url = $this->slash_item('base_url_port');
+
+		if (isset($protocol))
+		{
+			// For protocol-relative links
+			if ($protocol === '')
+			{
+				$base_url = substr($base_url, strpos($base_url, '//'));
+			}
+			else
+			{
+				$base_url = $protocol.substr($base_url, strpos($base_url, '://'));
+			}
+		}
+
+		return $base_url.ltrim($this->_uri_string($uri), '/');
+	}
 
 	// -------------------------------------------------------------
 

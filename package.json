@@ -1,0 +1,15 @@
+{
+  "name": "simple-socketio-codeigniter-chat",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",  // seems not necessary at all
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.7.2"
+  }
+}

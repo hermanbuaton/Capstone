@@ -53,7 +53,37 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	// define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+
+    if(isset($_SERVER['HTTP_HOST'])){
+        switch ($_SERVER['HTTP_HOST']) {
+            
+            // localhost
+            case '127.0.0.1':
+            case '127.0.0.1:3000':
+            case '127.0.0.1:5000':
+                define('ENVIRONMENT', 'development');
+                break;
+            
+            // beta
+            case 'beta.bookbookbot.com':
+                define('ENVIRONMENT', 'testing');
+                break;
+            
+            // ?
+            case '':
+                define('ENVIRONMENT', 'production');
+                break;
+            
+            // default
+            default:
+                define('ENVIRONMENT', 'production');
+                break;
+        }
+    }
+    else {
+        define('ENVIRONMENT','development');
+    }
 
 /*
  *---------------------------------------------------------------
@@ -66,7 +96,8 @@
 switch (ENVIRONMENT)
 {
 	case 'development':
-		error_reporting(-1);
+		// error_reporting(-1);
+		error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 		ini_set('display_errors', 1);
 	break;
 
