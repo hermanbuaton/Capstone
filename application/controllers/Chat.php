@@ -21,6 +21,10 @@ class Chat extends CI_Controller {
   public function index($room='')
   {
       $data['room'] = $room;
-      $this->load->view('view_chat/view_chat_front', $data);
+      // $this->load->view('view_chat/view_chat_front', $data);
+      
+      $this->load->view('view_chat/view_chat_header', $data);
+      $this->load->view('view_chat/view_chat_front2', $data);
+      $this->load->view('view_chat/view_chat_footer', $data);
   }
 }
