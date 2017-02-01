@@ -12,13 +12,14 @@
     <title>Simple Sidebar - Start Bootstrap Template</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap.css" rel="stylesheet">
 
     <!-- Theme CSS -->
     <link href="css/sb-admin.css" rel="stylesheet">
     <link href="css/simple-sidebar.css" rel="stylesheet">
     
     <!-- Custom CSS -->
+    <link href="css/custom.css" rel="stylesheet">
     
     <!-- Morris Charts CSS -->
     <link href="css/plugins/morris.css" rel="stylesheet">
@@ -45,19 +46,32 @@
             
             
             <!-- Brand and toggle get grouped for better mobile display -->
+            
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+            
+                <button type="button" href="#menu-toggle" class="navbar-toggle pull-left" id="menu-toggle">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="index.html">SB Admin</a>
+                
+                
+                <button type="button" class="navbar-toggle pull-right" id="navbar-toggle-right" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="width:44px;height:36px;">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="fa fa-chevron-down" style="color:#fff; top:-50px;"></span>
+                    <!--
+                    <span class="icon-envelope"></span>
+                    <b class="caret" style="color:#fff;"></b>
+                    -->
+                </button>
+            
             </div>
             
             
             <!-- Top Menu Items -->
-            <ul class="nav navbar-right top-nav">
+            <ul class="nav navbar-right top-nav navbar-collapse navbar-ex1-collapse collapse" id="navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">
@@ -196,35 +210,3 @@
         <!-- Page Content -->
         <div id="page-content-wrapper">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Simple Sidebar</h1>
-                        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-                        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-                        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
-
-</body>
-
-</html>
