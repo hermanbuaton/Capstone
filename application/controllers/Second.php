@@ -22,6 +22,8 @@ class Second extends CI_Controller {
   {
       // echo "hello";
       // $this->load->view('welcome_message');
-      $this->load->view('simple_sidebar');
+      $this->load->view('view_chat2/view_chat_header');
+      $this->load->view('view_chat2/view_chat_front');
+      $this->load->view('view_chat2/view_chat_footer');
   }
 }

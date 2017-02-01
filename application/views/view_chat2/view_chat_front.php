@@ -1,8 +1,38 @@
-<div class="row">
-    <div class="col-lg-12">
-        <h1>Simple Sidebar</h1>
-        <p>This template has a responsive menu toggling system. The menu will appear collapsed on smaller screens, and will appear non-collapsed on larger screens. When toggled using the button below, the menu will appear/disappear. On small screens, the page content will be pushed off canvas.</p>
-        <p>Make sure to keep all page content within the <code>#page-content-wrapper</code>.</p>
-        <a href="#menu-toggle" class="btn btn-default" id="menu-toggle-2">Toggle Menu</a>
+<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right">
+    
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+    
+    Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+
+    <!-- Start of Panel -->
+    <div class="panel panel-primary">
+
+        <!-- ============================================================================ -->
+        <!-- Panel Heading -->
+        <!-- ============================================================================ -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Question Bank</h3>
+        </div>
+
+        <!-- ============================================================================ -->
+        <!-- Panel Body -->
+        <!-- ============================================================================ -->
+        <div class="panel-body">
+
+            <!-- Messages -->
+            <ul id="messages"></ul>
+
+            <!-- Input area -->
+            <form id="messages_input" action="">
+                <input id="m" autocomplete="off" /><button id="send">Send</button>
+            </form>
+
+            <!-- Testing Line -->
+            <?php echo base_url_port() . "socket.io/socket.io.js"; ?>
+
+        </div>
+
     </div>
+    <!-- End of Panel -->
+
 </div>
