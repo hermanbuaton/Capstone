@@ -20,10 +20,10 @@ class Second extends CI_Controller {
    */
   public function index()
   {
-      // echo "hello";
+      echo "hello";
       // $this->load->view('welcome_message');
-      $this->load->view('view_chat2/view_chat_header');
-      $this->load->view('view_chat2/view_chat_front');
-      $this->load->view('view_chat2/view_chat_footer');
+      // $this->load->view('view_chat/view_chat_header');
+      // $this->load->view('view_chat/view_chat_front');
+      // $this->load->view('view_chat/view_chat_footer');
   }
 }

@@ -1,6 +1,7 @@
-</div>
+            </div>
+            <!-- /.container-fluid -->
         </div>
-        <!-- /#page-content-wrapper -->
+        <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
@@ -53,18 +54,6 @@
             $('#messages').append($('<li>').text(msg));
         })
         */
-    </script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    $("#menu-toggle-2").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
     </script>
 
 </body>

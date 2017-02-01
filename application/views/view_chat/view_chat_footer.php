@@ -1,21 +1,21 @@
             </div>
-            <!-- /.container-fluid -->
+            <!-- /#container-fluid -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /#page-content-wrapper -->
 
     </div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
-    <script src="js/jquery.js"></script>
+    <script src="<?php echo base_url();?>js/jquery.js"></script>
 
     <!-- Bootstrap Core JavaScript -->
-    <script src="js/bootstrap.min.js"></script>
+    <script src="<?php echo base_url();?>js/bootstrap.min.js"></script>
 
     <!-- Morris Charts JavaScript -->
-    <script src="js/plugins/morris/raphael.min.js"></script>
-    <script src="js/plugins/morris/morris.min.js"></script>
-    <script src="js/plugins/morris/morris-data.js"></script>
+    <script src="<?php echo base_url();?>js/plugins/morris/raphael.min.js"></script>
+    <script src="<?php echo base_url();?>js/plugins/morris/morris.min.js"></script>
+    <script src="<?php echo base_url();?>js/plugins/morris/morris-data.js"></script>
 
     <!-- socket.io -->
     <script src="<?php echo base_url_port(); ?>socket.io/socket.io.js"></script>
@@ -31,7 +31,7 @@
         });
 
         socket.on('chat message', function(data) {
-            $('#messages').append($('<li>').text(data));
+            $('#main-chat-view').append($('<div id="main-chat-view-msg">').text(data));
         });
 
         $('form').submit(function(){
@@ -54,6 +54,18 @@
             $('#messages').append($('<li>').text(msg));
         })
         */
+    </script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+    $("#menu-toggle-2").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
     </script>
 
 </body>

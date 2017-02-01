@@ -1,67 +1,52 @@
-<!doctype html>
-<html>
-    
-    
-    <head>
-        <title>Socket.IO chat</title>
-        <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { font: 13px Helvetica, Arial; }
-            form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-            form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-            form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
-            #messages { list-style-type: none; margin: 0; padding: 0; }
-            #messages li { padding: 5px 10px; }
-            #messages li:nth-child(odd) { background: #eee; }
-        </style>
-    </head>
-    
-    
-    <body>
-        <ul id="messages"></ul>
-        <form action="">
-            <input id="m" autocomplete="off" /><button>Send</button>
-        </form>
+<!-- Start of Panel -->
+    <div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-left hidden-xs">
 
-        <?php echo base_url_port() . "socket.io/socket.io.js"; ?>
-        <script src="<?php echo base_url_port(); ?>socket.io/socket.io.js"></script>
-        <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-        <script>
-            var socket = io.connect("http://127.0.0.1:3000/");
-            var room = "<?php echo $room; ?>";
-            
-            socket.on('connect', function() {
-                // Connected, let's sign-up for to receive messages for this room
-                socket.emit('room', room);
-                console.log(room);
-            });
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel ipsum euismod, blandit ipsum vel, mattis nisl. Quisque consequat eleifend vestibulum. Integer eu pretium nulla. Duis velit lectus, placerat sed nunc vitae, posuere aliquet nunc. Nam quis nisl tempus, pulvinar justo nec, mollis ex. In diam sem, tempus vehicula quam sed, euismod tincidunt nisl. Aenean tempus dolor sit amet lorem interdum, a condimentum quam consequat. Nullam nec orci vel tellus sodales mattis. Vestibulum porttitor mi tincidunt arcu molestie porta. Suspendisse at lacus velit. Proin eget sapien efficitur, tempor quam ut, viverra lectus. Vivamus lobortis eros sem, a ultricies tortor ultricies a.
 
-            socket.on('chat message', function(data) {
-                $('#messages').append($('<li>').text(data));
-            });
+        Nam eget ligula vulputate, pretium lacus quis, pharetra leo. Donec lobortis maximus pulvinar. Duis a interdum nulla. Integer eget ligula ullamcorper, congue magna non, faucibus nulla. Praesent diam risus, pretium ac dui at, congue tincidunt orci. Maecenas eget mattis arcu. Duis et dolor quis est facilisis convallis. Praesent nec erat ac nulla eleifend semper quis vel sapien. Integer scelerisque consectetur ullamcorper. Fusce placerat, lorem quis vehicula ultrices, sapien lacus interdum ipsum, eu facilisis velit magna sit amet sapien. Donec lobortis tortor sit amet risus maximus finibus.
+
+        Suspendisse pulvinar mi sed nisl eleifend lacinia. Morbi aliquam eget ante vel finibus. Duis eu lacus libero. Integer sed semper lorem. Interdum et malesuada fames ac ante ipsum primis in faucibus. Duis eleifend dapibus massa in pretium. Vestibulum sollicitudin et ex non facilisis. Integer dignissim blandit nulla quis gravida. Vivamus magna sem, dapibus nec erat eu, accumsan gravida quam. Sed quis volutpat ligula, ut viverra turpis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Integer dignissim lobortis condimentum. Praesent quis justo sodales, molestie leo sit amet, dignissim tortor. Mauris augue erat, egestas vitae vehicula eu, pellentesque in tellus. Sed eget arcu nulla.
+
+        Ut vestibulum mauris aliquam orci euismod, vel ornare purus condimentum. Donec vel pharetra diam. Nulla lacus leo, placerat sit amet est quis, accumsan iaculis dolor. Vivamus pellentesque lacus ac orci blandit, id iaculis arcu bibendum. Maecenas tempus euismod condimentum. Mauris sed nunc vel nulla eleifend venenatis vel ut enim. Donec a porttitor tortor. Praesent sed pharetra lorem. Nam eros neque, venenatis a erat sit amet, aliquam dignissim lacus. Aenean cursus tempus cursus. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum sed auctor ligula, ut sodales urna. Sed aliquet risus ac placerat tempor.
+
+        Nunc arcu mauris, interdum faucibus efficitur ac, ultricies sed ante. Mauris sed dolor ut est consequat posuere et rhoncus sapien. Fusce tincidunt laoreet tincidunt. Morbi quis risus consequat, pretium augue sed, efficitur justo. Phasellus accumsan mi vitae sapien consectetur tincidunt. Suspendisse sed sapien hendrerit augue hendrerit malesuada sed vel eros. Aliquam sed purus augue.
+
+    </div>
+    <!-- End of Panel -->
+
+    <!-- Start of Panel -->
+    <div class="panel panel-primary col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
+
+        <!-- ============================================================================ -->
+        <!-- Panel Heading -->
+        <!-- ============================================================================ -->
+        <div class="panel-heading">
+            <h3 class="panel-title">Question Bank</h3>
+        </div>
+
+        <!-- ============================================================================ -->
+        <!-- Panel Body -->
+        <!-- ============================================================================ -->
+        <div class="panel-body">
+
+            <!-- Messages -->
+            <div id="main-chat-view">
+                <!-- Messages here -->
+            </div>
+
+            <!-- Input area -->
+            <form id="messages-input" action="">
+                <div class="pull-bottom-left" id="main-chat-input">
+                    <input class="form-control" id="m" autocomplete="off" />
+                </div>
+                
+                <div class="pull-bottom-right" id="main-chat-submit">
+                    <button class="btn btn-default" id="main-chat-submit-btn">Send</button>
+                </div>
+            </form>
             
-            $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
-            });
-            
-            /*
-            var socket = io.connect("<?php echo base_url_port(); ?>");
-            var room = "<?php echo $room; ?>";
-            
-            $('form').submit(function(){
-                socket.emit('chat message', $('#m').val());
-                $('#m').val('');
-                return false;
-            });
-            
-            socket.on('chat message', function(msg){
-                $('#messages').append($('<li>').text(msg));
-            })
-            */
-        </script>
-    </body>
-    
-    
-</html>
+        </div>
+
+    </div>
+    <!-- End of Panel -->
+

@@ -12,6 +12,54 @@
     flex-direction: column;
 }
 
+.pull-bottom {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 20px;
+}
+
+.pull-bottom-left {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding-bottom: 20px;
+    padding-left: 20px;
+}
+
+.pull-bottom-right {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-bottom: 20px;
+    padding-right: 20px;
+}
+
+/* Chat Room */
+#main-chat {
+    height: 100%;
+    padding: 0 0 0 0;
+}
+#main-chat-view {
+    position: absolute;
+    width: calc(100% - 15px - 15px);
+    height: calc(100% - 50px - 50px - 15px - 15px);
+    overflow-y: scroll;
+}
+#main-chat-view-msg {
+    padding: 3px 3px 3px 3px;
+}
+#main-chat-input {
+    width: calc(100% - 90px);
+    margin-right: 90px;
+}
+#main-chat-submit {
+    width: auto;
+}
+#main-chat-submit-btn {
+    width: 70px;
+}
+/* End of CSS for Chat Room */
+
 @media (min-width: 768px) {
   #navbar-toggle-right {
     display: none;
