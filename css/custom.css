@@ -1,0 +1,35 @@
+.row {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display:         flex;
+    flex-wrap: wrap;
+    
+    height: 100%;
+}
+.row > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  #navbar-toggle-right {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+    #sidebar-wrapper {
+        top: 50px;
+    }
+    
+    #page-content-wrapper {
+        top: 50px;
+    }
+    
+    .navbar-right {
+        float: right;
+        border-top: none;
+        box-shadow: none;
+    }
+}
