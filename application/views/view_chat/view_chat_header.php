@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Simple Sidebar - Start Bootstrap Template</title>
+    <title><?php echo $room; ?> - SB Admin</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url();?>css/bootstrap.css" rel="stylesheet">
@@ -54,7 +54,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html">SB Admin</a>
+                <a class="navbar-brand" href="index.html"><?php echo $room; ?> - SB Admin</a>
                 
                 
                 <button type="button" class="navbar-toggle pull-right" id="navbar-toggle-right" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="width:44px;height:36px;">

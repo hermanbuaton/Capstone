@@ -15,7 +15,7 @@
     <!-- End of Panel -->
 
     <!-- Start of Panel -->
-    <div class="panel panel-primary col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
+    <div class="panel panel-default col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
 
         <!-- ============================================================================ -->
         <!-- Panel Heading -->
@@ -44,7 +44,7 @@
                 </div>
                 
                 <div class="pull-bottom-right" id="main-chat-submit">
-                    <button class="btn btn-default" id="main-chat-submit-btn">Send</button>
+                    <button class="btn btn-primary" id="main-chat-submit-btn">Send</button>
                 </div>
             </form>
             
