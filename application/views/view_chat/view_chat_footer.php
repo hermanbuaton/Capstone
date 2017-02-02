@@ -35,8 +35,8 @@
         });
 
         $('form').submit(function(){
-            socket.emit('chat message', $('#m').val());
-            $('#m').val('');
+            socket.emit('chat message', $('#main-chat-input-area').val());
+            $('#main-chat-input-area').val('');
             return false;
         });
 
@@ -65,6 +65,12 @@
     $("#menu-toggle-2").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+    $("#main-chat-input-area").keyup(function(e) {
+        e = e || event;
+        if (e.keyCode === 13) {
+            $("#messages-input").submit();
+        }
     });
     </script>
 

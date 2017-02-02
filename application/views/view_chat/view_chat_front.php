@@ -37,7 +37,10 @@
             <!-- Input area -->
             <form id="messages-input" action="">
                 <div class="pull-bottom-left" id="main-chat-input">
-                    <input class="form-control" id="m" autocomplete="off" />
+                    <!--
+                    <input type="text" class="form-control" id="main-chat-input-area" autocomplete="off" ></input>
+                    -->
+                    <textarea class="form-control" rows="3" id="main-chat-input-area" autocomplete="off" ></textarea>
                 </div>
                 
                 <div class="pull-bottom-right" id="main-chat-submit">

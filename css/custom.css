@@ -42,7 +42,7 @@
 #main-chat-view {
     position: absolute;
     width: calc(100% - 15px - 15px);
-    height: calc(100% - 50px - 50px - 15px - 15px);
+    height: calc(100% - 50px - 90px - 15px - 15px);
     overflow-y: scroll;
 }
 #main-chat-view-msg {
@@ -52,11 +52,18 @@
     width: calc(100% - 90px);
     margin-right: 90px;
 }
+#main-chat-input-area {
+    max-width: 9999px;
+    height: 74px;
+    word-wrap: break-word;
+    resize: none;
+}
 #main-chat-submit {
     width: auto;
 }
 #main-chat-submit-btn {
     width: 70px;
+    height: 74px;
 }
 /* End of CSS for Chat Room */
 
