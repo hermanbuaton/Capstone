@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title><?php echo $room; ?> - SB Admin</title>
+    <title><?php echo $title; ?></title>
 
     <!-- Bootstrap Core CSS -->
     <link href="<?php echo base_url();?>css/bootstrap.css" rel="stylesheet">
@@ -36,7 +36,7 @@
 
 </head>
 
-<body>
+<body id="main-ui">
 
     <div id="wrapper">
         
@@ -48,13 +48,15 @@
             
             <div class="navbar-header">
             
-                <button type="button" href="#menu-toggle" class="navbar-toggle pull-left" id="menu-toggle">
+            <?php if ($page == "Chat") : ?>
+                <button type="button" href="#menu-toggle" class="navbar-toggle pull-left" id="menu-toggle" >
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.html"><?php echo $room; ?> - SB Admin</a>
+            <?php endif; ?>
+                <a class="navbar-brand" href="index.html"><?php echo $title; ?></a>
                 
                 
                 <button type="button" class="navbar-toggle pull-right" id="navbar-toggle-right" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="width:44px;height:36px;">
@@ -71,6 +73,11 @@
             
             <!-- Top Menu Items -->
             <ul class="nav navbar-right top-nav navbar-collapse navbar-ex1-collapse collapse" id="navbar-right">
+                <li class="dropdown">
+                    <a href="<?php echo site_url("/User/logout"); ?>">
+                        <i class="fa fa-sign-out"></i>
+                    </a>
+                </li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-envelope"></i> <b class="caret"></b></a>
                     <ul class="dropdown-menu message-dropdown">
@@ -172,40 +179,3 @@
             </ul>
             <!-- /.navbar-collapse -->
         </nav>
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="#">
-                        Start Bootstrap
-                    </a>
-                </li>
-                <li>
-                    <a href="#">Dashboard</a>
-                </li>
-                <li>
-                    <a href="#">Shortcuts</a>
-                </li>
-                <li>
-                    <a href="#">Overview</a>
-                </li>
-                <li>
-                    <a href="#">Events</a>
-                </li>
-                <li>
-                    <a href="#">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">

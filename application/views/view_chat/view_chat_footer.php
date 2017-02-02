@@ -1,8 +1,3 @@
-            </div>
-            <!-- /#container-fluid -->
-        </div>
-        <!-- /#page-content-wrapper -->
-
     </div>
     <!-- /#wrapper -->
 
@@ -34,7 +29,7 @@
             $('#main-chat-view').append($('<div id="main-chat-view-msg">').text(data));
         });
 
-        $('form').submit(function(){
+        $('#messages-input').submit(function(){
             socket.emit('chat message', $('#main-chat-input-area').val());
             $('#main-chat-input-area').val('');
             return false;

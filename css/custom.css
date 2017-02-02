@@ -34,6 +34,29 @@
     padding-right: 20px;
 }
 
+/* .body #main-ui */
+#main-ui {
+    overflow-y: hidden;
+}
+
+#menu-toggle {
+    margin-right: 15px;
+}
+
+/* Home */
+#home-login {
+    top: 20%;
+    height: 45%;
+    padding: 0 0 0 0;
+}
+#home-login-error {
+    top: 17%;
+    min-height: 20px;
+}
+#login-submit-btn {
+    width: 100%;
+}
+
 /* Chat Room */
 #main-chat {
     height: 100%;
