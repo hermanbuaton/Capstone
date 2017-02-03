@@ -1,5 +1,5 @@
 <!-- Page Content -->
-<div id="page-content-wrapper">
+<div class="main-ui" id="page-content-wrapper">
     <div class="container-fluid">
         
     
@@ -35,23 +35,12 @@
         <div class="panel-body">
 
             <!-- Messages -->
-            <div id="main-chat-view">
+            <div class="thread-view" id="main-chat-view">
                 <!-- Messages here -->
+                <div class="thread-message" id="main-chat-view-message">
+                    123132112123
+                </div>
             </div>
-
-            <!-- Input area -->
-            <form id="messages-input" action="">
-                <div class="pull-bottom-left" id="main-chat-input">
-                    <!--
-                    <input type="text" class="form-control" id="main-chat-input-area" autocomplete="off" ></input>
-                    -->
-                    <textarea class="form-control" rows="3" id="main-chat-input-area" autocomplete="off" ></textarea>
-                </div>
-                
-                <div class="pull-bottom-right" id="main-chat-submit">
-                    <button class="btn btn-primary" id="main-chat-submit-btn">Send</button>
-                </div>
-            </form>
             
         </div>
 

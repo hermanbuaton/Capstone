@@ -34,14 +34,16 @@
     padding-right: 20px;
 }
 
-/* .body #main-ui */
-#main-ui {
+/* .main-ui */
+.main-ui {
     overflow-y: hidden;
 }
 
 #menu-toggle {
     margin-right: 15px;
 }
+
+
 
 /* Home */
 #home-login {
@@ -56,39 +58,52 @@
 #login-submit-btn {
     width: 100%;
 }
+/* End of CSS for Home */
+
+
 
 /* Chat Room */
 #main-chat {
-    height: 100%;
+    top: 3%;
+    height: 95%;
     padding: 0 0 0 0;
 }
-#main-chat-view {
+.thread-view {
     position: absolute;
     width: calc(100% - 15px - 15px);
-    height: calc(100% - 50px - 90px - 15px - 15px);
+    height: calc(100% - 50px - 15px - 15px);
     overflow-y: scroll;
+}
+#main-chat-view {
+    height: calc(100% - 50px - 120px - 15px - 15px);
+}
+.thread-message {
+    padding: 3px 3px 3px 3px;
 }
 #main-chat-view-msg {
     padding: 3px 3px 3px 3px;
 }
 #main-chat-input {
-    width: calc(100% - 90px);
+    width: calc(100% - 90px - 15px);
     margin-right: 90px;
 }
 #main-chat-input-area {
     max-width: 9999px;
-    height: 74px;
+    height: 100px;
     word-wrap: break-word;
     resize: none;
 }
-#main-chat-submit {
-    width: auto;
+.main-chat-control {
+    width: 90px;
 }
-#main-chat-submit-btn {
+.main-chat-control-btn {
     width: 70px;
-    height: 74px;
+    height: 50px;
+    padding: 5px;
 }
 /* End of CSS for Chat Room */
+
+
 
 @media (min-width: 768px) {
   #navbar-toggle-right {

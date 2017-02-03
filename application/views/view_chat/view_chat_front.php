@@ -35,7 +35,7 @@
         <div class="panel-body">
 
             <!-- Messages -->
-            <div id="main-chat-view">
+            <div class="thread-view" id="main-chat-view">
                 <!-- Messages here -->
             </div>
 
@@ -48,8 +48,11 @@
                     <textarea class="form-control" rows="3" id="main-chat-input-area" autocomplete="off" ></textarea>
                 </div>
                 
-                <div class="pull-bottom-right" id="main-chat-submit">
-                    <button class="btn btn-primary" id="main-chat-submit-btn">Send</button>
+                <div class="pull-bottom-right main-chat-control">
+                    <button class="btn btn-primary main-chat-control-btn" id="main-chat-submit-btn">Send</button>
+                    <button class="btn btn-danger main-chat-control-btn" id="main-chat-cancel-btn">Cancel</button>
+                </div>
+                    
                 </div>
             </form>
             

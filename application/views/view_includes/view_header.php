@@ -36,7 +36,7 @@
 
 </head>
 
-<body id="main-ui">
+<body>
 
     <div id="wrapper">
         

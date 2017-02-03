@@ -25,7 +25,7 @@
         });
 
         socket.on('chat message', function(data) {
-            $('#main-chat-view').append($('<div id="main-chat-view-msg">').text(data));
+            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').text(data));
         });
 
         $('#messages-input').submit(function(){
