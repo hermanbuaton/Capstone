@@ -11,13 +11,12 @@ class Thread extends CI_Controller {
         $this->checkLogin();
 
         $data['room'] = $room;
-
-
+        
         $data['page'] = "Chat";
         $data['title'] = $room . " - SB Admin";
-        // $this->load->view('view_chat/view_chat_front', $data);
-        $this->load->view('view_chat/view_chat_header', $data);
-        $this->load->view('view_chat/view_chat_sidebar');
+        
+        $this->load->view('view_includes/view_header', $data);
+        $this->load->view('view_includes/view_sidebar');
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_footer');
     }
