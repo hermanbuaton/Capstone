@@ -1,15 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Chat extends CI_Controller {
+class Thread extends CI_Controller {
 
-    public function index($subject='')
+    public function index($subject='', $thread='')
     {
         // validation
         $this->checkSubject($subject);
+        $this->checkThread($thread);
         $this->checkLogin();
 
-        $data['subject'] = $subject;
+        $data['room'] = $room;
 
 
         $data['page'] = "Chat";
@@ -24,6 +25,15 @@ class Chat extends CI_Controller {
     private function checkSubject($s)
     {
         if($s=='' || $s === null) {
+            redirect();
+        }
+        
+        return true;
+    }
+    
+    private function checkThread($t)
+    {
+        if($t=='' || $t === null) {
             redirect();
         }
         
