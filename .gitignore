@@ -1,0 +1,9 @@
+##
+#ignore .ht
+.htaccess
+.htpasswd
+
+
+##
+#ignore cache
+application/cache/
