@@ -13,7 +13,7 @@ class Thread extends CI_Controller {
         $data['subject'] = $subject;
         $data['thread'] = $thread;
         
-        $data['page'] = "Thread";
+        $data['page'] = "Chat";
         $data['title'] = $room . " - SB Admin";
         
         $this->load->view('view_includes/view_header', $data);

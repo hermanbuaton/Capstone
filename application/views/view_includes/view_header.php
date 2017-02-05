@@ -36,7 +36,7 @@
 
 </head>
 
-<body>
+<body class="<?php echo ($page == "Chat" ? "main-ui" : "main-ui-scroll"); ?>">
 
     <div id="wrapper">
         

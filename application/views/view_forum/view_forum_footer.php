@@ -27,34 +27,27 @@
         socket.on('chat message', function(data) {
             $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').text(data));
         });
-        
-        $("#main-chat-input-area").keyup(function(e) {
-            e = e || event;
-            if (e.keyCode === 13) {
-                $("#messages-input").submit();
-            }
-        });
-        
-        $('#messages-input').submit(function(){
-            
-            var s = $('#main-chat-input-area').val();
-            var t = s.trim();
-            
-            if (t.length == 0)
-            {
-                // do nothing
-                $('#main-chat-input-area').val('');
-            } else {
-                socket.emit('chat message', s);
-                $('#main-chat-input-area').val('');
-            }
-            return false;
-        });
 
-        $('#main-chat-cancel-btn').click(function(){
+        $('#messages-input').submit(function(){
+            socket.emit('chat message', $('#main-chat-input-area').val());
             $('#main-chat-input-area').val('');
             return false;
         });
+
+        /*
+        var socket = io.connect("<?php echo base_url_port(); ?>");
+        var subject = "<?php echo $subject; ?>";
+
+        $('form').submit(function(){
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            return false;
+        });
+
+        socket.on('chat message', function(msg){
+            $('#messages').append($('<li>').text(msg));
+        })
+        */
     </script>
 
     <!-- Menu Toggle Script -->
@@ -66,6 +59,12 @@
     $("#menu-toggle-2").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
+    });
+    $("#main-chat-input-area").keyup(function(e) {
+        e = e || event;
+        if (e.keyCode === 13) {
+            $("#messages-input").submit();
+        }
     });
     </script>
 

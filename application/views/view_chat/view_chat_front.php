@@ -20,7 +20,7 @@
     <!-- End of Panel -->
 
     <!-- Start of Panel -->
-    <div class="panel panel-default col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
+    <div class="panel panel-default chat-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
 
         <!-- ============================================================================ -->
         <!-- Panel Heading -->
@@ -36,7 +36,12 @@
 
             <!-- Messages -->
             <div class="thread-view" id="main-chat-view">
-                <!-- Messages here -->
+                <!-- ** Messages here ** -->
+                <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
+                <!--
+                <div class="thread-message" id="main-chat-view-msg">
+                </div>
+                -->
             </div>
 
             <!-- Input area -->

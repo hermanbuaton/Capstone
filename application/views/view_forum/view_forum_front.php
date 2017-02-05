@@ -20,38 +20,18 @@
     <!-- End of Panel -->
 
     <!-- Start of Panel -->
-    <div class="panel panel-default thread-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right">
+    <div class="panel panel-default col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
 
+        <!-- ============================================================================ -->
         <!-- Panel Heading -->
+        <!-- ============================================================================ -->
         <div class="panel-heading">
             <h3 class="panel-title">Question Bank</h3>
         </div>
 
+        <!-- ============================================================================ -->
         <!-- Panel Body -->
-        <div class="panel-body">
-
-            <!-- Messages -->
-            <div class="thread-view" id="main-chat-view">
-                <!-- Messages here -->
-                <div class="thread-message" id="main-chat-view-message">
-                    123132112123
-                </div>
-            </div>
-            
-        </div>
-
-    </div>
-    <!-- End of Panel -->
-        
-    <!-- Start of Panel -->
-    <div class="panel panel-default thread-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right">
-
-        <!-- Panel Heading -->
-        <div class="panel-heading">
-            <h3 class="panel-title">Question Bank</h3>
-        </div>
-
-        <!-- Panel Body -->
+        <!-- ============================================================================ -->
         <div class="panel-body">
 
             <!-- Messages -->

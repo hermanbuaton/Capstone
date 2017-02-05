@@ -22,6 +22,12 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+    $("#login-form").keyup(function(e) {
+        e = e || event;
+        if (e.keyCode === 13) {
+            $("#login-form").submit();
+        }
+    });
     </script>
 
 </body>
