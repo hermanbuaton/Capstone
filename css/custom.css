@@ -71,8 +71,8 @@
 
 /* Home */
 #home-login {
-    top: 20%;
-    height: 45%;
+    top: 15%;
+    min-height: 45%;
     padding: 0 0 0 0;
 }
 #home-login-error {

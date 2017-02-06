@@ -2,12 +2,12 @@
 <div id="page-content-wrapper">
     <div class="container-fluid">
         
-    <div class="col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" id="home-login-error">
+    <div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" id="home-login-error">
         <div id="login-error-msg"></div>
     </div>
     
     <!-- Start of Panel -->
-    <div class="panel panel-default col-xs-8 col-xs-offset-2 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" id="home-login">
+    <div class="panel panel-default col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3" id="home-login">
 
         <!-- ============================================================================ -->
         <!-- Panel Heading -->
