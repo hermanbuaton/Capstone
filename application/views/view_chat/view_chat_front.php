@@ -47,10 +47,22 @@
             <!-- Input area -->
             <form id="messages-input" action="">
                 <div class="pull-bottom-left" id="main-chat-input">
-                    <!--
-                    <input type="text" class="form-control" id="main-chat-input-area" autocomplete="off" ></input>
-                    -->
-                    <textarea class="form-control" rows="3" id="main-chat-input-area" autocomplete="off" ></textarea>
+                    
+                    <!-- Thread Head -->
+                    <textarea class="form-control" name="chat-message-head" id="chat-message-head" placeholder="Question" autocomplete="off" ></textarea>
+                    
+                    <!-- Thread Body -->
+                    <textarea class="form-control" name="chat-message-body" id="chat-message-body" placeholder="Furtherer Explanation" autocomplete="off" ></textarea>
+                    
+                    <!-- Other fields -->
+                    <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
+                    <!-- class id -->
+                    <input class="form-control" type="hidden" name="chat-message-class" id="chat-message-class" value="<?= $subject; ?>" autocomplete="off"></input>
+                    <!-- lect id -->
+                    <input class="form-control" type="hidden" name="chat-message-lect" id="chat-message-lect" value="<?= /* TODO: lect id here */ ?>" autocomplete="off"></input>
+                    <!-- timestamp -->
+                    <input class="form-control" type="hidden" name="chat-message-time" id="chat-message-time" value="" autocomplete="off"></input>
+                    
                 </div>
                 
                 <div class="pull-bottom-right main-chat-control">

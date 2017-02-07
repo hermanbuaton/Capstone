@@ -35,9 +35,13 @@ class Chat extends CI_Controller {
         
         // process message
         $m = $post['chat-message-body'];
+        $t = $post['chat-message-time'];
+        
+        $this->load->model('Thread_model');
+        $this->Thread_model->create_thread($post);
         
         // return
-        echo $m;
+        echo $t;
     }
     
     public function msg()

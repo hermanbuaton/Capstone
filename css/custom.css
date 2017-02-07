@@ -109,9 +109,15 @@
     width: calc(100% - 90px - 15px);
     margin-right: 90px;
 }
-#main-chat-input-area {
+#chat-message-head {
     max-width: 9999px;
-    height: 100px;
+    height: 36px;
+    word-wrap: break-word;
+    resize: none;
+}
+#chat-message-body {
+    max-width: 9999px;
+    height: 64px;
     word-wrap: break-word;
     resize: none;
 }

@@ -14,7 +14,8 @@ class User extends CI_Controller {
         */
 	}
 	
-    public function login() {
+    public function login()
+    {
 
         $post = $_POST;
         $username = $post['username'];
