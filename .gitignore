@@ -7,3 +7,4 @@
 ##
 #ignore cache
 application/cache/
+ci_sessions
