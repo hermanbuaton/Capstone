@@ -37,6 +37,8 @@ class User extends CI_Controller {
         /* TODO: set cookies timeout */
         $this->storeSession($id,$username);
         
+        echo $username;
+        
         redirect("Chat/$class");
     }
     
