@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://www2.comp.polyu.edu.hk/~12102347d/simple-socketio-codeigniter-chat/';
-$config['base_url_port'] = 'http://127.0.0.1:3000/';
+$config['base_url'] = 'http://104.199.234.169/Capstone/';
+$config['base_url_port'] = 'http://104.199.234.169:3000/';
 
 /*
 |--------------------------------------------------------------------------
