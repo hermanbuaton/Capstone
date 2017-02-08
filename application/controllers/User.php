@@ -27,15 +27,11 @@ class User extends CI_Controller {
         $class = $post['course'];
         $time = date(DATE_RFC3339);
         
-        echo "1";
-        
         // send to model
         $data['u_name'] = $username;
         $data['class_id'] = $class;
         $data['signin_time'] = $time;
-        echo "1";
-        
-        $id = $this->User_model->record_signin($data);
+        // $id = $this->User_model->record_signin($data);
         
         echo "1";
         
