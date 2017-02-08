@@ -32,12 +32,14 @@ class User extends CI_Controller {
         $data['class_id'] = $class;
         $data['signin_time'] = $time;
         $id = $this->User_model->record_signin($data);
-
+        
+        echo "1";
+        
         /* TODO: save username in cookies */
         /* TODO: set cookies timeout */
         $this->storeSession($id,$username);
         
-        echo $username;
+        echo "1";
         
         redirect("Chat/$class");
     }
