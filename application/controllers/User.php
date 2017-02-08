@@ -17,20 +17,27 @@ class User extends CI_Controller {
     public function login()
     {
 
+        // load model
+        $this->load->model('User_model');
+        
+        // process message
         $post = $_POST;
         $username = $post['username'];
         $password = $post['password'];
-        $room = $post['course'];
-        $time = new DateTime();
+        $class = $post['course'];
+        $time = date(DATE_RFC3339);
         
-        /* TODO: record login record in db */
-        
-        
+        // send to model
+        $data['u_name'] = $username;
+        $data['class_id'] = $class;
+        $data['signin_time'] = $time;
+        $id = $this->User_model->record_signin($data);
+
         /* TODO: save username in cookies */
         /* TODO: set cookies timeout */
-        $this->storeSession($username);
+        $this->storeSession($id,$username);
         
-        redirect("Chat/$room");
+        redirect("Chat/$class");
     }
     
     public function logout()
@@ -45,8 +52,9 @@ class User extends CI_Controller {
      *  @param  $name   [str]   username
      *  @return
      **/
-    private function storeSession($name)
+    private function storeSession($id,$name)
 	{
+		$this->session->set_userdata('user_id',$id);
 		$this->session->set_userdata('user_name',$name);
 	}
     

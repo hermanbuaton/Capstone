@@ -41,6 +41,14 @@ io.on('connection', function(socket){
         io.emit('chat message', msg);
     });
     
+    // message
+    socket.on('thread', function(data){
+        var r = data['room'];
+        var d = data['data'];
+        
+        io.sockets.in(r).emit('chat message', msg);
+    });
+    
     /*
     // send a message to everyone except for certain socket
     socket.broadcast.emit('hi');

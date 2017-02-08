@@ -35,7 +35,7 @@
                 <br/>
                 
                 Course:
-                <input class="form-control" type="course" name="course" id="course" placeholder="Course Code"></input>
+                <input class="form-control" type="text" name="course" id="course" placeholder="Course Code"></input>
                 <br/>
                 
                 <div id="login-submit">

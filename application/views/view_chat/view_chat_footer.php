@@ -33,13 +33,13 @@
             if (e.keyCode === 13) {
                 if (!e.shiftKey && !e.ctrlKey) {
                     e.preventDefault();
-                    submitInput();
+                    submitInput2();
                 }
             }
         });
         
         $('#messages-input').submit(function(){
-            submitInput();
+            submitInput2();
             return false;
         });
 
@@ -60,12 +60,54 @@
             // if ALL fields have content
             if (ht.length > 0 && bt.length > 0)
             {
-                // add timestamp
-                var t = new Date();
-                t = t.toISOString();
-                $('#chat-message-time').val(t);
-                console.log($('#messages-input').serialize());
+                // send to:
+                // 1. socket server
+                // 2. database
                 
+                // to socket server
+                // only HEAD part, i.e. the question
+                socket.emit('thread', {
+                                        room: subject,
+                                        data: $('#messages-input')
+                                      }
+                           );
+                
+                // to database
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url("Chat/message"); ?>",
+                    data: $('#messages-input').serialize(),
+                    
+                    success: function(data) {
+                        // do something
+                        console.log(data);
+                    }
+                });
+            } 
+            // if ONLY EITHER ONE field have content
+            else if (ht.length > 0 || bt.length > 0)
+            {
+                // return before content clear
+                return false;
+            }
+            
+            cancelInput();
+            return false;
+            
+        }
+        
+        function submitInput2() {
+            
+            // validate head
+            var hv = $('#chat-message-head').val();
+            var ht = hv.trim();
+            // validate body
+            var bv = $('#chat-message-body').val();
+            var bt = bv.trim();
+            
+            // if ALL fields have content
+            if (ht.length > 0 && bt.length > 0)
+            {
                 // send to:
                 // 1. socket server
                 // 2. database

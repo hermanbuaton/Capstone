@@ -102,8 +102,19 @@
     height: calc(100% - 50px - 120px - 15px - 15px);
 }
 .thread-message {
-    min-height: 26px;
+    min-height: 61px;
     padding: 3px 3px 3px 3px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.thread-message-vote {
+    text-align: center;
+}
+.thread-message-vote-btn {
+    width: inherit;
+}
+.thread-message-head {
+    margin-left: 45px;
 }
 #main-chat-input {
     width: calc(100% - 90px - 15px);

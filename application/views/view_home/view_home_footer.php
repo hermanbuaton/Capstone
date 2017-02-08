@@ -14,20 +14,24 @@
 
     <!-- Menu Toggle Script -->
     <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    $("#menu-toggle-2").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    $("#login-form").keyup(function(e) {
-        e = e || event;
-        if (e.keyCode === 13) {
-            $("#login-form").submit();
-        }
-    });
+        
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
+        $("#menu-toggle-2").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
+        $("#login-form").keydown(function(e) {
+            e = e || event;
+            if (e.keyCode === 13) {
+                $("#login-form").submit();
+            }
+        });
+        
     </script>
 
 </body>

@@ -31,23 +31,25 @@ class Chat extends CI_Controller {
     
     public function message()
     {
-        $post = $_POST;
+        // load model
+        $this->load->model('Thread_model');
         
         // process message
-        $m = $post['chat-message-body'];
-        $t = $post['chat-message-time'];
+        $post = $_POST;
+        $data['class_id'] = $post['chat-message-class'];
+        $data['lect_id'] = $post['chat-message-lect'];
+        $data['m_type'] = 0;
+        $data['u_id'] = $this->session->userdata('user_id');
+        $data['u_show'] = $post['chat-message-anonymous'];
+        $data['m_time'] = date(DATE_RFC3339);
+        $data['m_head'] = $post['chat-message-head'];
+        $data['m_body'] = $post['chat-message-body'];
         
-        $this->load->model('Thread_model');
-        $this->Thread_model->create_thread($post);
+        // send to MODEL
+        $id = $this->Thread_model->insert_thread($data);
         
         // return
-        echo $t;
-    }
-    
-    public function msg()
-    {
-        $arr = "12312123312";
-        var_dump($arr);
+        echo json_encode($id);
     }
     
     private function checkSubject($s)

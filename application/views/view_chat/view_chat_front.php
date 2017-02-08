@@ -36,12 +36,24 @@
 
             <!-- Messages -->
             <div class="thread-view" id="main-chat-view">
+                
                 <!-- ** Messages here ** -->
                 <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
-                <!--
                 <div class="thread-message" id="main-chat-view-msg">
+                    
+                    <!-- Vote btn & counter -->
+                    <div class="thread-message-vote pull-left">
+                        <input class="form-control thread-message-vote-btn" type="button" value="+" name="vote" id="vote"></input>
+                        27
+                    </div>
+                    
+                    <!-- Thread HEAD -->
+                    <div class="thread-message-head">
+                        Blah Blah Blah
+                    </div>
+                    
                 </div>
-                -->
+            
             </div>
 
             <!-- Input area -->
@@ -57,11 +69,9 @@
                     <!-- Other fields -->
                     <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
                     <!-- class id -->
-                    <input class="form-control" type="hidden" name="chat-message-class" id="chat-message-class" value="<?= $subject; ?>" autocomplete="off"></input>
+                    <input class="form-control" type="hidden" name="chat-message-class" id="chat-message-class" value="<?php echo $subject; ?>" autocomplete="off"></input>
                     <!-- lect id -->
-                    <input class="form-control" type="hidden" name="chat-message-lect" id="chat-message-lect" value="<?= /* TODO: lect id here */ ?>" autocomplete="off"></input>
-                    <!-- timestamp -->
-                    <input class="form-control" type="hidden" name="chat-message-time" id="chat-message-time" value="" autocomplete="off"></input>
+                    <input class="form-control" type="hidden" name="chat-message-lect" id="chat-message-lect" value="<?php /* TODO: lect id here */ ?>" autocomplete="off"></input>
                     
                 </div>
                 
