@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://104.155.228.16/';
-$config['base_url_port'] = 'http://104.155.228.16:3000/';
+$config['base_url'] = 'http://104.199.234.169/';
+$config['base_url_port'] = 'http://104.199.234.169:3000/';
 
 /*
 |--------------------------------------------------------------------------

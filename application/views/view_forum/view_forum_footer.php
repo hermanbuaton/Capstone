@@ -16,7 +16,7 @@
     <script src="<?php echo base_url_port(); ?>socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
     <script>
-        var socket = io.connect("http://127.0.0.1:3000/");
+        var socket = io.connect(""<?php echo base_url_port(); ?>"");
         var subject = "<?php echo $subject; ?>";
 
         socket.on('connect', function() {

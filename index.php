@@ -66,12 +66,14 @@
                 break;
             
             // beta
-            case 'beta.bookbookbot.com':
+            case 'beta.something.com':
                 define('ENVIRONMENT', 'testing');
                 break;
             
             // ?
-            case '':
+            case '104.199.234.169':
+            case '104.199.234.169:3000':
+            case '104.199.234.169:5000':
                 define('ENVIRONMENT', 'production');
                 break;
             
