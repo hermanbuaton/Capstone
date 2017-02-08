@@ -20,7 +20,7 @@ class Second extends CI_Controller {
    */
   public function index()
   {
-      echo "hello";
+      echo "hello " . ENVIRONMENT;
       // $this->load->view('welcome_message');
       // $this->load->view('view_chat/view_chat_header');
       // $this->load->view('view_chat/view_chat_front');
