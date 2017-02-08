@@ -17,6 +17,8 @@ class User extends CI_Controller {
     public function login()
     {
 
+        echo "1";
+        
         // load model
         $this->load->model('User_model');
         
@@ -26,6 +28,8 @@ class User extends CI_Controller {
         $password = $post['password'];
         $class = $post['course'];
         $time = date(DATE_RFC3339);
+        
+        echo "1";
         
         // send to model
         $data['u_name'] = $username;
