@@ -21,6 +21,19 @@ class Second extends CI_Controller {
     public function index()
     {
         echo "hello " . ENVIRONMENT;
+        
+        $servername = "104.199.234.169";
+        $username = "root";
+        $password = "root111";
+
+        // Create connection
+        $conn = new mysqli($servername, $username, $password);
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        } 
+        echo "Connected successfully";
 
         // $this->load->view('welcome_message');
         // $this->load->view('view_chat/view_chat_header');
