@@ -17,8 +17,6 @@ class User extends CI_Controller {
     public function login()
     {
 
-        echo "1";
-        
         // load model
         $this->load->model('User_model');
         
@@ -35,6 +33,8 @@ class User extends CI_Controller {
         $data['u_name'] = $username;
         $data['class_id'] = $class;
         $data['signin_time'] = $time;
+        echo "1";
+        
         $id = $this->User_model->record_signin($data);
         
         echo "1";
