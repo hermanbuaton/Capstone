@@ -31,7 +31,7 @@ class User extends CI_Controller {
         $data['u_name'] = $username;
         $data['class_id'] = $class;
         $data['signin_time'] = $time;
-        // $id = $this->User_model->record_signin($data);
+        $id = $this->User_model->record_signin($data);
         
         echo "1";
         
