@@ -39,20 +39,10 @@
                 
                 <!-- ** Messages here ** -->
                 <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
-                <div class="thread-message" id="main-chat-view-msg">
-                    
-                    <!-- Vote btn & counter -->
-                    <div class="thread-message-vote pull-left">
-                        <input class="form-control thread-message-vote-btn" type="button" value="+" name="vote" id="vote"></input>
-                        27
-                    </div>
-                    
-                    <!-- Thread HEAD -->
-                    <div class="thread-message-head">
-                        Blah Blah Blah
-                    </div>
-                    
-                </div>
+                <!-- ** Change layout in view_chat_message ** -->
+                <!--
+                    <div class="thread-message" id="main-chat-view-msg"></div>
+                -->
             
             </div>
 

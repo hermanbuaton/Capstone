@@ -103,7 +103,7 @@
 }
 .thread-message {
     min-height: 61px;
-    padding: 3px 3px 3px 3px;
+    padding: 3px 3px 12px 3px;
     margin-bottom: 8px;
     border-bottom: 1px solid #f0f0f0;
 }

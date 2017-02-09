@@ -48,8 +48,13 @@ class Chat extends CI_Controller {
         // send to MODEL
         $id = $this->Thread_model->insert_thread($data);
         
+        // retrieve id
+        $data['t_id'] = $id['t'];
+        $data['m_id'] = $id['m'];
+        
         // return
-        echo json_encode($id);
+        $this->load->view('view_chat/view_chat_message',$data);
+        //echo json_encode($id);
     }
     
     private function checkSubject($s)

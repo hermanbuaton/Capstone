@@ -25,7 +25,7 @@
         });
 
         socket.on('chat message', function(data) {
-            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').text(data));
+            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
         });
         
         $("#chat-message-body").keydown(function(e) {
@@ -109,12 +109,9 @@
             if (ht.length > 0 && bt.length > 0)
             {
                 // send to:
-                // 1. socket server
-                // 2. database
-                
-                // to socket server
-                // only HEAD part, i.e. the question
-                socket.emit('chat message', hv);
+                // 1. database
+                // 2. socket server
+                var content = "";
                 
                 // to database
                 $.ajax({
@@ -124,9 +121,17 @@
                     
                     success: function(data) {
                         // do something
-                        console.log(data);
+                        content = data;
+                        socket.emit('chat message', content);
                     }
                 });
+                
+                
+                console.log(content);
+                // to socket server
+                // only HEAD part, i.e. the question
+                // socket.emit('chat message', content);
+                
             } 
             // if ONLY EITHER ONE field have content
             else if (ht.length > 0 || bt.length > 0)
