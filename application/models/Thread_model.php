@@ -39,5 +39,13 @@ class Thread_model extends CI_Model {
         
         return $id;
     }
+    
+    public function insert_vote($data)
+    {
+        $this->db->insert('vote',$data);
+        $id = $this->db->insert_id();
+        
+        return $id;
+    }
 
 }

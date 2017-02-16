@@ -37,8 +37,12 @@ io.on('connection', function(socket){
     
     // message
     socket.on('chat message', function(msg){
-        console.log('message: ' + msg);
         io.emit('chat message', msg);
+    });
+    
+    // vote
+    socket.on('vote', function(msg){
+        io.emit('vote', msg);
     });
     
     // message

@@ -39,9 +39,9 @@ class Chat extends CI_Controller {
         $data['class_id'] = $post['chat-message-class'];
         $data['lect_id'] = $post['chat-message-lect'];
         $data['m_type'] = 0;
-        $data['u_id'] = $this->session->userdata('user_id');
+        $data['u_id'] = $this->getUserID();
         $data['u_show'] = $post['chat-message-anonymous'];
-        $data['m_time'] = date(DATE_RFC3339);
+        $data['m_time'] = $this->getTimeString();
         $data['m_head'] = $post['chat-message-head'];
         $data['m_body'] = $post['chat-message-body'];
         
@@ -55,6 +55,27 @@ class Chat extends CI_Controller {
         // return
         $this->load->view('view_chat/view_chat_message',$data);
         //echo json_encode($id);
+    }
+    
+    public function vote()
+    {
+        // load model
+        $this->load->model('Thread_model');
+        
+        // process vote
+        $post = $_POST;
+        $data['m_id'] = $post['vote-message'];
+        $data['vote'] = $post['vote-value'];
+        $data['v_time'] = $this->getTimeString();
+        
+        // send to MODEL
+        $this->Thread_model->insert_vote($data);
+        
+        // return
+        $out['m'] = $data['m_id'];
+        $out['v'] = $data['vote'];
+        echo $out['m'];
+        // echo json_encode($out);
     }
     
     private function checkSubject($s)
@@ -74,6 +95,16 @@ class Chat extends CI_Controller {
         }
         
         return true;
+    }
+    
+    private function getUserID()
+    {
+        return $this->session->userdata('user_id');
+    }
+    
+    private function getTimeString()
+    {
+        return date(DATE_RFC3339);
     }
 
 }

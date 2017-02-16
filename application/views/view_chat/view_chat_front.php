@@ -35,17 +35,14 @@
         <div class="panel-body">
 
             <!-- Messages -->
-            <div class="thread-view" id="main-chat-view">
-                
-                <!-- ** Messages here ** -->
-                <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
-                <!-- ** Change layout in view_chat_message ** -->
-                <!--
-                    <div class="thread-message" id="main-chat-view-msg"></div>
-                -->
+            <form id="messages-vote" action="">
+                <div class="thread-view" id="main-chat-view">
+                    <!-- ** Messages here ** -->
+                    <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
+                    <!-- ** Change layout in view_chat_message ** -->
+                </div>
+            </form>
             
-            </div>
-
             <!-- Input area -->
             <form id="messages-input" action="">
                 <div class="pull-bottom-left" id="main-chat-input">
