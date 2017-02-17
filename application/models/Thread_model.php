@@ -27,17 +27,23 @@ class Thread_model extends CI_Model {
         $message['m_head'] = $data['m_head'];
         $message['m_body'] = $data['m_body'];
         
-        $id['m'] = $this->insert_message($message);
+        $row = $this->insert_message($message);
         
-        return $id;
+        return $row;
     }
     
     public function insert_message($data)
     {
         $this->db->insert('message',$data);
-        $id = $this->db->insert_id();
+        $data['m_id'] = $this->db->insert_id();
+        $query = $this->db
+                    ->select('*')
+                    ->from('message')
+                    ->where('m_id',$data['m_id']);
+        $row = $query->get()->result();
         
-        return $id;
+        // $row = array($data);
+        return $row;
     }
     
     public function insert_vote($data)

@@ -46,14 +46,11 @@ class Chat extends CI_Controller {
         $data['m_body'] = $post['chat-message-body'];
         
         // send to MODEL
-        $id = $this->Thread_model->insert_thread($data);
-        
-        // retrieve id
-        $data['t_id'] = $id['t'];
-        $data['m_id'] = $id['m'];
+        // on return put data into $out
+        $out['row'] = $this->Thread_model->insert_thread($data);
         
         // return
-        $this->load->view('view_chat/view_chat_message',$data);
+        $this->load->view('view_chat/view_chat_message',$out);
         //echo json_encode($id);
     }
     

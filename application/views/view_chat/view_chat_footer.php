@@ -23,6 +23,21 @@
         
         
         /** ========================================
+        *   sidebar
+        *   ======================================== */
+        
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        $("#menu-toggle-2").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        
+        
+        
+        /** ========================================
         *   socket
         *   ======================================== */
         
@@ -34,6 +49,9 @@
         
         //  receive message
         socket.on('chat message', function(data) {
+            
+            console.log(data);
+            
             $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
         });
         
@@ -187,18 +205,6 @@
             );
         }
         
-    </script>
-
-    <!-- Menu Toggle Script -->
-    <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
-        $("#menu-toggle-2").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-        });
     </script>
 
 </body>
