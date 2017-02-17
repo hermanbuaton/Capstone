@@ -41,8 +41,8 @@ io.on('connection', function(socket){
     });
     
     // vote
-    socket.on('vote', function(msg){
-        io.emit('vote', msg);
+    socket.on('vote', function(data){
+        io.emit('vote', data);
     });
     
     // message

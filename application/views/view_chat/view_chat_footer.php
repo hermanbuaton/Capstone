@@ -38,8 +38,20 @@
         });
         
         //  update vote
-        socket.on('chat message', function(data) {
-            // TODO
+        socket.on('vote', function(data) {
+            
+            // extract json
+            var vote = JSON.parse(data);
+            var m = parseInt(vote['m']);
+            var v = parseInt(vote['v']);
+            
+            // get DOM element
+            var control = 'vote-count[' + m + ']';
+            var count = parseInt(document.getElementById(control).innerHTML);
+            
+            // set counter
+            document.getElementById(control).innerHTML = count + v;
+            
         });
         
         
@@ -169,12 +181,9 @@
                 }
             });
             
-            // set vote button & vote counter
+            // set vote button
             input.text(
                 (field.val() == 1) ? "-" : "+" 
-            );
-            counter.text( 
-                (field.val() == 1) ? (count+1) : (count-1) 
             );
         }
         

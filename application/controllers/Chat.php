@@ -74,8 +74,7 @@ class Chat extends CI_Controller {
         // return
         $out['m'] = $data['m_id'];
         $out['v'] = $data['vote'];
-        echo $out['m'];
-        // echo json_encode($out);
+        echo json_encode($out);
     }
     
     private function checkSubject($s)
