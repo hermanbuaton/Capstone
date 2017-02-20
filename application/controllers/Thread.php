@@ -17,7 +17,7 @@ class Thread extends CI_Controller {
         // validation
         $this->checkLogin();
         $this->checkSubject($subject);
-        $this->checkThread($thread);
+        // $this->checkThread($thread);
         
         $data['subject'] = $subject;
         $data['thread'] = $thread;
@@ -27,7 +27,9 @@ class Thread extends CI_Controller {
         
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');
+        $this->load->view('view_thread/view_thread_header');
         $this->load->view('view_thread/view_thread_front');
+        $this->load->view('view_chat/view_chat_panel');
         $this->load->view('view_thread/view_thread_footer');
     }
     

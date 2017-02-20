@@ -12,37 +12,28 @@ class Thread extends CI_Controller {
 		$this->index($method);
 	}
 	
-    public function index($subject='', $thread='')
+    public function index($subject='')
     {
         // validation
         $this->checkLogin();
         $this->checkSubject($subject);
-        // $this->checkThread($thread);
         
         $data['subject'] = $subject;
-        $data['thread'] = $thread;
         
-        $data['page'] = "Chat";
+        $data['page'] = "Forum";
         $data['title'] = $subject . " - SB Admin";  // TODO: Page Title
         
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');
-        $this->load->view('view_thread/view_thread_front');
-        $this->load->view('view_thread/view_thread_footer');
+        $this->load->view('view_forum/view_forum_header');
+        $this->load->view('view_forum/view_forum_front');
+        $this->load->view('view_chat/view_chat_panel');
+        $this->load->view('view_forum/view_forum_footer');
     }
     
     private function checkSubject($s)
     {
         if($s=='' || $s === null) {
-            redirect();
-        }
-        
-        return true;
-    }
-    
-    private function checkThread($t)
-    {
-        if($t=='' || $t === null) {
             redirect();
         }
         
