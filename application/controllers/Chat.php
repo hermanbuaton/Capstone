@@ -29,6 +29,19 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_footer');
     }
     
+    public function load($subject='')
+    {
+        // validation
+        $this->checkSubject($subject);
+        
+        // load model & get data
+        $this->load->model('Thread_model');
+        $out['row'] = $this->Thread_model->load_thread($subject);
+        
+        // return
+        $this->load->view('view_chat/view_chat_message',$out);
+    }
+    
     public function message()
     {
         // load model
@@ -51,7 +64,6 @@ class Chat extends CI_Controller {
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
-        //echo json_encode($id);
     }
     
     public function vote()

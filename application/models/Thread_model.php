@@ -34,16 +34,13 @@ class Thread_model extends CI_Model {
     
     public function insert_message($data)
     {
+        // insert
         $this->db->insert('message',$data);
-        $data['m_id'] = $this->db->insert_id();
-        $query = $this->db
-                    ->select('*')
-                    ->from('message')
-                    ->where('m_id',$data['m_id']);
-        $row = $query->get()->result();
         
-        // $row = array($data);
-        return $row;
+        // put id into array
+        $data['m_id'] = $this->db->insert_id();
+        
+        return array($data);
     }
     
     public function insert_vote($data)
@@ -53,5 +50,19 @@ class Thread_model extends CI_Model {
         
         return $id;
     }
+    
+    public function load_thread($subject)
+    {
+        $query = $this->db
+                    ->select('m.*, SUM(v.vote) AS vote')
+                    ->from('message AS m')
+                    ->join('vote AS v', 'm.m_id = v.m_id', 'left')
+                    ->group_by('m.m_id');
+        $row = $query->get()->result_array();
+        
+        return $row;
+    }
+    
+    
 
 }

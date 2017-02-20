@@ -30,13 +30,14 @@ io.on('connection', function(socket){
         socket.join(room);
         console.log("someone joined " + room);
         
+        // TODO: remove testing line
         var message = 'Lets welcome a new buddy to ' + room;
         io.sockets.in(room).emit('chat message', message);
         console.log("emited message: " + message);
     });
     
     // message
-    socket.on('chat message', function(msg){
+    socket.on('system broadcasting', function(msg){
         io.emit('chat message', msg);
     });
     
@@ -47,10 +48,11 @@ io.on('connection', function(socket){
     
     // message
     socket.on('thread', function(data){
+        console.log(data);
         var r = data['room'];
-        var d = data['data'];
+        var d = data['html'];
         
-        io.sockets.in(r).emit('chat message', msg);
+        io.sockets.in(r).emit('thread', d);
     });
     
     /*

@@ -23,6 +23,24 @@
         
         
         /** ========================================
+        *   onload
+        *   ======================================== */
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "<?php echo site_url("Chat/load/".$subject); ?>",
+                // data: $('#messages-input').serialize(),
+
+                success: function(data) {
+                    $('#main-chat-view').append(data);
+                    // $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+                }
+            });
+        });
+        
+        
+        
+        /** ========================================
         *   sidebar
         *   ======================================== */
         
@@ -48,11 +66,8 @@
         });
         
         //  receive message
-        socket.on('chat message', function(data) {
-            
-            console.log(data);
-            
-            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+        socket.on('thread', function(data) {
+            $('#main-chat-view').append(data);
         });
         
         //  update vote
@@ -72,6 +87,10 @@
             
         });
         
+        //  system message
+        socket.on('system broadcasting', function(data) {
+            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+        });
         
         
         /** ========================================
@@ -140,7 +159,8 @@
                     
                     success: function(data) {
                         // (2) to socket server
-                        socket.emit('chat message', data);
+                        var out = {"html": data, "room": subject};
+                        socket.emit('thread', out);
                     }
                 });
                 
