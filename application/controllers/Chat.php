@@ -25,7 +25,9 @@ class Chat extends CI_Controller {
         
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');
+        $this->load->view('view_chat/view_chat_header');
         $this->load->view('view_chat/view_chat_front');
+        $this->load->view('view_chat/view_chat_panel');
         $this->load->view('view_chat/view_chat_footer');
     }
     
