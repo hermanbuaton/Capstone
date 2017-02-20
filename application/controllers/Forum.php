@@ -3,18 +3,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Thread extends CI_Controller {
 
+    public function _remap($method, $params = array())
+	{
+		if (method_exists($this, $method))
+		{
+			return call_user_func_array(array($this, $method), $params);
+		}
+		$this->index($method);
+	}
+	
     public function index($subject='', $thread='')
     {
         // validation
-        $this->checkSubject($subject);
-        $this->checkThread($thread);
         $this->checkLogin();
-
+        $this->checkSubject($subject);
+        // $this->checkThread($thread);
+        
         $data['subject'] = $subject;
         $data['thread'] = $thread;
         
         $data['page'] = "Chat";
-        $data['title'] = $room . " - SB Admin";
+        $data['title'] = $subject . " - SB Admin";  // TODO: Page Title
         
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');

@@ -15,13 +15,13 @@ class Chat extends CI_Controller {
     public function index($subject='')
     {
         // validation
-        $this->checkSubject($subject);
         $this->checkLogin();
+        $this->checkSubject($subject);
         
         $data['subject'] = $subject;
         
         $data['page'] = "Chat";
-        $data['title'] = $room . " - SB Admin";
+        $data['title'] = $subject . " - SB Admin";  // TODO: Page Title
         
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');
