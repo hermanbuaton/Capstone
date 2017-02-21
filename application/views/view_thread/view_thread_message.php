@@ -6,7 +6,7 @@
 <!-- ** Messages here ** -->
 <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
 
-<div class="forum-message" id="forum-message-view">
+<div class="forum-message" id="forum-message-view" value="<?= $data['m_id']; ?>">
     <!-- Vote btn & counter -->
     <div class="forum-thread-vote pull-left">
         <form class="forum-thread-vote-form" id="vote-form[<?= $data['m_id']; ?>]" action="">

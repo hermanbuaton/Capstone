@@ -149,3 +149,13 @@
     top: 3%;
     padding: 0 0 0 0;
 }
+
+
+
+
+#thread-content {
+    position: absolute;
+    width: calc(100% - 15px - 15px);
+    height: calc(100% - 50px - 15px - 15px);
+    overflow-y: scroll;
+}

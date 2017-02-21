@@ -141,6 +141,25 @@
         
         
         /** ========================================
+        *   Message Expand
+        *   ======================================== */
+        
+        //  submit vote
+        $("#forum-list-view").on("click", ".forum-message", function(e) {
+            
+            // if click on VOTE button
+            if($(e.target).is('.forum-thread-vote-input')){
+                // do nothing
+                return;
+            }
+            
+            var m_id = $(this).attr('value');
+            console.log(m_id);
+        });
+        
+        
+        
+        /** ========================================
         *   Real Work
         *   ======================================== */
         

@@ -39,7 +39,7 @@
                 // data: $('#messages-input').serialize(),
 
                 success: function(data) {
-                    $('#main-chat-view').append(data);
+                    $('#forum-list-view').append(data);
                     // $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
                 }
             });
@@ -61,6 +61,40 @@
         });
         
         
+        
+        /** ========================================
+        *   Message Expand
+        *   ======================================== */
+        
+        //  submit vote
+        $("#forum-list-view").on("click", ".forum-message", function(e) {
+            
+            // if click on VOTE button
+            if($(e.target).is('.forum-thread-vote-input')){
+                // do nothing
+                return;
+            }
+            
+            var m_id = $(this).attr('value');
+            console.log(m_id);
+            
+            $.ajax({
+                type: "GET",
+                // TODO: put message id into URL
+                url: "<?php echo site_url("Thread/load/1234567"); ?>",
+                // data: $('#messages-input').serialize(),
+
+                success: function(data) {
+                    
+                    // set content
+                    $('#thread-content').html(data);
+                    
+                    // interface: hide forum-panel
+                    // TODO: make div scrollable
+                    $("#forum-panel-view").addClass('hidden-xs');
+                }
+            });
+        });
         
         
         

@@ -6,13 +6,13 @@
 <!-- ** Messages here ** -->
 <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
 
-<div class="forum-message" id="forum-message-view">
+<div class="forum-message" id="forum-message-view" value="<?= $data['m_id']; ?>">
     <!-- Vote btn & counter -->
     <div class="forum-thread-vote pull-left">
         <form class="forum-thread-vote-form" id="vote-form[<?= $data['m_id']; ?>]" action="">
             
             <!-- message id -->
-            <input class="form-control" type="hidden" name="vote-message" id="vote-message[<?= $data['m_id']; ?>]" value="<?php echo $data['m_id']; ?>" autocomplete="off"></input>
+            <input class="form-control forum-thread-vote-message" type="hidden" name="vote-message" id="vote-message[<?= $data['m_id']; ?>]" value="<?php echo $data['m_id']; ?>" autocomplete="off"></input>
                 
             <!-- vote value : +1 | -1 -->
             <input class="form-control forum-thread-vote-value" type="hidden" name="vote-value" id="vote-value[<?= $data['m_id']; ?>]" value="" autocomplete="off"></input>

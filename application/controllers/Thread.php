@@ -31,7 +31,7 @@ class Thread extends CI_Controller {
         $this->load->view('view_thread/view_thread_footer');
     }
     
-    public function load($subject='', $thread='')
+    public function load($thread='')
     {
         // validation
         $this->checkThread($thread);
