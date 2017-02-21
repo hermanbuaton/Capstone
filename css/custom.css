@@ -87,55 +87,55 @@
 
 
 /* Chat Room */
-.chat-panel {
+.forum-panel {
     top: 3%;
     height: 95%;
     padding: 0 0 0 0;
 }
-.thread-view {
+.forum-list {
     position: absolute;
     width: calc(100% - 15px - 15px);
     height: calc(100% - 50px - 15px - 15px);
     overflow-y: scroll;
 }
-#main-chat-view {
+#forum-list-view {
     height: calc(100% - 50px - 120px - 15px - 15px);
 }
-.thread-message {
+.forum-message {
     min-height: 61px;
     padding: 3px 3px 12px 3px;
     margin-bottom: 8px;
     border-bottom: 1px solid #f0f0f0;
 }
-.thread-message-vote {
+.forum-thread-vote {
     text-align: center;
 }
-.thread-message-vote-btn {
+.forum-thread-vote-input {
     width: inherit;
 }
-.thread-message-head {
+.forum-thread-head {
     margin-left: 45px;
 }
-#main-chat-input {
+#forum-quick-input-data-view {
     width: calc(100% - 90px - 15px);
     margin-right: 90px;
 }
-#chat-message-head {
+#input-message-head {
     max-width: 9999px;
     height: 36px;
     word-wrap: break-word;
     resize: none;
 }
-#chat-message-body {
+#input-message-body {
     max-width: 9999px;
     height: 64px;
     word-wrap: break-word;
     resize: none;
 }
-.main-chat-control {
+#forum-quick-input-control-view {
     width: 90px;
 }
-.main-chat-control-btn {
+.forum-quick-input-control {
     width: 70px;
     height: 50px;
     padding: 5px;

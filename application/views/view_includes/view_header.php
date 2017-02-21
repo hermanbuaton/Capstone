@@ -35,8 +35,11 @@
     <![endif]-->
 
 </head>
-
-<body class="<?php echo ($page == "Chat" ? "main-ui" : "main-ui-scroll"); ?>">
+    
+<!--
+<body class="<?php // echo ($page == "Chat" ? "main-ui" : "main-ui-scroll"); ?>">
+-->
+<body class="main-ui">
 
     <div id="wrapper">
         

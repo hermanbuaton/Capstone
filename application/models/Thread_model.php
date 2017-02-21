@@ -53,6 +53,20 @@ class Thread_model extends CI_Model {
     
     public function load_thread($subject)
     {
+        // TODO: set query WHERE subject == subject id
+        $query = $this->db
+                    ->select('m.*, SUM(v.vote) AS vote')
+                    ->from('message AS m')
+                    ->join('vote AS v', 'm.m_id = v.m_id', 'left')
+                    ->group_by('m.m_id');
+        $row = $query->get()->result_array();
+        
+        return $row;
+    }
+    
+    public function load_message($thread)
+    {
+        // TODO: set query WHERE thread == thread id
         $query = $this->db
                     ->select('m.*, SUM(v.vote) AS vote')
                     ->from('message AS m')

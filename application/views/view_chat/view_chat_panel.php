@@ -1,5 +1,5 @@
 <!-- Start of Panel -->
-<div class="panel panel-default chat-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="main-chat">
+<div class="panel panel-default forum-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="forum-panel-view">
 
     <!-- ============================================================================ -->
     <!-- Panel Heading -->
@@ -14,36 +14,38 @@
     <div class="panel-body">
 
         <!-- Messages -->
-        <form id="messages-vote" action="">
-            <div class="thread-view" id="main-chat-view">
-                <!-- ** Messages here ** -->
-                <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
-                <!-- ** Change layout in view_chat_message ** -->
-            </div>
-        </form>
+        <div class="forum-list" id="forum-list-view">
+            <!-- ** Messages here ** -->
+            <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
+            <!-- ** Change layout in view_chat_message ** -->
+        </div>
 
         <!-- Input area -->
-        <form id="messages-input" action="">
-            <div class="pull-bottom-left" id="main-chat-input">
+        <form class="" id="forum-quick-input" action="">
+            <div class="pull-bottom-left" id="forum-quick-input-data-view">
 
                 <!-- Thread Head -->
-                <textarea class="form-control" name="chat-message-head" id="chat-message-head" placeholder="Question" autocomplete="off" ></textarea>
+                <textarea class="form-control" name="input-message-head" id="input-message-head" placeholder="Question" autocomplete="off" ></textarea>
 
                 <!-- Thread Body -->
-                <textarea class="form-control" name="chat-message-body" id="chat-message-body" placeholder="Furtherer Explanation" autocomplete="off" ></textarea>
+                <textarea class="form-control" name="input-message-body" id="input-message-body" placeholder="Furtherer Explanation" autocomplete="off" ></textarea>
 
                 <!-- Other fields -->
                 <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
                 <!-- class id -->
-                <input class="form-control" type="hidden" name="chat-message-class" id="chat-message-class" value="<?php echo $subject; ?>" autocomplete="off"></input>
+                <input class="form-control" type="hidden" name="input-message-class" id="input-message-class" value="<?php echo $subject; ?>" autocomplete="off"></input>
                 <!-- lect id -->
-                <input class="form-control" type="hidden" name="chat-message-lect" id="chat-message-lect" value="<?php /* TODO: lect id here */ ?>" autocomplete="off"></input>
+                <input class="form-control" type="hidden" name="input-message-lect" id="input-message-lect" value="<?php /* TODO: lect id here */ ?>" autocomplete="off"></input>
 
             </div>
 
-            <div class="pull-bottom-right main-chat-control">
-                <button class="btn btn-primary main-chat-control-btn" id="main-chat-submit-btn">Send</button>
-                <button class="btn btn-danger main-chat-control-btn" id="main-chat-cancel-btn">Cancel</button>
+            <div class="pull-bottom-right" id="forum-quick-input-control-view">
+                <button class="btn btn-primary forum-quick-input-control" id="forum-quick-input-submit">
+                    Send
+                </button>
+                <button class="btn btn-danger forum-quick-input-control" id="forum-quick-input-cancel">
+                    Cancel
+                </button>
             </div>
 
             </div>

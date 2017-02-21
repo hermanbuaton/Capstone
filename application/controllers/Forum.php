@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Thread extends CI_Controller {
+class Forum extends CI_Controller {
 
     public function _remap($method, $params = array())
 	{

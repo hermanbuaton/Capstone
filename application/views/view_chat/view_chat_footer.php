@@ -38,8 +38,8 @@
                 // data: $('#messages-input').serialize(),
 
                 success: function(data) {
-                    $('#main-chat-view').append(data);
-                    // $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+                    $('#forum-list-view').append(data);
+                    // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
                 }
             });
         });
@@ -73,7 +73,7 @@
         
         //  receive message
         socket.on('thread', function(data) {
-            $('#main-chat-view').append(data);
+            $('#forum-list-view').append(data);
         });
         
         //  update vote
@@ -95,7 +95,7 @@
         
         //  system message
         socket.on('system broadcasting', function(data) {
-            $('#main-chat-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+            $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
         });
         
         
@@ -104,24 +104,24 @@
         *   ======================================== */
         
         //  press enter to submit message
-        $("#chat-message-body").keydown(function(e) {
+        $("#input-message-body").keydown(function(e) {
             e = e || event;
             if (e.keyCode === 13) {
                 if (!e.shiftKey && !e.ctrlKey) {
                     e.preventDefault();
-                    $('#messages-input').submit();
+                    $('#forum-quick-input').submit();
                 }
             }
         });
         
         //  submit message
-        $('#messages-input').submit(function(){
+        $('#forum-quick-input').submit(function(){
             submitInput2();
             return false;
         });
 
         //  clear message <form>
-        $('#main-chat-cancel-btn').click(function(){
+        $('#forum-quick-input-cancel').click(function(){
             cancelInput();
             return false;
         });
@@ -133,7 +133,7 @@
         *   ======================================== */
         
         //  submit vote
-        $("#main-chat-view").on("submit", ".thread-message-vote-form", function() {
+        $("#forum-list-view").on("submit", ".forum-thread-vote-form", function() {
             submitVote2($(this));
             return false;
         });
@@ -148,10 +148,10 @@
         function submitInput2() {
             
             // for m_head validation
-            var hv = $('#chat-message-head').val();
+            var hv = $('#input-message-head').val();
             var ht = hv.trim();
             // for m_body validation
-            var bv = $('#chat-message-body').val();
+            var bv = $('#input-message-body').val();
             var bt = bv.trim();
             
             // if ALL fields have content
@@ -161,7 +161,7 @@
                 $.ajax({
                     type: "POST",
                     url: "<?php echo site_url("Chat/message"); ?>",
-                    data: $('#messages-input').serialize(),
+                    data: $('#forum-quick-input').serialize(),
                     
                     success: function(data) {
                         // (2) to socket server
@@ -186,10 +186,11 @@
         
         //  clear message <form>
         function cancelInput() {
-            $('#chat-message-head').val().replace(/\n/g, '');
-            $('#chat-message-head').val('');
-            $('#chat-message-body').val().replace(/\n/g, '');
-            $('#chat-message-body').val('');
+            $('#input-message-head').val().replace(/\n/g, '');
+            $('#input-message-head').val('');
+            $('#input-message-body').val().replace(/\n/g, '');
+            $('#input-message-body').val('');
+            
             return false;
         }
         
@@ -197,15 +198,9 @@
         //  submit vote
         function submitVote2(form) {
             
-            console.log(form.attr('id'));
-            
             /* get input */
-            var input = form.children(".thread-message-vote-btn");
-            var field = form.children(".thread-message-vote-val");
-            
-            /* get counter */
-            var counter = form.children(".thread-message-vote-count");
-            var count = parseInt(counter.text());
+            var field = form.children(".forum-thread-vote-value");
+            var input = form.children(".forum-thread-vote-input");
             
             // set VALUE field
             // if found "+", set to +1, else to -1

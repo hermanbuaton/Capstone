@@ -51,14 +51,14 @@ class Chat extends CI_Controller {
         
         // process message
         $post = $_POST;
-        $data['class_id'] = $post['chat-message-class'];
-        $data['lect_id'] = $post['chat-message-lect'];
+        $data['class_id'] = $post['input-message-class'];
+        $data['lect_id'] = $post['input-message-lect'];
         $data['m_type'] = 0;
         $data['u_id'] = $this->getUserID();
-        $data['u_show'] = $post['chat-message-anonymous'];
+        $data['u_show'] = $post['input-message-anonymous'];
         $data['m_time'] = $this->getTimeString();
-        $data['m_head'] = $post['chat-message-head'];
-        $data['m_body'] = $post['chat-message-body'];
+        $data['m_head'] = $post['input-message-head'];
+        $data['m_body'] = $post['input-message-body'];
         
         // send to MODEL
         // on return put data into $out

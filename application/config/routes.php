@@ -55,4 +55,4 @@ $route['translate_uri_dashes'] = FALSE;
 
 
 // $route['Chat/(:any)']= 'Chat/index/$1';
-$route['Thread/(:any)/(:any)']= 'Thread/index/$1/$2';
+// $route['Thread/(:any)/(:any)']= 'Thread/index/$1/$2';
