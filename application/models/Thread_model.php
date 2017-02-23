@@ -58,6 +58,7 @@ class Thread_model extends CI_Model {
                     ->select('m.*, SUM(v.vote) AS vote')
                     ->from('message AS m')
                     ->join('vote AS v', 'm.m_id = v.m_id', 'left')
+                    ->where('m.m_type',0)
                     ->group_by('m.m_id');
         $row = $query->get()->result_array();
         

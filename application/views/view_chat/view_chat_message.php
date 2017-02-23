@@ -30,7 +30,7 @@
     </div>
 
     <!-- Thread HEAD -->
-    <div class="forum-thread-head" id="forum-thread-head-view[<?= $data['m_id']; ?>]">
+    <div class="forum-thread-body" id="forum-thread-body-view[<?= $data['m_id']; ?>]">
         <?php echo $data['m_head']; ?>
     </div>
 

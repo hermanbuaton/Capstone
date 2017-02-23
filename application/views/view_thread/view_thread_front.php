@@ -3,14 +3,20 @@
 
     
     
-    <div id="thread-content">
+    <div class="hidden-xs" id="thread-navbar">
+        Click here to return.
+    </div>
+    
+    
+    
+    <div id="thread-content-view">
         Select a thread to expand.
     </div>
     
     
     
     <!-- Start of Panel -->
-    <div class="panel thread-reply-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 " id="thread-reply">
+    <div class="panel thread-reply-panel col-xs-12 col-sm-12 col-md-12 col-lg-12 " id="thread-reply">
 
         <!-- ================================================================== -->
         <!-- Panel Heading -->

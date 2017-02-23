@@ -87,7 +87,7 @@
                 success: function(data) {
                     
                     // set content
-                    $('#thread-content').html(data);
+                    $('#thread-content-view').html(data);
                     $('#input-message-id').val(m_id);
                     
                     // interface: make div scrollable & hide forum-panel
