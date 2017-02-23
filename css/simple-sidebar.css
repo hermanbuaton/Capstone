@@ -125,7 +125,7 @@ body {
         height: calc(100% - 50px);
         padding: 20px;
         overflow-x: hidden;
-        overflow-y: hidden;
+        overflow-y: auto;
     }
 
     #wrapper.toggled #page-content-wrapper {

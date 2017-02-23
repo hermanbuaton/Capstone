@@ -35,7 +35,7 @@
         $(document).ready(function() {
             $.ajax({
                 type: "GET",
-                url: "<?php echo site_url("Thread/load/".$thread); ?>",
+                url: "<?php echo site_url("Chat/load/".$thread); ?>",
                 // data: $('#messages-input').serialize(),
 
                 success: function(data) {
@@ -76,25 +76,101 @@
             }
             
             var m_id = $(this).attr('value');
-            console.log(m_id);
+            var m_str = "/" + m_id;
             
             $.ajax({
                 type: "GET",
                 // TODO: put message id into URL
-                url: "<?php echo site_url("Thread/load/1234567"); ?>",
+                url: "<?php echo site_url("Thread/load/"); ?>" + m_str,
                 // data: $('#messages-input').serialize(),
 
                 success: function(data) {
                     
                     // set content
                     $('#thread-content').html(data);
+                    $('#input-message-id').val(m_id);
                     
-                    // interface: hide forum-panel
-                    // TODO: make div scrollable
-                    $("#forum-panel-view").addClass('hidden-xs');
+                    // interface: make div scrollable & hide forum-panel
+                    $("#main-ui").removeClass("main-ui");
+                    $("#main-ui").addClass("main-ui-scrollable");
+                    $("#forum-panel-view").addClass("hidden-xs");
+                    $("#thread-main").removeClass("hidden-xs");
                 }
             });
         });
+        
+        
+        
+        /** ========================================
+        *   Message Submit
+        *   ======================================== */
+        
+        //  press enter to submit message
+        $("#input-message-body").keydown(function(e) {
+            e = e || event;
+            if (e.keyCode === 13) {
+                if (!e.shiftKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    $('#thread-quick-reply').submit();
+                }
+            }
+        });
+        
+        //  submit message
+        $('#thread-quick-reply').submit(function(){
+            submitInput2();
+            return false;
+        });
+
+        //  clear message <form>
+        $('#thread-quick-reply-cancel').click(function(){
+            cancelInput();
+            return false;
+        });
+        
+        
+        
+        /** ========================================
+        *   Real Work
+        *   ======================================== */
+        
+        //  submit message
+        function submitInput2() {
+            
+            // for m_body validation
+            var bv = $('#input-message-body').val();
+            var bt = bv.trim();
+            
+            // if ALL fields have content
+            if (bt.length > 0)
+            {
+                // (1) to database
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url("Thread/message"); ?>",
+                    data: $('#thread-quick-reply').serialize(),
+                    
+                    success: function(data) {
+                        // do nothing
+                        console.log(data);
+                    }
+                });
+                
+            }
+            
+            cancelInput();
+            return false;
+            
+        }
+        
+        
+        //  clear message <form>
+        function cancelInput() {
+            $('#input-message-body').val().replace(/\n/g, '');
+            $('#input-message-body').val('');
+            
+            return false;
+        }
         
         
         

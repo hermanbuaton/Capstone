@@ -39,7 +39,7 @@
 <!--
 <body class="<?php // echo ($page == "Chat" ? "main-ui" : "main-ui-scroll"); ?>">
 -->
-<body class="main-ui">
+<body class="main-ui" id="main-ui">
 
     <div id="wrapper">
         

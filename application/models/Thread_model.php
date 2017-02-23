@@ -69,8 +69,10 @@ class Thread_model extends CI_Model {
         // TODO: set query WHERE thread == thread id
         $query = $this->db
                     ->select('m.*, SUM(v.vote) AS vote')
+                    ->from('(SELECT t_id FROM message WHERE m_id ='.$thread.') AS t')
                     ->from('message AS m')
                     ->join('vote AS v', 'm.m_id = v.m_id', 'left')
+                    ->where('m.t_id = t.t_id')
                     ->group_by('m.m_id');
         $row = $query->get()->result_array();
         
@@ -78,5 +80,21 @@ class Thread_model extends CI_Model {
     }
     
     
+    /**
+     *  Return Thread ID only
+     *
+     *  @param  $m      message id
+     *  @return $id     thread id
+     */
+    public function get_thread($m)
+    {
+        $result = $this->db
+                    ->select('t_id')
+                    ->from('message')
+                    ->where('m_id', $m)
+                    ->get()->row();
+        
+        return $result->t_id;
+    }
 
 }
