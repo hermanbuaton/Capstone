@@ -1,11 +1,15 @@
 <!-- Start of Panel -->
 <div class="panel panel-default forum-panel col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-right" id="forum-panel-view">
-
+    
     <!-- ============================================================================ -->
     <!-- Panel Heading -->
     <!-- ============================================================================ -->
     <div class="panel-heading">
         <h3 class="panel-title">Question Bank</h3>
+        
+        <div class="pull-right">
+            <button type="button" class="btn btn-info btn-lg" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">Start a Poll</button>
+        </div>
     </div>
 
     <!-- ============================================================================ -->

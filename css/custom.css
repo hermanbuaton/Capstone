@@ -1,9 +1,3 @@
-.scrollable {
-    overflow-y: scroll;
-}
-
-
-
 .row {
     display: -webkit-box;
     display: -webkit-flex;
@@ -16,6 +10,12 @@
 .row > [class*='col-'] {
     display: flex;
     flex-direction: column;
+}
+
+
+
+.scrollable {
+    overflow-y: scroll;
 }
 
 .pull-bottom {
@@ -64,6 +64,12 @@
     
     #page-content-wrapper {
         top: 50px;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    
+    .navbar-brand {
+        max-width: calc(100% - 44px * 2 - 20px * 4);
     }
     
     .navbar-right {
@@ -150,20 +156,43 @@
 
 
 
-/* Chat Room */
+/* Thread */
+/*
 .thread-panel {
     top: 3%;
     padding: 0 0 0 0;
 }
+*/
+@media (min-width: 768px) {
+    #thread-main {
+        height: 100%;
+        width: calc(100% / 12 * 7);
+        overflow-y: scroll;
+    }
+    #thread-main2 {
+        position: absolute;
+        height: 100%;
+        width: calc(100% - 60px);
+    }
+}
 
+@media (min-width: 992px) {
+    #thread-main {
+        width: calc(100% / 12 * 8);
+    }
+}
 
-
-
-.thread-reply-panel {
+.thread-quick-input-panel {
     height: 180px;
     padding: 0 0 0 0;
     border: none;
     box-shadow: none;
+}
+
+#thread-quick-input {
+    display: inline-block;
+    margin-top: 25px;
+    margin-bottom: 50px;
 }
 
 #thread-quick-reply-data-view {
@@ -180,6 +209,11 @@
     margin-top: 25px;
     margin-bottom: 25px;
 }
+@media (min-width: 768px) {
+    #thread-content-view {
+        margin-top: 0%;
+    }
+}
 
 #thread-opener-head-view {
     min-height: 61px;
@@ -195,7 +229,15 @@
     border-bottom: 1px solid #f0f0f0;
 }
 
-#thread-reply {
-    display: inline-block;
-    margin-bottom: 50px;
-}
+
+
+/* Poll Modal */
+.poll-modal {
+    position: absolute;
+    width: 80%;
+    min-height: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -40%;
+    margin-top: -25%;
+}   

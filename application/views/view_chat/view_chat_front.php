@@ -1,5 +1,5 @@
 <!-- Start of Panel -->
-<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-left hidden-xs">
+<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 pull-left hidden-xs">
 
     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vel ipsum euismod, blandit ipsum vel, mattis nisl. Quisque consequat eleifend vestibulum. Integer eu pretium nulla. Duis velit lectus, placerat sed nunc vitae, posuere aliquet nunc. Nam quis nisl tempus, pulvinar justo nec, mollis ex. In diam sem, tempus vehicula quam sed, euismod tincidunt nisl. Aenean tempus dolor sit amet lorem interdum, a condimentum quam consequat. Nullam nec orci vel tellus sodales mattis. Vestibulum porttitor mi tincidunt arcu molestie porta. Suspendisse at lacus velit. Proin eget sapien efficitur, tempor quam ut, viverra lectus. Vivamus lobortis eros sem, a ultricies tortor ultricies a.
 

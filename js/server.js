@@ -48,7 +48,14 @@ io.on('connection', function(socket){
     
     // message
     socket.on('thread', function(data){
-        console.log(data);
+        var r = data['room'];
+        var d = data['html'];
+        
+        io.sockets.in(r).emit('thread', d);
+    });
+    
+    // poll
+    socket.on('poll start', function(data){
         var r = data['room'];
         var d = data['html'];
         

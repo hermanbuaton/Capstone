@@ -28,6 +28,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_header');
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_panel');
+        $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_footer');
     }
     
@@ -51,18 +52,20 @@ class Chat extends CI_Controller {
         
         // process message
         $post = $_POST;
-        $data['class_id'] = $post['input-message-class'];
-        $data['lect_id'] = $post['input-message-lect'];
-        $data['m_type'] = 0;
-        $data['u_id'] = $this->getUserID();
-        $data['u_show'] = $post['input-message-anonymous'];
-        $data['m_time'] = $this->getTimeString();
-        $data['m_head'] = $post['input-message-head'];
-        $data['m_body'] = $post['input-message-body'];
+        $thread['class_id'] = $post['input-message-class'];
+        $thread['lect_id'] = $post['input-message-lect'];
+        $thread['m_type'] = 0;
+        $thread['u_id'] = $this->getUserID();
+        $thread['u_show'] = $post['input-message-anonymous'];
+        $thread['m_time'] = $this->getTimeString();
+        $thread['m_head'] = $post['input-message-head'];
+        $thread['m_body'] = $post['input-message-body'];
         
         // send to MODEL
         // on return put data into $out
-        $out['row'] = $this->Thread_model->insert_thread($data);
+        $message = $this->Thread_model->insert_thread($thread);
+        $row = $this->Thread_model->insert_message($message);
+        $out['row'] = array($row);
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
@@ -86,6 +89,61 @@ class Chat extends CI_Controller {
         $out['m'] = $data['m_id'];
         $out['v'] = $data['vote'];
         echo json_encode($out);
+    }
+    
+    public function poll_create()
+    {
+        // load model
+        $this->load->model('Thread_model');
+        $this->load->model('Poll_model');
+        
+        // process message
+        $post = $_POST;
+        
+        
+        // insert thread
+        $thread['class_id'] = $post['input-message-class'];
+        $thread['lect_id'] = $post['input-message-lect'];
+        $message = $this->Thread_model->insert_thread($thread);
+        
+        
+        // insert message
+        $message['m_type'] = 99;
+        $message['u_id'] = $this->getUserID();
+        $message['u_show'] = $post['input-message-anonymous'];
+        $message['m_time'] = $this->getTimeString();
+        // $message['m_head'] = $post['input-message-head'];
+        $message['m_body'] = $post['input-message-body'];
+        $row = $this->Thread_model->insert_message($message);
+        
+        
+        // validate & insert poll option
+        $max_opt = 4;
+        $count = 0;
+        for ($i=0; $i<$max_opt; $i++) {
+            
+            // $fname = 'input-pull-opt-' . (string)$i;
+            $fdata = $post['input-poll-opt'][$i];
+            
+            if ($fdata !== null) {
+                $poll['opt'][$count] = $fdata;
+                $count++;
+            }
+        }   // end FOR loop
+        
+        $poll['m_id'] = $row['m_id'];
+        $result = $this->Poll_model->insert_opt($poll);
+        
+        
+        // TODO: organize output
+        $out['id'] = $row['m_id'];
+        $out['body'] = $row['m_body'];
+        $out['time'] = $row['m_time'];
+        $out['opt'] = $result;
+        
+        // return
+        echo json_encode($result);
+        return;
     }
     
     private function checkSubject($s)

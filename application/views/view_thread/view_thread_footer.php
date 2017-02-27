@@ -91,8 +91,8 @@
                     $('#input-message-id').val(m_id);
                     
                     // interface: make div scrollable & hide forum-panel
-                    $("#main-ui").removeClass("main-ui");
-                    $("#main-ui").addClass("main-ui-scrollable");
+                    // $("#main-ui").removeClass("main-ui");
+                    // $("#main-ui").addClass("main-ui-scrollable");
                     $("#forum-panel-view").addClass("hidden-xs");
                     $("#thread-main").removeClass("hidden-xs");
                 }

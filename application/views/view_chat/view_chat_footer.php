@@ -99,6 +99,7 @@
         });
         
         
+        
         /** ========================================
         *   Message Submit
         *   ======================================== */
@@ -155,6 +156,35 @@
             
             var m_id = $(this).attr('value');
             console.log(m_id);
+        });
+        
+        
+        
+        /** ========================================
+        *   Poll Create
+        *   ======================================== */
+        
+        //  press enter to submit message
+        $("#input-message-body").keydown(function(e) {
+            e = e || event;
+            if (e.keyCode === 13) {
+                if (!e.shiftKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    $('#forum-quick-input').submit();
+                }
+            }
+        });
+        
+        //  submit message
+        $('#poll-create').submit(function(){
+            createPoll(this);
+            return false;
+        });
+
+        //  clear <form>
+        $('#poll-create-cancel').click(function(){
+            cancelPoll(this);
+            return false;
         });
         
         
@@ -244,6 +274,35 @@
                 (field.val() == 1) ? "-" : "+" 
             );
         }
+        
+        
+        //  submit poll
+        function createPoll(form) {
+            
+            /* get input */
+            console.log($(form).serialize());
+            
+            // (1) to database
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/poll_create"); ?>",
+                data: $(form).serialize(),
+
+                success: function(data) {
+                    // (2) to socket server
+                    console.log(data);
+                    // socket.emit('poll start', data);
+                }
+            });
+        }
+        
+        
+        //  clear poll <form>
+        function cancelPoll() {
+            $('#poll-create').trigger('reset');
+            return false;
+        }
+        
         
     </script>
 

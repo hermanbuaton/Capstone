@@ -1,9 +1,10 @@
 <!-- Start of Panel -->
-<div class="col-xs-12 col-sm-5 col-md-4 col-lg-4 pull-left hidden-xs" id="thread-main">
+<div class="col-xs-12 col-sm-7 col-md-8 col-lg-8 pull-left hidden-xs" id="thread-main">
+<div class="" id="thread-main2">
 
     
     
-    <div class="hidden-xs" id="thread-navbar">
+    <div class="hidden-sm hidden-md hidden-lg" id="thread-navbar">
         Click here to return.
     </div>
     
@@ -16,12 +17,12 @@
     
     
     <!-- Start of Panel -->
-    <div class="panel thread-reply-panel col-xs-12 col-sm-12 col-md-12 col-lg-12 " id="thread-reply">
+    <div class="panel thread-quick-input-panel col-xs-12 col-sm-12 col-md-12 col-lg-12 " id="thread-quick-input">
 
         <!-- ================================================================== -->
         <!-- Panel Heading -->
         <!-- ================================================================== -->
-        <div class="panel-heading">
+        <div class="panel-heading" id="">
             <h3 class="panel-title">Quick Reply</h3>
         </div>
 
@@ -60,5 +61,6 @@
     </div>
     <!-- End of Panel -->
     
+</div>
 </div>
 <!-- End of Panel -->

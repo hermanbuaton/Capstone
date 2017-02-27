@@ -60,7 +60,8 @@ class Thread extends CI_Controller {
         
         // send to MODEL
         // on return put data into $out
-        $out['row'] = $this->Thread_model->insert_message($data);
+        $row = $this->Thread_model->insert_message($data);
+        $out['row'] = array($row);
         
         // return
         echo json_encode($data);

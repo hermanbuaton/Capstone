@@ -125,11 +125,17 @@ body {
         height: calc(100% - 50px);
         padding: 20px;
         overflow-x: hidden;
-        overflow-y: auto;
+        overflow-y: hidden;
     }
 
     #wrapper.toggled #page-content-wrapper {
         position: absolute;
         margin-right: 0;
+    }
+}
+
+@media(max-width:767px) {
+    #page-content-wrapper {
+        overflow-y: auto;
     }
 }
