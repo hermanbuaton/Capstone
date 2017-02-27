@@ -65,10 +65,10 @@ io.on('connection', function(socket){
     });
     
     // poll vote
-    socket.on('poll start', function(data){
+    socket.on('poll vote', function(data){
         var r = data['room'];
         var d = data['data'];
-        io.sockets.in(r).emit('poll start', d);
+        io.sockets.in(r).emit('poll vote', d);
     });
     
     // message
