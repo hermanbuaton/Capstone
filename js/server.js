@@ -45,24 +45,29 @@ io.on('connection', function(socket){
      *  Real Work
      *  ======================================== */
     
+    // message
+    socket.on('thread', function(data){
+        var r = data['room'];
+        var d = data['html'];
+        io.sockets.in(r).emit('thread', d);
+    });
+    
     // vote
     socket.on('vote', function(data){
         io.emit('vote', data);
     });
     
-    // message
-    socket.on('thread', function(data){
-        var r = data['room'];
-        var d = data['html'];
-        
-        io.sockets.in(r).emit('thread', d);
-    });
-    
-    // poll
+    // poll start
     socket.on('poll start', function(data){
         var r = data['room'];
         var d = data['data'];
-        
+        io.sockets.in(r).emit('poll start', d);
+    });
+    
+    // poll vote
+    socket.on('poll start', function(data){
+        var r = data['room'];
+        var d = data['data'];
         io.sockets.in(r).emit('poll start', d);
     });
     

@@ -1,5 +1,5 @@
 <!-- Start of Modal -->
-<div class="modal poll-modal col-xs-12 col-sm-12 col-md-12 col-lg-12 fade " id="poll-input" role="dialog" >
+<div class="modal fade poll-modal col-xs-12 col-sm-12 col-md-12 col-lg-12 " id="poll-input" config="{backdrop: false, keyboard: false}" tabindex="-1" role="dialog" >
     <div class="modal-dialog">
 
     <!-- Modal content START -->

@@ -19,7 +19,7 @@
             
             <!-- vote button -->
             <!-- default display: + -->
-            <button class="form-control forum-thread-vote-input" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >+</button>
+            <button class="form-control btn-info forum-thread-vote-input" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >+</button>
             
             <!-- vote counter -->
             <div class="forum-thread-vote-count" id="vote-count[<?= $data['m_id']; ?>]">

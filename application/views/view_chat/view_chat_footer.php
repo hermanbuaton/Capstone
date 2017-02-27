@@ -179,7 +179,6 @@
             }
             
             var m_id = $(this).attr('value');
-            console.log(m_id);
         });
         
         
@@ -187,17 +186,6 @@
         /** ========================================
         *   Poll Create
         *   ======================================== */
-        
-        //  press enter to submit message
-        $("#input-message-body").keydown(function(e) {
-            e = e || event;
-            if (e.keyCode === 13) {
-                if (!e.shiftKey && !e.ctrlKey) {
-                    e.preventDefault();
-                    $('#forum-quick-input').submit();
-                }
-            }
-        });
         
         //  submit message
         $('#poll-create').submit(function(){
@@ -208,7 +196,7 @@
         //  clear <form>
         $('#poll-create-cancel').click(function(e){
             e.preventDefault();
-            cancelPoll(this);
+            cancelPoll();
             return false;
         });
         
@@ -317,6 +305,8 @@
                     // (2) to socket server
                     var out = {"room": subject, "data": data};
                     socket.emit('poll start', out);
+                    
+                    cancelPoll();
                 }
             });
         }
@@ -326,16 +316,34 @@
         function cancelPoll() {
             $('#poll-create').trigger('reset');
             $('#poll-input').modal('hide');
-            console.log('hide');
-            // $('#poll-create-close').click();
+            
             return false;
         }
         
         
         //  prompt poll screen
-        function promptPoll(data) {
-            console.log("a poll started");
-            console.log(data);
+        function promptPoll(d) {
+            
+            var data = $.parseJSON(d);
+            var opt = data.opt;
+            var count = 1;
+            
+            // set text on screen
+            $('#poll-vote-body').append($('<h2/>').text(data.body));
+            
+            opt.forEach(function(row) {
+                count++;
+                var b = $('<button/>', {
+                            class: "form-control",
+                            id: "poll-vote-input[" + count + "]",
+                            value: row.opt_id
+                        });
+                b.text(row.opt_txt);
+                $("#poll-vote-opt").append(b);
+            });
+            
+            // open modal
+            $('#poll-vote').modal('toggle');
         }
         
         

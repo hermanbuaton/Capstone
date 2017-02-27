@@ -28,6 +28,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_header');
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_panel');
+        $this->load->view('view_chat/view_chat_poll');
         $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_footer');
     }
@@ -125,7 +126,7 @@ class Chat extends CI_Controller {
             // $fname = 'input-pull-opt-' . (string)$i;
             $fdata = $post['input-poll-opt'][$i];
             
-            if ($fdata !== null) {
+            if ($fdata !== null && $fdata !== "") {
                 $poll['opt'][$count] = $fdata;
                 $count++;
             }

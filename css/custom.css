@@ -232,7 +232,7 @@
 
 
 /* Poll Modal */
-.poll-modal {
+.poll-modal > .modal-dialog {
     position: absolute;
     width: 80%;
     min-height: 50%;
@@ -240,4 +240,9 @@
     top: 50%;
     margin-left: -40%;
     margin-top: -25%;
-}   
+}
+
+#poll-vote-body > h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
