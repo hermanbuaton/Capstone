@@ -6,10 +6,16 @@
 
     </div>
     <!-- /#wrapper -->
+    
+    
 
+    <!-- socket.io -->
+    <script src="<?php echo base_url_port(); ?>socket.io/socket.io.js"></script>
+    
     <!-- jQuery -->
     <script src="<?php echo base_url(); ?>js/jquery.js"></script>
-
+    <!--<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 
@@ -17,10 +23,7 @@
     <script src="<?php echo base_url(); ?>js/plugins/morris/raphael.min.js"></script>
     <script src="<?php echo base_url(); ?>js/plugins/morris/morris.min.js"></script>
     <script src="<?php echo base_url(); ?>js/plugins/morris/morris-data.js"></script>
-
-    <!-- socket.io -->
-    <script src="<?php echo base_url_port(); ?>socket.io/socket.io.js"></script>
-    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    
     <script>
         
         var socket = io.connect("<?php echo base_url_port(); ?>");
@@ -31,12 +34,28 @@
         /** ========================================
         *   onload
         *   ======================================== */
-        $(document).ready(function() {
+        
+        /** ========================================
+        *   *** NOTES ***
+        *
+        *   Date:   27 Feb 2017
+        *   Use $(window).load() instead of 
+        *       $(document).ready() because it seems
+        *       that jQuery only load in between
+        *       the 2 function.
+        *   
+        *   $(window).load() is running after 
+        *       $(document).ready()
+        *
+        *   REFERENCE: 
+        *   http://stackoverflow.com/questions/3008696/
+        *   ======================================== */
+        
+        $(window).load(function() {
             $.ajax({
                 type: "GET",
                 url: "<?php echo site_url("Chat/load/".$subject); ?>",
-                // data: $('#messages-input').serialize(),
-
+                
                 success: function(data) {
                     $('#forum-list-view').append(data);
                     // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
@@ -91,6 +110,11 @@
             // set counter
             document.getElementById(control).innerHTML = count + v;
             
+        });
+        
+        //  poll happening
+        socket.on('poll start', function(data) {
+            promptPoll(data);
         });
         
         //  system message
@@ -182,7 +206,8 @@
         });
 
         //  clear <form>
-        $('#poll-create-cancel').click(function(){
+        $('#poll-create-cancel').click(function(e){
+            e.preventDefault();
             cancelPoll(this);
             return false;
         });
@@ -214,7 +239,7 @@
                     
                     success: function(data) {
                         // (2) to socket server
-                        var out = {"html": data, "room": subject};
+                        var out = {"room": subject, "html": data};
                         socket.emit('thread', out);
                     }
                 });
@@ -290,17 +315,27 @@
 
                 success: function(data) {
                     // (2) to socket server
-                    console.log(data);
-                    // socket.emit('poll start', data);
+                    var out = {"room": subject, "data": data};
+                    socket.emit('poll start', out);
                 }
             });
         }
         
         
-        //  clear poll <form>
+        //  clear poll <form> & close modal
         function cancelPoll() {
             $('#poll-create').trigger('reset');
+            $('#poll-input').modal('hide');
+            console.log('hide');
+            // $('#poll-create-close').click();
             return false;
+        }
+        
+        
+        //  prompt poll screen
+        function promptPoll(data) {
+            console.log("a poll started");
+            console.log(data);
         }
         
         

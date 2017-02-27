@@ -18,14 +18,17 @@ io.listen(3000, function(){
 io.on('connection', function(socket){
     
     // connect
+    // inherit from tutorial
     console.log('A user connected.');
     
     // disconnect
+    // inherit from tutorial
     socket.on('disconnect', function(){
         console.log('user disconnected');
     });
     
-    // once a client has connected, we expect to get a ping from them saying what room they want to join
+    // ping all user when new user connected
+    // inherit from tutorial
     socket.on('room', function(room) {
         socket.join(room);
         console.log("someone joined " + room);
@@ -36,10 +39,11 @@ io.on('connection', function(socket){
         console.log("emited message: " + message);
     });
     
-    // message
-    socket.on('system broadcasting', function(msg){
-        io.emit('chat message', msg);
-    });
+    
+    
+    /** ========================================
+     *  Real Work
+     *  ======================================== */
     
     // vote
     socket.on('vote', function(data){
@@ -57,10 +61,17 @@ io.on('connection', function(socket){
     // poll
     socket.on('poll start', function(data){
         var r = data['room'];
-        var d = data['html'];
+        var d = data['data'];
         
-        io.sockets.in(r).emit('thread', d);
+        io.sockets.in(r).emit('poll start', d);
     });
+    
+    // message
+    socket.on('system broadcasting', function(msg){
+        io.emit('system broadcasting', msg);
+    });
+    
+    
     
     /*
     // send a message to everyone except for certain socket

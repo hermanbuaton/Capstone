@@ -142,7 +142,7 @@ class Chat extends CI_Controller {
         $out['opt'] = $result;
         
         // return
-        echo json_encode($result);
+        echo json_encode($out);
         return;
     }
     
