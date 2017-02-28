@@ -57,8 +57,9 @@
                 url: "<?php echo site_url("Chat/load/".$subject); ?>",
                 
                 success: function(data) {
-                    $('#forum-list-view').append(data);
                     // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+                    $('#forum-list-view').append(data);
+                    $("#forum-list-view").animate({ scrollTop: $('#forum-list-view').prop("scrollHeight")}, 1000);
                 }
             });
         });
@@ -93,6 +94,7 @@
         //  receive message
         socket.on('thread', function(data) {
             $('#forum-list-view').append(data);
+            $("#forum-list-view").animate({ scrollTop: $('#forum-list-view').prop("scrollHeight")}, 1000);
         });
         
         //  update vote
