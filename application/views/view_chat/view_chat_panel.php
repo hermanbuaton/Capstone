@@ -5,11 +5,31 @@
     <!-- Panel Heading -->
     <!-- ============================================================================ -->
     <div class="panel-heading">
-        <h3 class="panel-title">Question Bank</h3>
         
-        <div class="pull-right">
-            <button type="button" class="btn btn-info btn-lg" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">Start a Poll</button>
+        <div class="pull-left">
+            <h3 class="panel-title">Question Bank</h3>
         </div>
+        
+        <div class="btn-group panel-dropdown pull-right">
+            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                Menu
+                <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a class="btn btn-link" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">
+                        Start a Poll
+                    </a>
+                </li>
+                <!--
+                <li><a href="#">Choice2</a></li>
+                <li><a href="#">Choice3</a></li>
+                <li class="divider"></li>
+                <li><a href="#">Choice..</a></li>
+                -->
+            </ul>
+        </div>
+        
     </div>
 
     <!-- ============================================================================ -->

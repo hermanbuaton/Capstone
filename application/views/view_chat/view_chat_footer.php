@@ -117,6 +117,11 @@
             promptPoll(data);
         });
         
+        //  poll vote
+        socket.on('poll vote', function(data) {
+            // TODO: update poll result
+        });
+        
         //  system message
         socket.on('system broadcasting', function(data) {
             $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
@@ -203,6 +208,19 @@
         
         
         /** ========================================
+        *   Poll Vote
+        *   ======================================== */
+        
+        //  submit vote
+        $("#poll-vote-form").on("click", ".poll-vote-input", function() {
+            console.log(this.value);
+            respondPoll(this.value);
+            return false;
+        });
+        
+        
+        
+        /** ========================================
         *   Real Work
         *   ======================================== */
         
@@ -279,13 +297,14 @@
                 success: function(data) {
                     // (2) to socket server
                     socket.emit('vote', data);
+                    
+                    // set vote button
+                    input.text(
+                        (field.val() == 1) ? "-" : "+" 
+                    );
                 }
             });
             
-            // set vote button
-            input.text(
-                (field.val() == 1) ? "-" : "+" 
-            );
         }
         
         
@@ -305,10 +324,11 @@
                     // (2) to socket server
                     var out = {"room": subject, "data": data};
                     socket.emit('poll start', out);
-                    
-                    cancelPoll();
                 }
             });
+            
+            cancelPoll();
+            return false;
         }
         
         
@@ -328,13 +348,17 @@
             var opt = data.opt;
             var count = 1;
             
+            // clear previous poll data
+            $('#poll-vote-body').html('');
+            $('#poll-vote-opt').html('');
+            
             // set text on screen
             $('#poll-vote-body').append($('<h2/>').text(data.body));
             
             opt.forEach(function(row) {
                 count++;
                 var b = $('<button/>', {
-                            class: "form-control",
+                            class: "form-control poll-vote-input",
                             id: "poll-vote-input[" + count + "]",
                             value: row.opt_id
                         });
@@ -344,6 +368,28 @@
             
             // open modal
             $('#poll-vote').modal('toggle');
+            
+        }
+        
+        
+        //  respond to poll
+        function respondPoll(opt) {
+            
+            // (1) to database
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/poll_vote"); ?>",
+                data: {"opt": opt},
+
+                success: function(data) {
+                    // (2) to socket server
+                    // var out = {"room": subject, "data": data};
+                    // socket.emit('poll vote', data);
+                    
+                    console.log(data);
+                }
+            });
+            
         }
         
         

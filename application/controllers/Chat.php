@@ -80,8 +80,11 @@ class Chat extends CI_Controller {
         // process vote
         $post = $_POST;
         $data['m_id'] = $post['vote-message'];
+        $data['u_id'] = $this->getUserID();
         $data['vote'] = $post['vote-value'];
         $data['v_time'] = $this->getTimeString();
+        
+        // TODO: get user data
         
         // send to MODEL
         $this->Thread_model->insert_vote($data);
@@ -141,6 +144,42 @@ class Chat extends CI_Controller {
         $out['body'] = $row['m_body'];
         $out['time'] = $row['m_time'];
         $out['opt'] = $result;
+        
+        // return
+        echo json_encode($out);
+        return;
+    }
+    
+    public function poll_vote()
+    {
+        // TODO: record vote for polling
+        
+        // load model
+        $this->load->model('Poll_model');
+        
+        // process vote
+        $post = $_POST;
+        $data['u_id'] = $this->getUserID();
+        // $data['u_show'] = $post['something'];
+        $data['p_time'] = $this->getTimeString();
+        $data['opt_id'] = $post['opt'];
+        
+        // verify if User already vote
+        if ($this->Poll_model->validateUser($data['u_id'],$data['opt_id']) === true) {
+            
+            // valid to vote -> record vote
+            $re = $this->Poll_model->insert_vote($data);
+            
+            // organize output
+            $out['opt'] = $data['opt_id'];
+            $out['message'] = 'Success';
+            
+        } else {
+            
+            // voted already -> return error
+            $out['message'] = 'Already Vote';
+            
+        }
         
         // return
         echo json_encode($out);

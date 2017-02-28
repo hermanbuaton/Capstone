@@ -11,6 +11,10 @@
     display: flex;
     flex-direction: column;
 }
+.panel-heading {
+    min-height: 38px;
+    vertical-align: middle;
+}
 
 
 
@@ -38,6 +42,10 @@
     right: 0;
     padding-bottom: 20px;
     padding-right: 20px;
+}
+.panel-dropdown {
+    margin-top: -7px;
+    margin-right: -7px;
 }
 
 
@@ -235,14 +243,22 @@
 .poll-modal > .modal-dialog {
     position: absolute;
     width: 80%;
-    min-height: 50%;
+    height: 70%;
     left: 50%;
     top: 50%;
     margin-left: -40%;
-    margin-top: -25%;
+    margin-top: -35%;
 }
 
 #poll-vote-body > h2 {
     margin-top: 0;
     margin-bottom: 20px;
+}
+
+#poll-vote-opt > .poll-vote-input {
+    height: 74px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    vertical-align: middle;
+    overflow-y: hidden;
 }

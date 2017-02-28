@@ -56,6 +56,9 @@ io.on('connection', function(socket){
     socket.on('vote', function(data){
         io.emit('vote', data);
     });
+    socket.on('live vote', function(data){
+        io.emit('live vote', data);
+    });
     
     // poll start
     socket.on('poll start', function(data){

@@ -12,13 +12,15 @@
 
         <div class="modal-body">
             
-            <div id="poll-vote-body">
-                <!-- Display Body by js -->
-            </div>
-            
-            <div id="poll-vote-opt">
-                <!-- Display Option by js -->
-            </div>
+            <form id="poll-vote-form">
+                <div id="poll-vote-body">
+                    <!-- Display Body by js -->
+                </div>
+
+                <div id="poll-vote-opt">
+                    <!-- Display Option by js -->
+                </div>
+            </form>
             
         </div>
 
