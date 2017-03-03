@@ -78,6 +78,12 @@
     
     .navbar-brand {
         max-width: calc(100% - 44px * 2 - 20px * 4);
+        max-height: 36px;
+        overflow-y: hidden;
+    }
+    
+    .chat-brand {
+        margin-left: -15px;
     }
     
     .navbar-right {

@@ -59,7 +59,7 @@
                     <span class="icon-bar"></span>
                 </button>
             <?php endif; ?>
-                <a class="navbar-brand" href="index.html"><?= $title; ?></a>
+                <a class="navbar-brand <?php if ($page == "Chat") echo "chat-brand"; ?>" href="index.html"><?= $title; ?></a>
                 
                 
                 <button type="button" class="navbar-toggle pull-right" id="navbar-toggle-right" data-toggle="collapse" data-target=".navbar-ex1-collapse" style="width:44px;height:36px;">
