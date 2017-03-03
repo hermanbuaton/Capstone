@@ -139,6 +139,7 @@
 .forum-thread-vote-input {
     width: inherit;
 }
+.forum-thread-head, 
 .forum-thread-body {
     margin-left: 45px;
 }
@@ -241,6 +242,32 @@
     margin-top: 20px;
     margin-bottom: 8px;
     border-bottom: 1px solid #f0f0f0;
+}
+
+
+
+/* Respond Modal */
+.respond-modal > .modal-dialog {
+    position: absolute;
+    width: 80%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    margin-left: -40%;
+    margin-top: -35%;
+}
+
+#thread-question-head > h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+#thread-respond-input > .form-control {
+    height: 74px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    vertical-align: middle;
+    overflow-y: hidden;
 }
 
 

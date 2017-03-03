@@ -82,6 +82,93 @@
         
         
         /** ========================================
+        *   speech recognition
+        *   ======================================== */
+        
+        function startDictation() {
+
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
+
+                var recognition = new webkitSpeechRecognition();
+                var final = '';
+                
+                recognition.continuous = true;
+                recognition.interimResults = true;
+
+                recognition.lang = "en-US";
+                recognition.start();
+                
+                /*
+                recognition.onresult = function(e) {
+                    document.getElementById('respond-body').value
+                                             = e.results[0][0].transcript;
+                    document.getElementById('respond-textarea').value
+                                             = e.results[0][0].transcript;
+                    // recognition.stop();
+                    // document.getElementById('respond-form').submit();
+                };
+                */
+                recognition.onresult = function(e) {
+                    var interim = '';
+                    
+                    for (var i = e.resultIndex; i < e.results.length; ++i) {
+                        
+                        var out = $('#respond-body').val();
+                        
+                        if (e.results[i].isFinal) {
+                            final += e.results[i][0].transcript;
+                            out = final;
+                        } else {
+                            interim += e.results[i][0].transcript;
+                            // display fewer interim result
+                            if (i%4 == 0) out += interim;
+                        }
+                        
+                        $('#respond-body').val(out);
+                        $('#respond-textarea').val(out);
+                    }
+                }
+
+                recognition.onerror = function(e) {
+                    // recognition.stop();
+                }
+                
+                
+                /*
+                recognition.onresult = function(event) {
+                    var interim_transcript = '';
+                    
+                    if (typeof(event.results) == 'undefined') {
+                        recognition.onend = null;
+                        recognition.stop();
+                        upgrade();
+                        return;
+                    }
+                    
+                    for (var i = event.resultIndex; i < event.results.length; ++i) {
+                        if (event.results[i].isFinal) {
+                            final_transcript += event.results[i][0].transcript;
+                        } else {
+                            interim_transcript += event.results[i][0].transcript;
+                        }
+                    }
+                    
+                    final_transcript = capitalize(final_transcript);
+                    final_span.innerHTML = linebreak(final_transcript);
+                    interim_span.innerHTML = linebreak(interim_transcript);
+                    
+                    if (final_transcript || interim_transcript) {
+                        showButtons('inline-block');
+                    }
+                };
+                */
+
+            }
+        }
+        
+        
+        
+        /** ========================================
         *   socket
         *   ======================================== */
         
@@ -185,7 +272,23 @@
                 return;
             }
             
+            // clear previous poll data
+            $('#thread-question-head').html('');
+            $('#respond-body').val('');
+            $('#respond-textarea').val('');
+            
             var m_id = $(this).attr('value');
+            var head = $(this).find('.forum-thread-head').text();
+            
+            // open modal
+            $('#thread-respond').modal('toggle');
+            $('#thread-question-head').append($('<h2/>').text(head));
+            
+            console.log(m_id);
+            console.log(head);
+            
+            startDictation();
+            
         });
         
         
