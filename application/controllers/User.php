@@ -13,6 +13,53 @@ class User extends CI_Controller {
 		$this->load->model('User_model');
         */
 	}
+    
+    public function create()
+    {
+        $post = $_POST;
+        
+        if ($post == null) {
+        
+            $data['page'] = "User";
+            $data['title'] = "Create Teacher Account";  // TODO: Page Title
+            
+            if ($this->session->flashdata('error') !== null)
+                $data['error'] = $this->session->flashdata('error');
+            
+            $this->load->view('view_includes/view_header', $data);
+            $this->load->view('view_includes/view_sidebar');
+            $this->load->view('view_user_create/view_user_create_front');
+            $this->load->view('view_user_create/view_user_create_footer');
+            
+        } else {
+            
+            // load model
+            $this->load->model('User_model');
+            
+            // process data & send to model
+            $data['u_name'] = $post['username'];
+            $data['u_nick'] = $post['nickname'];
+            $data['u_type'] = 11;
+            $data['u_pass'] = $post['password'];
+            $result = $this->User_model->create_user($data);
+            
+            // return
+            if ($result['message'] == 'Success') {
+                
+                // redirect to home
+                $this->session->set_flashdata('target','Teacher');
+                $this->session->set_flashdata('error','Account created successfully.');
+                redirect("");
+                
+            } else {
+                
+                // redirect to form
+                $this->session->set_flashdata('error',$result['message']);
+                redirect("User/create");
+                
+            }
+        }
+    }
 	
     public function login()
     {
@@ -25,21 +72,32 @@ class User extends CI_Controller {
         $username = $post['username'];
         $password = $post['password'];
         $class = $post['course'];
+        $type = $post['usertype'];
         $time = date(DATE_RFC3339);
         
-        // send to model
-        $data['u_name'] = $username;
-        $data['class_id'] = $class;
-        $data['signin_time'] = $time;
-        // $id = $this->User_model->record_signin($data);
+        // validate user
+        if ($type == 11) {
+            $user = $this->User_model->validate_user($username, $password);
+            
+            if ($user === FALSE) {
+                $this->session->set_flashdata('error','Username or password incorrect.');
+                redirect("");
+            }
+        }
         
-        echo "1";
+        // log user action
+        $log['u_id'] = $user;
+        $log['u_name'] = $username;
+        $log['class_id'] = $class;
+        $log['signin_time'] = $time;
+        $id = $this->User_model->record_signin($log);
+        
+        // validate user
+        
         
         /* TODO: save username in cookies */
         /* TODO: set cookies timeout */
         $this->storeSession($id,$username);
-        
-        echo "1";
         
         redirect("Chat/$class");
     }

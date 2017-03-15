@@ -91,6 +91,7 @@ CREATE TABLE user (
     u_name VARCHAR(40),
     u_nick VARCHAR(40),
     u_type INT(3),
+    u_pass VARCHAR(40),
     sch_id INT(11)
 );
 

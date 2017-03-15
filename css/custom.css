@@ -47,6 +47,14 @@
     margin-top: -7px;
     margin-right: -7px;
 }
+.nav-two-items {
+    width: 50%;
+    text-align: center;
+    background: #F5F5F5;
+}
+.nav-two-items.active {
+    font-weight: 900;
+}
 
 
 
@@ -97,9 +105,19 @@
 
 /* Home */
 #home-login {
-    top: 15%;
+    top: 20%;
     min-height: 45%;
     padding: 0 0 0 0;
+}
+#home-login-heading {
+    padding: 0;
+    border-bottom: none;
+}
+#home-login-heading > .nav-tabs {
+    border: none;
+}
+#home-login-heading > .nav-tabs > li.active > a {
+    border: none;
 }
 #home-login-error {
     top: 17%;
@@ -250,11 +268,24 @@
 .respond-modal > .modal-dialog {
     position: absolute;
     width: 80%;
-    height: 70%;
+    max-height: 70%;
     left: 50%;
     top: 50%;
     margin-left: -40%;
     margin-top: -35%;
+    overflow-y: scroll;
+}
+
+.respond-control.btn {
+    width: 70px;
+}
+
+.respond-control {
+    /*padding-top: 15px;
+    padding-bottom: 15px;*/
+    margin-top: 15px;
+    vertical-align: middle;
+    overflow-y: hidden;
 }
 
 #thread-question-head > h2 {
@@ -262,12 +293,12 @@
     margin-bottom: 20px;
 }
 
-#thread-respond-input > .form-control {
-    height: 74px;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    vertical-align: middle;
-    overflow-y: hidden;
+#respond-textarea {
+    height: 144px;
+}
+
+#thread-respond-control {
+    height: 50px;
 }
 
 

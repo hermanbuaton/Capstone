@@ -34,17 +34,6 @@
         
         $("#tab-student").click(function(e) {
             e.preventDefault();
-            studentLogin();
-            return false;
-        });
-        
-        $("#tab-teacher").click(function(e) {
-            e.preventDefault();
-            teacherLogin();
-            return false;
-        });
-        
-        function studentLogin() {
             
             $("#home-login-teacher").addClass("hidden");
             $("#tab-teacher").removeClass("active");
@@ -52,9 +41,11 @@
             $("#home-login-student").removeClass("hidden");
             $("#tab-student").addClass("active");
             
-        }
+            return false;
+        });
         
-        function teacherLogin() {
+        $("#tab-teacher").click(function(e) {
+            e.preventDefault();
             
             $("#home-login-student").addClass("hidden");
             $("#tab-student").removeClass("active");
@@ -62,7 +53,8 @@
             $("#home-login-teacher").removeClass("hidden");
             $("#tab-teacher").addClass("active");
             
-        }
+            return false;
+        });
         
     </script>
 

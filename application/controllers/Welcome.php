@@ -22,7 +22,10 @@ class Welcome extends CI_Controller {
     {
         $data['page'] = "home";
         $data['title'] = "Homepage";
-
+        
+        if ($this->session->flashdata('error') !== null)
+            $data['error'] = $this->session->flashdata('error');
+        
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_home/view_home_front');
         $this->load->view('view_home/view_home_footer');

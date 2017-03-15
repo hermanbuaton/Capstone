@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Chat extends CI_Controller {
     
+    
+    
     public function _remap($method, $params = array())
 	{
 		if (method_exists($this, $method))
@@ -12,6 +14,8 @@ class Chat extends CI_Controller {
 		$this->index($method);
 	}
 	
+    
+    
     public function index($subject='')
     {
         // validation
@@ -30,9 +34,12 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_panel');
         $this->load->view('view_chat/view_chat_poll_create');
         $this->load->view('view_chat/view_chat_poll_vote');
+        $this->load->view('view_chat/view_chat_poll_result');
         $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_footer');
     }
+    
+    
     
     public function load($subject='')
     {
@@ -46,6 +53,8 @@ class Chat extends CI_Controller {
         // return
         $this->load->view('view_chat/view_chat_message',$out);
     }
+    
+    
     
     public function message()
     {
@@ -73,6 +82,33 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_message',$out);
     }
     
+    
+    
+    public function respond()
+    {
+        // load model
+        $this->load->model('Thread_model');
+        
+        // process message
+        $post = $_POST;
+        $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
+        $message['m_type'] = 10;
+        $message['u_id'] = $this->getUserID();
+        $message['u_show'] = 1;
+        $message['m_time'] = $this->getTimeString();
+        $message['m_body'] = $post['respond-body'];
+        
+        // send to MODEL
+        // on return put data into $out
+        $row = $this->Thread_model->insert_message($message);
+        $out['row'] = array($row);
+        
+        // return
+        return true;
+    }
+    
+    
+    
     public function vote()
     {
         // load model
@@ -95,6 +131,8 @@ class Chat extends CI_Controller {
         $out['v'] = $data['vote'];
         echo json_encode($out);
     }
+    
+    
     
     public function poll_create()
     {
@@ -151,6 +189,8 @@ class Chat extends CI_Controller {
         return;
     }
     
+    
+    
     public function poll_vote()
     {
         // TODO: record vote for polling
@@ -172,7 +212,10 @@ class Chat extends CI_Controller {
             $re = $this->Poll_model->insert_vote($data);
             
             // organize output
-            $out['opt'] = $data['opt_id'];
+            $poll = $this->Poll_model->get_poll($data['opt_id']);
+            $out['poll'] = $poll['poll'];
+            $out['opt'] = $poll['opt'];
+            $out['vote'] = $data['opt_id'];
             $out['message'] = 'Success';
             
         } else {
@@ -187,6 +230,8 @@ class Chat extends CI_Controller {
         return;
     }
     
+    
+    
     private function checkSubject($s)
     {
         if($s=='' || $s === null) {
@@ -195,6 +240,8 @@ class Chat extends CI_Controller {
         
         return true;
     }
+    
+    
     
     private function checkLogin()
     {
@@ -206,14 +253,20 @@ class Chat extends CI_Controller {
         return true;
     }
     
+    
+    
     private function getUserID()
     {
         return $this->session->userdata('user_id');
     }
+    
+    
     
     private function getTimeString()
     {
         return date(DATE_RFC3339);
     }
 
+    
+    
 }

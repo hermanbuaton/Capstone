@@ -79,5 +79,41 @@ class Poll_model extends CI_Model {
         }
         return FALSE;
     }
+    
+    /**
+     *
+     */
+    public function get_poll($o)
+    {
+        // query
+        $sub = $this->db
+                ->select('m_id')
+                ->from('poll_opt')
+                ->where('opt_id',$o)
+                ->get_compiled_select();
+        
+        // poll
+        $poll = $this->db
+                    ->select(['o.m_id', 'm.t_id', 'm.m_body'])
+                    ->from('poll_opt AS o')
+                    ->join('message AS m','o.m_id = m.m_id','RIGHT')
+                    ->where("o.m_id in ($sub)",null,false)
+                    ->group_by('m.m_id')
+                    ->get()->row();
+        
+        // opt list
+        $opt = $this->db
+                    ->select(['o.opt_id', 'o.opt_txt', 'COUNT(p.p_id) AS vote'])
+                    ->from('poll_opt AS o')
+                    ->join('poll_vote AS p', 'o.opt_id = p.opt_id', 'LEFT')
+                    ->where("o.m_id in ($sub)",null,false)
+                    ->group_by('o.opt_id')
+                    ->get()->result_array();
+        
+        $out['poll'] = $poll;
+        $out['opt'] = $opt;
+        return $out;
+        
+    }
 
 }

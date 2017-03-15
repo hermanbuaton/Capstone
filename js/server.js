@@ -71,6 +71,7 @@ io.on('connection', function(socket){
     socket.on('poll vote', function(data){
         var r = data['room'];
         var d = data['data'];
+        console.log("poll vote in " + r);
         io.sockets.in(r).emit('poll vote', d);
     });
     

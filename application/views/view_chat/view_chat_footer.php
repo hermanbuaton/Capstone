@@ -29,6 +29,10 @@
         var socket = io.connect("<?php echo base_url_port(); ?>");
         var subject = "<?= $subject; ?>";
         
+        if (window.hasOwnProperty('webkitSpeechRecognition')) {
+            var recognition = new webkitSpeechRecognition();
+        }
+        
         
         
         /** ========================================
@@ -89,7 +93,6 @@
 
             if (window.hasOwnProperty('webkitSpeechRecognition')) {
 
-                var recognition = new webkitSpeechRecognition();
                 var final = '';
                 
                 recognition.continuous = true;
@@ -98,18 +101,15 @@
                 recognition.lang = "en-US";
                 recognition.start();
                 
-                /*
-                recognition.onresult = function(e) {
-                    document.getElementById('respond-body').value
-                                             = e.results[0][0].transcript;
-                    document.getElementById('respond-textarea').value
-                                             = e.results[0][0].transcript;
-                    // recognition.stop();
-                    // document.getElementById('respond-form').submit();
-                };
-                */
                 recognition.onresult = function(e) {
                     var interim = '';
+                    
+                    if (typeof(event.results) == 'undefined') {
+                        recognition.onend = null;
+                        recognition.stop();
+                        upgrade();
+                        return;
+                    }
                     
                     for (var i = e.resultIndex; i < e.results.length; ++i) {
                         
@@ -120,7 +120,6 @@
                             out = final;
                         } else {
                             interim += e.results[i][0].transcript;
-                            // display fewer interim result
                             if (i%4 == 0) out += interim;
                         }
                         
@@ -130,40 +129,14 @@
                 }
 
                 recognition.onerror = function(e) {
-                    // recognition.stop();
+                    recognition.stop();
                 }
-                
-                
-                /*
-                recognition.onresult = function(event) {
-                    var interim_transcript = '';
-                    
-                    if (typeof(event.results) == 'undefined') {
-                        recognition.onend = null;
-                        recognition.stop();
-                        upgrade();
-                        return;
-                    }
-                    
-                    for (var i = event.resultIndex; i < event.results.length; ++i) {
-                        if (event.results[i].isFinal) {
-                            final_transcript += event.results[i][0].transcript;
-                        } else {
-                            interim_transcript += event.results[i][0].transcript;
-                        }
-                    }
-                    
-                    final_transcript = capitalize(final_transcript);
-                    final_span.innerHTML = linebreak(final_transcript);
-                    interim_span.innerHTML = linebreak(interim_transcript);
-                    
-                    if (final_transcript || interim_transcript) {
-                        showButtons('inline-block');
-                    }
-                };
-                */
 
             }
+        }
+        
+        function stopDictation() {
+            recognition.stop();
         }
         
         
@@ -182,6 +155,11 @@
         socket.on('thread', function(data) {
             $('#forum-list-view').append(data);
             $("#forum-list-view").animate({ scrollTop: $('#forum-list-view').prop("scrollHeight")}, 1000);
+        });
+        
+        //  thread respond
+        socket.on('respond', function(data) {
+            // TODO: on respond, add button to view respond
         });
         
         //  update vote
@@ -206,9 +184,9 @@
             promptPoll(data);
         });
         
-        //  poll vote
+        //  poll vote update
         socket.on('poll vote', function(data) {
-            // TODO: update poll result
+            updatePoll(data);
         });
         
         //  system message
@@ -263,13 +241,12 @@
         *   Message Expand
         *   ======================================== */
         
-        //  submit vote
+        //  start respond on modal start
         $("#forum-list-view").on("click", ".forum-message", function(e) {
             
             // if click on VOTE button
             if($(e.target).is('.forum-thread-vote-input')){
-                // do nothing
-                return;
+                return;     // do nothing
             }
             
             // clear previous poll data
@@ -277,18 +254,22 @@
             $('#respond-body').val('');
             $('#respond-textarea').val('');
             
-            var m_id = $(this).attr('value');
-            var head = $(this).find('.forum-thread-head').text();
-            
             // open modal
             $('#thread-respond').modal('toggle');
-            $('#thread-question-head').append($('<h2/>').text(head));
-            
-            console.log(m_id);
-            console.log(head);
+            $('#thread-question-head').append(
+                $('<h2/>').text($(this).find('.forum-thread-head').text())
+            );
+            $('#respond-id').val($(this).find('.forum-thread-vote-message').val());
             
             startDictation();
             
+            return false;
+        });
+        
+        //  end respond on modal close
+        $('#thread-respond').on("hidden.bs.modal", function() {
+            stopDictation();
+            submitRespond();
         });
         
         
@@ -413,6 +394,27 @@
         }
         
         
+        //  submit thread
+        function submitRespond() {
+            
+            console.log("submit");
+            
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/respond"); ?>",
+                data: $('#respond-form').serialize(),
+
+                success: function(data) {
+                    // (2) to socket server
+                    // var out = {"room": subject, "html": data};
+                    console.log(data);
+                    
+                    // TODO: on respond, add button to view respond
+                }
+            });
+        }
+        
+        
         //  submit poll
         function createPoll(form) {
             
@@ -480,6 +482,8 @@
         //  respond to poll
         function respondPoll(opt) {
             
+            $('#poll-vote').modal('hide');
+            
             // (1) to database
             $.ajax({
                 type: "POST",
@@ -488,12 +492,91 @@
 
                 success: function(data) {
                     // (2) to socket server
-                    // var out = {"room": subject, "data": data};
-                    // socket.emit('poll vote', data);
+                    var d = $.parseJSON(data);
+                    if (d.message=="Already Vote") { return false; }
                     
-                    console.log(data);
+                    var out = {"room": subject, "data": d.opt};
+                    socket.emit('poll vote', out);
+                    
+                    reviewPoll(data);
                 }
             });
+            
+            return false;
+            
+        }
+        
+        
+        //  update poll result
+        function updatePoll(d) {
+            console.log("update");
+            console.log(d);
+            
+            d.forEach(function(row) {
+                
+                /**
+                 *  NOTES:
+                 *  for some reason jQuery not working here
+                 *  *** use document.getElementbyId ***
+                 */
+                var c = 'poll-result-opt[' + row.opt_id + ']';
+                var ct = document.getElementById(c);
+                ct.innerHTML = row.opt_txt + "  Vote: " + row.vote;
+                
+            });
+        }
+        
+        
+        //  poll result
+        function reviewPoll(d) {
+            
+            var id = parseInt(d) || -1;
+            
+            if (id != -1) {
+                // TODO: ajax to get poll data
+                console.log("no poll data yet");
+                
+                /*
+                // TODO: retrieve from database
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url("Chat/poll_result"); ?>",
+                    data: {"id": id},
+
+                    success: function(data) {
+                        // TODO: set interface
+                    }
+                });
+                */
+                
+            } else {
+                console.log("contains data");
+            }
+            
+            var data = $.parseJSON(d);
+            var poll = data.poll;
+            var opt = data.opt;
+            var count = 1;
+            
+            $('#poll-result-id').html('');
+            $('#poll-result-body').html('');
+            $('#poll-result-count').html('');
+            
+            // set text on screen
+            $('#poll-result-body').append($('<h2/>').text(poll.m_body));
+            
+            opt.forEach(function(row) {
+                count++;
+                var b = $('<p/>', {
+                            class: "poll-result-opt",
+                            id: "poll-result-opt[" + row.opt_id + "]"
+                        });
+                b.text(row.opt_txt + "  Vote: " + row.vote);
+                $("#poll-result-count").append(b);
+            });
+            
+            // open modal
+            $('#poll-result').modal('toggle');
             
         }
         
