@@ -59,6 +59,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  Load previous messages
+     *  ============================================================
+     */
     public function load($subject='')
     {
         // validation
