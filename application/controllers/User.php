@@ -93,7 +93,7 @@ class User extends CI_Controller {
      */
     public function login()
     {
-
+        
         // load model
         $this->load->model('User_model');
         
@@ -118,7 +118,7 @@ class User extends CI_Controller {
                 $this->session->set_flashdata('error','Username or password incorrect.');
                 redirect("");
             }
-            
+        
         }
         
         
@@ -130,15 +130,19 @@ class User extends CI_Controller {
         $id = $this->User_model->record_signin($log);
         
         
-        // validate user
-        
-        
         /* TODO: save username in cookies */
         /* TODO: set cookies timeout */
         $this->storeSession($id,$username);
         
         
-        redirect("Chat/$class");
+        // redirect
+        if ($type == 11) {
+            // teacher
+            redirect("Dashboard");
+        } elseif ($type == 1) {
+            // student
+            redirect("Chat/$class");
+        }
     }
     
     
