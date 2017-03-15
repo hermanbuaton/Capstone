@@ -5,6 +5,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  remap
+     *  ============================================================
+     */
     public function _remap($method, $params = array())
 	{
 		if (method_exists($this, $method))
@@ -16,6 +21,17 @@ class Chat extends CI_Controller {
 	
     
     
+    /**
+     *  ============================================================
+     *  
+     *  Index:
+     *      check if user already login
+     *      direct user into chatroom
+     *  
+     *  @param  $subject    from GET, class / lect code
+     *  
+     *  ============================================================
+     */
     public function index($subject='')
     {
         // validation
@@ -37,6 +53,8 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_poll_result');
         $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_footer');
+        
+        return;
     }
     
     
@@ -56,6 +74,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  process NEW MESSAGE
+     *  ============================================================
+     */
     public function message()
     {
         // load model
@@ -84,6 +107,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  process teachers' RESPOND
+     *  ============================================================
+     */
     public function respond()
     {
         // load model
@@ -109,6 +137,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  process VOTE of messages
+     *  ============================================================
+     */
     public function vote()
     {
         // load model
@@ -134,6 +167,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  Create New Poll
+     *  ============================================================
+     */
     public function poll_create()
     {
         // load model
@@ -191,6 +229,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  process VOTE for poll
+     *  ============================================================
+     */
     public function poll_vote()
     {
         // TODO: record vote for polling
@@ -232,6 +275,17 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  
+     *  TODO: check if inputted subject EXISTED
+     *  
+     *  @param  $s          user input
+     *  @return BOOLEAN     true when subject exist, 
+     *                      false when subj NOT exist
+     *  
+     *  ============================================================
+     */
     private function checkSubject($s)
     {
         if($s=='' || $s === null) {
@@ -243,9 +297,14 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  Check if user already login
+     *  ============================================================
+     */
     private function checkLogin()
     {
-        //check if logined already
+        // check if logined already
         if(!$this->session->userdata('user_name')) {
             redirect();
         }
@@ -255,6 +314,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  Get user ID
+     *  ============================================================
+     */
     private function getUserID()
     {
         return $this->session->userdata('user_id');
@@ -262,6 +326,11 @@ class Chat extends CI_Controller {
     
     
     
+    /**
+     *  ============================================================
+     *  Generate time string
+     *  ============================================================
+     */
     private function getTimeString()
     {
         return date(DATE_RFC3339);

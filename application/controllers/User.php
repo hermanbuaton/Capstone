@@ -2,18 +2,33 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
-
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Construtor
+     *  ============================================================
+     */
     function __construct()
 	{
 		parent::__construct();
-        
-        $this->load->helper('cookie');
-
-        /*
-		$this->load->model('User_model');
-        */
 	}
     
+    
+    
+    /**
+     *  ============================================================
+     *
+     *  Create New User
+     *
+     *  if $post NOT EXIST,
+     *      go to form display
+     *  elseif $post EXIST
+     *      process data, pass to model
+     *
+     *  ============================================================
+     */
     public function create()
     {
         $post = $_POST;
@@ -61,11 +76,27 @@ class User extends CI_Controller {
         }
     }
 	
+    
+    
+    /**
+     *  ============================================================
+     *
+     *  Authentication
+     *
+     *  if user type == 11 (teacher):
+     *      check username, password
+     *
+     *  All user type:
+     *      log login name, class, time
+     *
+     *  ============================================================
+     */
     public function login()
     {
 
         // load model
         $this->load->model('User_model');
+        
         
         // process message
         $post = $_POST;
@@ -75,15 +106,21 @@ class User extends CI_Controller {
         $type = $post['usertype'];
         $time = date(DATE_RFC3339);
         
-        // validate user
+        
+        // validate teacher
         if ($type == 11) {
+            
+            // check username, password
             $user = $this->User_model->validate_user($username, $password);
             
+            // if NOT MATCH, redirect to home
             if ($user === FALSE) {
                 $this->session->set_flashdata('error','Username or password incorrect.');
                 redirect("");
             }
+            
         }
+        
         
         // log user action
         $log['u_id'] = $user;
@@ -92,6 +129,7 @@ class User extends CI_Controller {
         $log['signin_time'] = $time;
         $id = $this->User_model->record_signin($log);
         
+        
         // validate user
         
         
@@ -99,20 +137,34 @@ class User extends CI_Controller {
         /* TODO: set cookies timeout */
         $this->storeSession($id,$username);
         
+        
         redirect("Chat/$class");
     }
     
+    
+    
+    /**
+     *  ============================================================
+     *  Logout
+     *  ============================================================
+     */
     public function logout()
 	{
 		$this->unsetSession();
-        
-		redirect();
+        redirect();
 	}
     
+    
+    
     /**
+     *  ============================================================
+     *  
      *  Store user info in session data
+     *  
      *  @param  $name   [str]   username
      *  @return
+     *  
+     *  ============================================================
      **/
     private function storeSession($id,$name)
 	{
@@ -120,10 +172,17 @@ class User extends CI_Controller {
 		$this->session->set_userdata('user_name',$name);
 	}
     
+    
+    
     /**
+     *  ============================================================
+     *  
      *  Remove user info in session data
+     *
      *  @param  $name   [str]   username
      *  @return
+     *  
+     *  ============================================================
      **/
     private function unsetSession()
 	{
