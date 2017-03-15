@@ -1,12 +1,16 @@
 <?php
 
 class User_model extends CI_Model {
-
+    
+    
+    
     public function __construct()
     {
             parent::__construct();
             // Your own constructor code
     }
+    
+    
     
     /**
      *  Store NEW acct into db
@@ -38,6 +42,8 @@ class User_model extends CI_Model {
         return $out;
     }
     
+    
+    
     /**
      *  Validate if username already exists
      *  
@@ -60,6 +66,32 @@ class User_model extends CI_Model {
         // else
         return false;
     }
+    
+    
+    
+    /**
+     *  Validate if username already exists
+     *  
+     *  @param  $in [str]   inputted username
+     *  @return _BOOLEAN    true when does not exist, false when already exist
+     */
+    public function validate_user($id, $pw)
+    {
+        $result = $this->db
+                    ->select('u_id')
+                    ->from('user')
+                    ->where('u_name',$id)
+                    ->where('u_pass',$pw)
+                    ->get()->row();
+        
+        if ($result->u_id !== NULL) {
+            return $result->u_id;
+        }
+        
+        return FALSE;
+    }
+    
+    
     
     /**
      *  Record user actions in db
