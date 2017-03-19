@@ -3,42 +3,65 @@
     foreach ($row as $data) {
 ?>
 
-<!-- ** Messages here ** -->
-<!-- ** Change div CLASS & ID in view_chat_footer script ** -->
+<!-- Panel START -->
+<div class="panel panel-default">
 
-<div class="forum-message" id="forum-message-view" value="<?= $data['m_id']; ?>">
-    <!-- Vote btn & counter -->
-    <div class="forum-thread-vote pull-left">
-        <form class="forum-thread-vote-form" id="vote-form[<?= $data['m_id']; ?>]" action="">
-            
-            <!-- message id -->
-            <input class="form-control forum-thread-vote-message" type="hidden" name="vote-message" id="vote-message[<?= $data['m_id']; ?>]" value="<?php echo $data['m_id']; ?>" autocomplete="off"></input>
-                
-            <!-- vote value : +1 | -1 -->
-            <input class="form-control forum-thread-vote-value" type="hidden" name="vote-value" id="vote-value[<?= $data['m_id']; ?>]" value="" autocomplete="off"></input>
-            
-            <!-- vote button -->
-            <!-- default display: + -->
-            <button class="form-control btn-info forum-thread-vote-input" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >+</button>
-            
-            <!-- vote counter -->
-            <div class="forum-thread-vote-count" id="vote-count[<?= $data['m_id']; ?>]">
-                <?php echo ($data['vote'] !== null ? $data['vote'] : "0"); ?>
+    <div class="panel-heading" data-toggle="collapse" data-parent="#dashboard-class-list" href="#dashboard-class-panel-<?= $data['class_id']; ?>">
+        <div class="pull-right">
+            <i class="fa fa-caret-down"></i>
+        </div>
+        <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#dashboard-class-list" href="#dashboard-class-panel-<?= $data['class_id']; ?>">
+                <!-- TODO: Class Code -->
+                <?= $data['course_code'] . ' - ' . $data['class_code'] . 
+                    ' (' . $data['sem_name'] . ')'; ?>
+            </a>
+        </h4>
+    </div>
+
+    <div class="panel-collapse collapse" id="dashboard-class-panel-<?= $data['class_id']; ?>">
+    <div class="lect-panel panel-body">
+        <div class="lect-list-head">
+            <div class="pull-right">
+            <form class="lect-create-toggle">
+                <!-- Class id -->
+                <input class="form-control respond-control" type="hidden" name="lect-create-id" id="lect-create-id" value="<?= $data['class_id']; ?>" autocomplete="off"></input>
+                <!-- Class name -->
+                <input class="form-control respond-control" type="hidden" name="lect-create-name" id="lect-create-name" value="<?= $data['course_code'] . ' - ' . $data['class_code'] . ' (' . $data['sem_name'] . ')'; ?>" autocomplete="off"></input>
+                <!-- button -->
+                <button type="submit" class="btn btn-primary lect-create-btn">
+                    <small>+ Session</small>
+                </button>
+            </form>
             </div>
-            
-        </form>
-    </div>
+            <h5>
+                <i class="fa fa-fw fa-briefcase"></i>
+                Lectures
+            </h5>
+        </div>
 
-    <!-- Thread HEAD -->
-    <div class="forum-thread-head" id="forum-thread-head-view[<?= $data['m_id']; ?>]">
-        <?php echo $data['m_head']; ?>
-    </div>
+        <div class="lect-list list-group">
 
-    <div class="forum-thread-body hidden" id="forum-thread-body-view[<?= $data['m_id']; ?>]">
-        <?php echo $data['m_body']; ?>
+            <!-- Sessions -->
+            <?php 
+                $lecture = $data['lecture'];
+                
+                foreach ($lecture as $item) {
+            ?>
+            <!-- TODO: Link to /Chat -->
+            <a href="#" class="lect-item list-group-item" id="dashboard-lect-item-<?= $item['lect_id']; ?>">
+                <span class="badge"><?= $item['lect_start']; ?></span>
+                <i class="fa fa-fw fa-book"></i>
+                <?= $item['lect_name']; ?>
+            </a>
+            <?php } ?>
+
+        </div>
+    </div>
     </div>
 
 </div>
+<!-- Panel END -->
 
 <?php
    // FOR loop end

@@ -2,7 +2,8 @@ CREATE TABLE class (
 	class_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_id INT(11),
     class_code VARCHAR(40),
-    sem_id INT(11)
+    sem_id INT(11),
+    own_id INT(11)
 );
 
 CREATE TABLE course (
@@ -69,11 +70,12 @@ CREATE TABLE poll_vote (
 
 CREATE TABLE lecture (
 	lect_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+	lect_ref VARCHAR(11), 
     class_id INT(11),
-    lect_owner INT(11),
     lect_name INT(11),
     lect_start DATETIME,
-    lect_end DATETIME
+    lect_end DATETIME,
+    own_id INT(11)
 );
 
 CREATE TABLE user_log (

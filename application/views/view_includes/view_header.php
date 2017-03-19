@@ -51,7 +51,8 @@
             
             <div class="navbar-header">
             
-            <?php if ($page == "Chat") : ?>
+            <?php if ($page == "Chat"
+                     || $page == "Dashboard") : ?>
                 <button type="button" href="#menu-toggle" class="navbar-toggle pull-left" id="menu-toggle" >
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>

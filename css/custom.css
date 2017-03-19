@@ -55,6 +55,20 @@
 .nav-two-items.active {
     font-weight: 900;
 }
+.form-date-control {
+    display: inline-block;
+    width: 18%;
+}
+.form-time-control {
+    display: inline-block;
+    width: 15%;
+}
+.form-datetime-span {
+    display: inline-block;
+    margin: 15px 0px 15px 0px;
+    padding: 0px;
+    transform: translateY(0%); 
+}
 
 
 
@@ -127,6 +141,61 @@
     width: 100%;
 }
 /* End of CSS for Home */
+
+
+
+/* Dashboard */
+.class-list-head {
+    padding: 5px 5px 0px 5px;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #ddd;
+}
+.lect-panel {
+    padding: 5px 10px;
+}
+.lect-list {
+    margin-bottom: 0px;
+}
+.lect-list-head {
+    padding: 5px 5px 10px 5px;
+    border-bottom: 2px solid #ddd;
+}
+.lect-item {
+    border-top: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 5px;
+}
+.lect-item:first-child {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 5px;
+}
+.lect-item:last-child {
+    border-top: 1px solid #ddd;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    padding: 10px 5px;
+}
+.dashboard-modal > .modal-dialog {
+    position: absolute;
+    width: 80%;
+    height: 70%;
+    left: 50%;
+    top: 50%;
+    margin-left: -40%;
+    margin-top: -35%;
+}
+.dashboard-modal-footer-control {
+    height: 50px;
+}
+.dashboard-control {
+    margin-bottom: 15px;
+}
 
 
 
