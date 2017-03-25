@@ -113,18 +113,23 @@
                     
                     for (var i = e.resultIndex; i < e.results.length; ++i) {
                         
-                        var out = $('#respond-body').val();
+                        var show = $('#respond-body').val();
+                        var hide = $('#respond-body').val();
                         
                         if (e.results[i].isFinal) {
                             final += e.results[i][0].transcript;
-                            out = final;
+                            show = final;
+                            hide = final;
                         } else {
                             interim += e.results[i][0].transcript;
-                            if (i%4 == 0) out += interim;
+                            if (i%4 == 0) show += interim;
+                            hide += interim;
                         }
                         
-                        $('#respond-body').val(out);
-                        $('#respond-textarea').val(out);
+                        console.log(hide);
+                        
+                        $('#respond-textarea').val(show);
+                        $('#respond-body').val(hide);
                     }
                 }
 
@@ -267,9 +272,26 @@
         });
         
         //  end respond on modal close
-        $('#thread-respond').on("hidden.bs.modal", function() {
+        $('#thread-respond').on("hidden.bs.modal", function(e) {
+            
+            // stop speech recognition
             stopDictation();
-            submitRespond();
+            
+            // if click on SUBMIT button
+            if($(e.target).is('#respond-submit')){
+                
+                // get response
+                var re = $('#respond-body').val();
+
+                // submit if length > 0
+                if (re.length > 0)
+                    submitRespond();
+                
+            } else {
+                return false;
+            }
+            
+            return false;
         });
         
         

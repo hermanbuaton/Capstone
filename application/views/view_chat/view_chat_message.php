@@ -37,7 +37,10 @@
     <div class="forum-thread-body hidden" id="forum-thread-body-view[<?= $data['m_id']; ?>]">
         <?php echo $data['m_body']; ?>
     </div>
-
+    
+    <?php var_dump($data['labels']); ?>
+    
+    
 </div>
 
 <?php

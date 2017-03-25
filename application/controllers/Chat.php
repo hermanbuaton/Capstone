@@ -7,6 +7,20 @@ class Chat extends CI_Controller {
     
     /**
      *  ============================================================
+     *  Construtor
+     *  ============================================================
+     */
+    function __construct()
+	{
+		parent::__construct();
+        
+        $this->load->model('Thread_model');
+	}
+    
+    
+    
+    /**
+     *  ============================================================
      *  remap
      *  ============================================================
      */
@@ -32,17 +46,18 @@ class Chat extends CI_Controller {
      *  
      *  ============================================================
      */
-    public function index($subject='')
+    public function index($lecture='')
     {
         // validation
         $this->checkLogin();
-        $this->checkSubject($subject);
+        $this->checkLecture($lecture);
         
-        $data['subject'] = $subject;
-        
+        // load data into array
+        $data['subject'] = $lecture;
         $data['page'] = "Chat";
-        $data['title'] = $subject . " - SB Admin";  // TODO: Page Title
+        $data['title'] = $lecture . " - SB Admin";  // TODO: Page Title
         
+        // load view
         $this->load->view('view_includes/view_header', $data);
         $this->load->view('view_includes/view_sidebar');
         $this->load->view('view_chat/view_chat_header');
@@ -64,14 +79,13 @@ class Chat extends CI_Controller {
      *  Load previous messages
      *  ============================================================
      */
-    public function load($subject='')
+    public function load($lecture='')
     {
         // validation
-        $this->checkSubject($subject);
+        $this->checkLecture($lecture);
         
         // load model & get data
-        $this->load->model('Thread_model');
-        $out['row'] = $this->Thread_model->load_thread($subject);
+        $out['row'] = $this->Thread_model->load_thread($lecture);
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
@@ -87,27 +101,60 @@ class Chat extends CI_Controller {
     public function message()
     {
         // load model
-        $this->load->model('Thread_model');
+        $this->load->model('Lecture_model');
+        $this->load->model('Rake_model');
         
         // process message
         $post = $_POST;
+        
+        // insert thread
         $thread['class_id'] = $post['input-message-class'];
-        $thread['lect_id'] = $post['input-message-lect'];
-        $thread['m_type'] = 0;
-        $thread['u_id'] = $this->getUserID();
-        $thread['u_show'] = $post['input-message-anonymous'];
-        $thread['m_time'] = $this->getTimeString();
-        $thread['m_head'] = $post['input-message-head'];
-        $thread['m_body'] = $post['input-message-body'];
-        
-        // send to MODEL
-        // on return put data into $out
+        $thread['lect_id'] = $this->Lecture_model->get_lectid($post['input-message-lect']);
         $message = $this->Thread_model->insert_thread($thread);
-        $row = $this->Thread_model->insert_message($message);
-        $out['row'] = array($row);
         
-        // return
+        // insert message
+        $message['m_type'] = 0;
+        $message['u_id'] = $this->getUserID();
+        $message['u_show'] = $post['input-message-anonymous'];
+        $message['m_time'] = $this->getTimeString();
+        $message['m_head'] = $post['input-message-head'];
+        $message['m_body'] = $post['input-message-body'];
+        $data = $this->Thread_model->insert_message($message);
+        
+        // text mining
+        $text = $post['input-message-head'] . ' \n ' . $post['input-message-body'];
+        $labels = $this->Rake_model->extract($text);
+        $data['labels'] = $this->insert_labels($data['m_id'], 1, $labels);
+        
+        // on return put data into $out
+        $out['row'] = array($data);
         $this->load->view('view_chat/view_chat_message',$out);
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  process labels of messages before insert to db
+     *  ============================================================
+     */
+    private function insert_labels($m, $type, $labels)
+    {
+        // new array
+        $out = array();
+        
+        // put id into each row
+        foreach ($labels AS $label) {
+            $row['m_id'] = $m;
+            $row['label'] = $label['words'];
+            $row['l_type'] = 1;
+            $row['l_score'] = $label['score'];
+            array_push($out, $row);
+        }
+        
+        // to model & return
+        $this->Thread_model->insert_labels($out);
+        return $out;
     }
     
     
@@ -118,10 +165,7 @@ class Chat extends CI_Controller {
      *  ============================================================
      */
     public function respond()
-    {
-        // load model
-        $this->load->model('Thread_model');
-        
+    {   
         // process message
         $post = $_POST;
         $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
@@ -149,9 +193,6 @@ class Chat extends CI_Controller {
      */
     public function vote()
     {
-        // load model
-        $this->load->model('Thread_model');
-        
         // process vote
         $post = $_POST;
         $data['m_id'] = $post['vote-message'];
@@ -180,7 +221,6 @@ class Chat extends CI_Controller {
     public function poll_create()
     {
         // load model
-        $this->load->model('Thread_model');
         $this->load->model('Poll_model');
         
         // process message
@@ -283,17 +323,28 @@ class Chat extends CI_Controller {
     /**
      *  ============================================================
      *  
-     *  TODO: check if inputted subject EXISTED
+     *  TODO: check if inputted session EXISTED
      *  
      *  @param  $s          user input
-     *  @return BOOLEAN     true when subject exist, 
-     *                      false when subj NOT exist
+     *  @return BOOLEAN     true when session exist, 
+     *                      false when session NOT exist
      *  
      *  ============================================================
      */
-    private function checkSubject($s)
+    private function checkLecture($s)
     {
-        if($s=='' || $s === null) {
+        // load model
+        $this->load->model('Lecture_model');
+        
+        // if nothing is inputted
+        if ($s=='' || $s === null) {
+            redirect();
+        }
+        
+        // check from db
+        if (!($this->Lecture_model->validate_ref($s) > 0)) {
+            // ref not found
+            $this->session->set_flashdata('error','Login code incorrect.');
             redirect();
         }
         

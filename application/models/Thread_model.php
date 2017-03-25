@@ -9,27 +9,14 @@ class Thread_model extends CI_Model {
     }
     
     public function insert_thread($data)
-    {
+    {   
         // insert THREAD
-        $thread['class_id'] = $data['class_id'];
-        $thread['lect_id'] = "";    // TODO: lect_id
-        
-        $this->db->insert('thread',$thread);
-        $id['t'] = $this->db->insert_id();
-        
-        
-        // insert MESSAGE
-        $message['t_id'] = $id['t'];
-        $message['m_type'] = $data['m_type'];
-        $message['u_id'] = $data['u_id'];
-        $message['u_show'] = $data['u_show'];
-        $message['m_time'] = $data['m_time'];
-        $message['m_head'] = $data['m_head'];
-        $message['m_body'] = $data['m_body'];
+        $this->db->insert('thread',$data);
         
         // EDIT: return to controller before goto insert_message()
         // $row = $this->insert_message($message);
-        return $message;
+        $out['t_id'] = $this->db->insert_id();
+        return $out;
     }
     
     public function insert_message($data)
@@ -39,6 +26,12 @@ class Thread_model extends CI_Model {
         
         // put id into array
         $data['m_id'] = $this->db->insert_id();
+        return $data;
+    }
+    
+    public function insert_labels($data)
+    {
+        $this->db->insert_batch('label',$data);
         
         return $data;
     }
@@ -51,14 +44,17 @@ class Thread_model extends CI_Model {
         return $id;
     }
     
-    public function load_thread($subject)
+    public function load_thread($lecture)
     {
         // TODO: set query WHERE subject == subject id
         $query = $this->db
                     ->select('m.*, SUM(v.vote) AS vote')
                     ->from('message AS m')
+                    ->join('thread AS t', 'm.t_id = t.t_id')
                     ->join('vote AS v', 'm.m_id = v.m_id', 'left')
+                    ->join('lecture AS l', 't.lect_id = l.lect_id')
                     ->where('m.m_type',0)
+                    ->where('l.lect_ref',$lecture)
                     ->group_by('m.m_id');
         $row = $query->get()->result_array();
         

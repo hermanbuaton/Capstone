@@ -1,4 +1,5 @@
-CREATE TABLE class (
+CREATE TABLE class
+(
 	class_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_id INT(11),
     class_code VARCHAR(40),
@@ -6,14 +7,16 @@ CREATE TABLE class (
     own_id INT(11)
 );
 
-CREATE TABLE course (
+CREATE TABLE course
+(
 	course_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     sch_id INT(11),
     course_code VARCHAR(40),
     course_name VARCHAR(255)
 );
 
-CREATE TABLE semester (
+CREATE TABLE semester
+(
 	sem_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     sch_id INT(11),
     sem_code VARCHAR(40),
@@ -22,20 +25,23 @@ CREATE TABLE semester (
     sem_week INT(6)
 );
 
-CREATE TABLE school (
+CREATE TABLE school
+(
 	sch_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     sch_code VARCHAR(40),
     sch_name VARCHAR(255),
     sch_region VARCHAR(255)
 );
 
-CREATE TABLE thread (
+CREATE TABLE thread
+(
 	t_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     class_id INT(11),
     lect_id INT(11)
 );
 
-CREATE TABLE message (
+CREATE TABLE message
+(
 	m_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     t_id INT(11),
     m_type VARCHAR(3),
@@ -46,7 +52,17 @@ CREATE TABLE message (
     m_body TEXT
 );
 
-CREATE TABLE vote (
+CREATE TABLE label
+(
+	l_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    m_id INT(11),
+    label VARCHAR(255),
+    l_type TINYINT,
+    l_score FLOAT
+);
+
+CREATE TABLE vote
+(
 	v_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     m_id INT(11),
     u_id INT(11),
@@ -54,13 +70,15 @@ CREATE TABLE vote (
     vote TINYINT
 );
 
-CREATE TABLE poll_opt (
+CREATE TABLE poll_opt
+(
 	opt_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     m_id INT(11),
     opt_txt TEXT
 );
 
-CREATE TABLE poll_vote (
+CREATE TABLE poll_vote
+(
 	p_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     u_id INT(11),
     u_show TINYINT,
@@ -68,7 +86,8 @@ CREATE TABLE poll_vote (
     opt_id INT(11)
 );
 
-CREATE TABLE lecture (
+CREATE TABLE lecture
+(
 	lect_id INT(11) AUTO_INCREMENT PRIMARY KEY,
 	lect_ref VARCHAR(11), 
     class_id INT(11),
@@ -78,7 +97,8 @@ CREATE TABLE lecture (
     own_id INT(11)
 );
 
-CREATE TABLE user_log (
+CREATE TABLE user_log
+(
 	log_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     u_id INT(11),
     u_name VARCHAR(40),
@@ -88,7 +108,8 @@ CREATE TABLE user_log (
     signout_time DATETIME
 );
 
-CREATE TABLE user (
+CREATE TABLE user
+(
 	u_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     u_name VARCHAR(40),
     u_nick VARCHAR(40),
@@ -97,9 +118,23 @@ CREATE TABLE user (
     sch_id INT(11)
 );
 
-CREATE TABLE class_user (
+CREATE TABLE class_use
+(
 	id INT(11) AUTO_INCREMENT PRIMARY KEY,
     class_id INT(11),
     u_id INT(11),
     role INT(3)
+);
+
+CREATE TABLE rake_stop_ver
+(
+	ver_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    ver_date DATETIME
+);
+
+CREATE TABLE rake_stop_words
+(
+	stop_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    ver_id INT(11),
+    word VARCHAR(255)
 );

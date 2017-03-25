@@ -31,10 +31,26 @@ class Lecture_model extends CI_Model {
     public function validate_ref($s)
     {
         $count = $this->db
-                    ->where('lect_ref', $ran)
+                    ->where('lect_ref', $s)
                     ->count_all_results('lecture');
         
         return $count;
+    }
+    
+    
+    
+    /**
+     *  return Lect ID from Lect Ref
+     */
+    public function get_lectid($ref)
+    {
+        $result = $this->db
+                    ->select('lect_id')
+                    ->from('lecture')
+                    ->where('lect_ref', $ref)
+                    ->get()->row();
+        
+        return intval($result->lect_id);
     }
 
 }

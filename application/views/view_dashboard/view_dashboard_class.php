@@ -11,7 +11,7 @@
             <i class="fa fa-caret-down"></i>
         </div>
         <h4 class="panel-title">
-            <a data-toggle="collapse" data-parent="#dashboard-class-list" href="#dashboard-class-panel-<?= $data['class_id']; ?>">
+            <a href="#dashboard-class-panel-<?= $data['class_id']; ?>" data-toggle="collapse" data-parent="#dashboard-class-list">
                 <!-- TODO: Class Code -->
                 <?= $data['course_code'] . ' - ' . $data['class_code'] . 
                     ' (' . $data['sem_name'] . ')'; ?>
@@ -46,15 +46,31 @@
             <?php 
                 $lecture = $data['lecture'];
                 
-                foreach ($lecture as $item) {
+                if (sizeOf($lecture) == 0) {
             ?>
-            <!-- TODO: Link to /Chat -->
-            <a href="#" class="lect-item list-group-item" id="dashboard-lect-item-<?= $item['lect_id']; ?>">
-                <span class="badge"><?= $item['lect_start']; ?></span>
-                <i class="fa fa-fw fa-book"></i>
-                <?= $item['lect_name']; ?>
-            </a>
-            <?php } ?>
+                
+                <!-- A message to tell user there are 0 lect -->
+                <h5 style="text-align: center; margin-top: 15px; margin-bottom: 15px;">
+                    There is no lecture yet.
+                </h5>
+                
+            <?php
+                } else {
+                    foreach ($lecture as $item) {
+            ?>
+                
+                <!-- A message to tell user there are 0 lect -->
+                <!-- TODO: Link to /Chat -->
+                <a href="<?php echo base_url('Chat/' . $item['lect_ref']); ?>" class="lect-item list-group-item" id="dashboard-lect-item-<?= $item['lect_id']; ?>">
+                    <span class="badge"><?= $item['lect_start']; ?></span>
+                    <i class="fa fa-fw fa-book"></i>
+                    <?= $item['lect_name']; ?>
+                </a>
+                
+            <?php 
+                    }
+                }
+            ?>
 
         </div>
     </div>

@@ -57,9 +57,9 @@
                 <!-- Other fields -->
                 <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
                 <!-- class id -->
-                <input class="form-control" type="hidden" name="input-message-class" id="input-message-class" value="<?php echo $subject; ?>" autocomplete="off"></input>
+                <input class="form-control" type="hidden" name="input-message-class" id="input-message-class" value="<?= /* TODO: NEED REVIEW: Class ID here. */ $subject; ?>" autocomplete="off"></input>
                 <!-- lect id -->
-                <input class="form-control" type="hidden" name="input-message-lect" id="input-message-lect" value="<?php /* TODO: lect id here */ ?>" autocomplete="off"></input>
+                <input class="form-control" type="hidden" name="input-message-lect" id="input-message-lect" value="<?= $subject; ?>" autocomplete="off"></input>
 
             </div>
 
