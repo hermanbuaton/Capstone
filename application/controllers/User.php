@@ -54,7 +54,7 @@ class User extends CI_Controller {
             // process data & send to model
             $data['u_name'] = $post['username'];
             $data['u_nick'] = $post['nickname'];
-            $data['u_type'] = 11;
+            $data['u_type'] = USER_TYPE_INSTRUCTOR;
             $data['u_pass'] = $post['password'];
             $result = $this->User_model->create_user($data);
             
@@ -108,7 +108,7 @@ class User extends CI_Controller {
         
         
         // validate teacher
-        if ($type == 11) {
+        if ($type == USER_TYPE_INSTRUCTOR) {
             
             // check username, password
             $user = $this->User_model->validate_user($username, $password);
@@ -132,14 +132,14 @@ class User extends CI_Controller {
         
         /* TODO: save username in cookies */
         /* TODO: set cookies timeout */
-        $this->storeSession($id,$username);
+        $this->storeSession($id,$type,$username);
         
         
         // redirect
-        if ($type == 11) {
+        if ($type == USER_TYPE_INSTRUCTOR) {
             // teacher
             redirect("Dashboard");
-        } elseif ($type == 1) {
+        } elseif ($type == USER_TYPE_STUDENT) {
             // student
             redirect("Chat/$class");
         }
@@ -170,9 +170,10 @@ class User extends CI_Controller {
      *  
      *  ============================================================
      **/
-    private function storeSession($id,$name)
+    private function storeSession($id,$type,$name)
 	{
 		$this->session->set_userdata('user_id',$id);
+		$this->session->set_userdata('user_type',$type);
 		$this->session->set_userdata('user_name',$name);
 	}
     

@@ -7,7 +7,7 @@
 
 <!-- ** Thread Opener START ** -->
 <?php 
-    if ($data['m_type'] == 0):
+    if ($data['m_type'] == MESSAGE_TYPE_OPENER):
 ?>
     <!-- Thread HEAD -->
     <div class="thread-opener-head" id="thread-opener-head-view">
@@ -25,8 +25,8 @@
 
 <!-- ** Messages START ** -->
 <?php 
-    if ($data['m_type'] == 0 || 
-        $data['m_type'] == 1):
+    if ($data['m_type'] == MESSAGE_TYPE_OPENER || 
+        $data['m_type'] == MESSAGE_TYPE_REPLY):
 ?>
     <div class="forum-message" id="forum-message-view" value="<?= $data['m_id']; ?>">
         <!-- Vote btn & counter -->
@@ -66,13 +66,13 @@
 
 <!-- ** Thread Opener START ** -->
 <?php 
-    if ($data['m_type'] == 0):
+    if ($data['m_type'] == MESSAGE_TYPE_OPENER):
 ?>
     <!-- Thread HEAD -->
     <div class="thread-reply-head" id="thread-reply-head-view">
         <div class="" id="">
             <!-- TODO: Count no. of reply -->
-            <h5> # Response</h5>
+            <h5><?= (sizeOf($row) - 1); ?> Response</h5>
         </div>
     </div>
     

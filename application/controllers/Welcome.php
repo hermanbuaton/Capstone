@@ -23,6 +23,9 @@ class Welcome extends CI_Controller {
         $data['page'] = "home";
         $data['title'] = "Homepage";
         
+        if ($this->session->flashdata('lecture') !== null)
+            $data['lecture'] = $this->session->flashdata('lecture');
+        
         if ($this->session->flashdata('error') !== null)
             $data['error'] = $this->session->flashdata('error');
         

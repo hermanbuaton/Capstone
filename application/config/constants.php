@@ -83,3 +83,36 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+
+/**
+ *  Chat display preference
+ */
+defined('MESSAGE_SHOW_CHRONO') OR define('MESSAGE_SHOW_CHRONO', 0);
+defined('MESSAGE_SHOW_VOTE') OR define('MESSAGE_SHOW_VOTE', 1);
+defined('MESSAGE_SHOW_LABEL') OR define('MESSAGE_SHOW_LABEL', 2);
+
+
+
+/**
+ *  User u_type
+ */
+defined('USER_TYPE_INSTRUCTOR') OR define('USER_TYPE_INSTRUCTOR', 11);
+defined('USER_TYPE_STUDENT') OR define('USER_TYPE_STUDENT', 1);
+
+
+
+/**
+ *  Message m_type 
+ */
+defined('MESSAGE_TYPE_OPENER') OR define('MESSAGE_TYPE_OPENER', 0);
+defined('MESSAGE_TYPE_REPLY') OR define('MESSAGE_TYPE_REPLY', 1);
+defined('MESSAGE_TYPE_RESPOND') OR define('MESSAGE_TYPE_RESPOND', 10);
+defined('MESSAGE_TYPE_POLL') OR define('MESSAGE_TYPE_POLL', 99);
+
+/**
+ *  Message Anonymous
+ */
+defined('MESSAGE_ANONYMOUS_YES') OR define('MESSAGE_ANONYMOUS_YES', 1);
+defined('MESSAGE_ANONYMOUS_NO') OR define('MESSAGE_ANONYMOUS_NO', 0);

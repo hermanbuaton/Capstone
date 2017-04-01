@@ -52,7 +52,7 @@ class Thread extends CI_Controller {
         // process message
         $post = $_POST;
         $data['t_id'] = $this->Thread_model->get_thread($post['input-message-id']);
-        $data['m_type'] = 1;
+        $data['m_type'] = MESSAGE_TYPE_REPLY;
         // $data['u_id'] = $this->getUserID();
         $data['u_show'] = $post['input-message-anonymous'];
         $data['m_time'] = $this->getTimeString();

@@ -19,12 +19,22 @@
             
             <!-- vote button -->
             <!-- default display: + -->
+            <button class="btn btn-default form-control forum-thread-vote-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?>" type="submit" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
+                <span class="" id="vote-text[<?= $data['m_id']; ?>]">
+                    <i class="fa fa-plus-square"></i>
+                </span>
+                <span class="forum-thread-vote-count" id="vote-count[<?= $data['m_id']; ?>]">
+                    <?php echo ($data['sum_vote'] !== null ? $data['sum_vote'] : "0"); ?>
+                </span>
+            </button>
+            
+            <!--
             <button class="form-control btn-info forum-thread-vote-input" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >+</button>
             
-            <!-- vote counter -->
             <div class="forum-thread-vote-count" id="vote-count[<?= $data['m_id']; ?>]">
-                <?php echo ($data['vote'] !== null ? $data['vote'] : "0"); ?>
+                <?php echo ($data['sum_vote'] !== null ? $data['sum_vote'] : "0"); ?>
             </div>
+            -->
             
         </form>
     </div>
@@ -33,13 +43,25 @@
     <div class="forum-thread-head" id="forum-thread-head-view[<?= $data['m_id']; ?>]">
         <?php echo $data['m_head']; ?>
     </div>
-
+    
+    <!-- Thread BODY -->
     <div class="forum-thread-body hidden" id="forum-thread-body-view[<?= $data['m_id']; ?>]">
         <?php echo $data['m_body']; ?>
     </div>
     
-    <?php var_dump($data['labels']); ?>
-    
+    <!-- Thread LABEL -->
+    <div class="forum-thread-label" id="forum-thread-label-view[<?= $data['m_id']; ?>]">
+        <?php
+            $labels = $data['labels'];
+            foreach ($labels AS $label) {
+        ?>
+            <span class="badge forum-thread-label-badge">
+                <?= $label['label']; ?>
+            </span>
+        <?php
+            }
+        ?>
+    </div>
     
 </div>
 

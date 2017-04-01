@@ -48,14 +48,24 @@ class Chat extends CI_Controller {
      */
     public function index($lecture='')
     {
-        // validation
-        $this->checkLogin();
-        $this->checkLecture($lecture);
+        // validate lecture ref
+        if (!$this->checkLecture($lecture)) {
+            $this->session->set_flashdata('error','Incorrect lecture assess code.');
+            redirect("");
+        }
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Input a nickname to continue.');
+            $this->session->set_flashdata('lecture',$lecture);
+            redirect("");
+        }
         
         // load data into array
+        $this->load->model('Lecture_model');
         $data['subject'] = $lecture;
         $data['page'] = "Chat";
-        $data['title'] = $lecture . " - SB Admin";  // TODO: Page Title
+        $data['title'] = $this->Lecture_model->get_lectname($lecture);
         
         // load view
         $this->load->view('view_includes/view_header', $data);
@@ -79,13 +89,14 @@ class Chat extends CI_Controller {
      *  Load previous messages
      *  ============================================================
      */
-    public function load($lecture='')
+    public function load($lecture='',$order=MESSAGE_SHOW_CHRONO)
     {
         // validation
         $this->checkLecture($lecture);
         
         // load model & get data
-        $out['row'] = $this->Thread_model->load_thread($lecture);
+        $user = $this->session->userdata('user_id');
+        $out['row'] = $this->Thread_model->load_thread($user,$lecture,$order);
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
@@ -113,7 +124,7 @@ class Chat extends CI_Controller {
         $message = $this->Thread_model->insert_thread($thread);
         
         // insert message
-        $message['m_type'] = 0;
+        $message['m_type'] = MESSAGE_TYPE_OPENER;
         $message['u_id'] = $this->getUserID();
         $message['u_show'] = $post['input-message-anonymous'];
         $message['m_time'] = $this->getTimeString();
@@ -169,7 +180,7 @@ class Chat extends CI_Controller {
         // process message
         $post = $_POST;
         $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
-        $message['m_type'] = 10;
+        $message['m_type'] = MESSAGE_TYPE_RESPOND;
         $message['u_id'] = $this->getUserID();
         $message['u_show'] = 1;
         $message['m_time'] = $this->getTimeString();
@@ -234,7 +245,7 @@ class Chat extends CI_Controller {
         
         
         // insert message
-        $message['m_type'] = 99;
+        $message['m_type'] = MESSAGE_TYPE_POLL;
         $message['u_id'] = $this->getUserID();
         $message['u_show'] = $post['input-message-anonymous'];
         $message['m_time'] = $this->getTimeString();
@@ -345,7 +356,7 @@ class Chat extends CI_Controller {
         if (!($this->Lecture_model->validate_ref($s) > 0)) {
             // ref not found
             $this->session->set_flashdata('error','Login code incorrect.');
-            redirect();
+            return false;
         }
         
         return true;
@@ -362,7 +373,7 @@ class Chat extends CI_Controller {
     {
         // check if logined already
         if(!$this->session->userdata('user_name')) {
-            redirect();
+            return false;
         }
         
         return true;

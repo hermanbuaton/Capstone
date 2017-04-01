@@ -52,5 +52,21 @@ class Lecture_model extends CI_Model {
         
         return intval($result->lect_id);
     }
+    
+    
+    
+    /**
+     *  return name of lecture
+     */
+    public function get_lectname($ref)
+    {
+        $result = $this->db
+                    ->select('lect_name')
+                    ->from('lecture')
+                    ->where('lect_ref', $ref)
+                    ->get()->row();
+        
+        return $result->lect_name;
+    }
 
 }

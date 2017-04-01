@@ -44,21 +44,42 @@ class Thread_model extends CI_Model {
         return $id;
     }
     
-    public function load_thread($lecture)
+    public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO)
     {
-        // TODO: set query WHERE subject == subject id
         $query = $this->db
-                    ->select('m.*, SUM(v.vote) AS vote')
+                    ->select(['m.*', 'sum_vote', 'user_vote'])
                     ->from('message AS m')
                     ->join('thread AS t', 'm.t_id = t.t_id')
-                    ->join('vote AS v', 'm.m_id = v.m_id', 'left')
-                    ->join('lecture AS l', 't.lect_id = l.lect_id')
-                    ->where('m.m_type',0)
-                    ->where('l.lect_ref',$lecture)
-                    ->group_by('m.m_id');
+                    ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
+                    ->join('lecture AS lect', 't.lect_id = lect.lect_id')
+                    ->where('m.m_type', MESSAGE_TYPE_OPENER)
+                    ->where('lect.lect_ref', $lecture);
+        
+        // order by user preference
+        switch ($order) {
+            case MESSAGE_SHOW_CHRONO:
+                $query = $this->db->order_by('m.m_time');
+                break;
+            case MESSAGE_SHOW_VOTE:
+                $query = $this->db->order_by('sum_vote');
+                break;
+            case MESSAGE_SHOW_LABEL:
+                // TODO: show tags only
+                break;
+        }
+        
+        // retrieve
         $row = $query->get()->result_array();
         
-        return $row;
+        // get labels of messages
+        $out = array();
+        foreach ($row as $message) {
+            $message['labels'] = $this->load_labels($message['m_id']);
+            array_push($out, $message);
+        }
+        
+        return $out;
     }
     
     public function load_message($thread)
@@ -75,6 +96,26 @@ class Thread_model extends CI_Model {
         
         return $row;
     }
+    
+    
+    
+    /**
+     *  Load Labels of $message
+     *
+     *  @param  $m      message id
+     *  @return $result array of labels
+     */
+    public function load_labels($m)
+    {
+        $query = $this->db
+                    ->select('*')
+                    ->from('label')
+                    ->where('m_id',$m);
+        $result = $query->get()->result_array();
+        
+        return $result;
+    }
+    
     
     
     /**

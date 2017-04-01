@@ -28,6 +28,7 @@
         
         var socket = io.connect("<?php echo base_url_port(); ?>");
         var subject = "<?= $subject; ?>";
+        var order = "<?= MESSAGE_SHOW_CHRONO; ?>";
         
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             var recognition = new webkitSpeechRecognition();
@@ -56,16 +57,7 @@
         *   ======================================== */
         
         $(window).load(function() {
-            $.ajax({
-                type: "GET",
-                url: "<?php echo site_url("Chat/load/".$subject); ?>",
-                
-                success: function(data) {
-                    // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
-                    $('#forum-list-view').append(data);
-                    $("#forum-list-view").animate({ scrollTop: $('#forum-list-view').prop("scrollHeight")}, 1000);
-                }
-            });
+            load();
         });
         
         
@@ -202,6 +194,26 @@
         
         
         /** ========================================
+        *   Change Message Display Order
+        *   ======================================== */
+        
+        //  clear message <form>
+        $('.forum-panel-order-control').click(function(){
+            
+            // set global variable
+            order = $(this).attr('value');
+            
+            // load messages again
+            load();
+            
+            $(':focus').blur()
+            return false;
+            
+        });
+        
+        
+        
+        /** ========================================
         *   Message Submit
         *   ======================================== */
         
@@ -237,6 +249,7 @@
         //  submit vote
         $("#forum-list-view").on("submit", ".forum-thread-vote-form", function() {
             submitVote2($(this));
+            $(':focus').blur()
             return false;
         });
         
@@ -250,7 +263,8 @@
         $("#forum-list-view").on("click", ".forum-message", function(e) {
             
             // if click on VOTE button
-            if($(e.target).is('.forum-thread-vote-input')){
+            if($(e.target).is('.forum-thread-vote-input')
+              || $(e.target).parent.is('.forum-thread-vote-input')){
                 return;     // do nothing
             }
             
@@ -332,6 +346,30 @@
         *   Real Work
         *   ======================================== */
         
+        //  load
+        function load() {
+            
+            var loadURL = "<?php echo site_url("Chat/load"); ?>";
+            loadURL += "/" + subject;
+            loadURL += "/" + order;
+            
+            $.ajax({
+                type: "GET",
+                url: loadURL,
+                
+                success: function(data) {
+                    // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+                    console.log("loading from " + loadURL);
+                    $('#forum-list-view').html(data);
+                    $("#forum-list-view").animate({scrollTop: 0}, 10);
+                    $("#forum-list-view").animate({scrollTop: $('#forum-list-view').prop("scrollHeight")}, 1000);
+                }
+            });
+            
+        }
+        
+        
+        
         //  submit message
         function submitInput2() {
             
@@ -393,7 +431,7 @@
             // set VALUE field
             // if found "+", set to +1, else to -1
             field.val( 
-                input.text().indexOf("+") >= 0 ? 1 : -1 
+                input.hasClass("forum-social-control-fade") ? 1 : -1 
             );
             
             // (1) to database
@@ -407,9 +445,13 @@
                     socket.emit('vote', data);
                     
                     // set vote button
-                    input.text(
-                        (field.val() == 1) ? "-" : "+" 
-                    );
+                    if (field.val() == 1) {
+                        input.removeClass("forum-social-control-fade");
+                        input.addClass("forum-social-control");
+                    } else {
+                        input.removeClass("forum-social-control");
+                        input.addClass("forum-social-control-fade");
+                    }
                 }
             });
             

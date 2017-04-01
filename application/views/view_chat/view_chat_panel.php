@@ -16,17 +16,37 @@
                 <span class="caret"></span>
             </a>
             <ul class="dropdown-menu">
+                
+                <!-- ======================================== -->
+                <!-- Message order
+                <!-- ======================================== -->
+                <li class="disabled"><a>Sort by:</a></li>
+                <li class="forum-panel-dropdown-subli">
+                    <a href="#" class="forum-panel-order-control " id="forum-panel-order-chrono" value="<?= MESSAGE_SHOW_CHRONO; ?>">
+                        Chronological
+                    </a>
+                </li>
+                <li class="forum-panel-dropdown-subli">
+                    <a href="#" class="forum-panel-order-control " id="forum-panel-order-vote" value="<?= MESSAGE_SHOW_VOTE; ?>">
+                        Popularity
+                    </a>
+                </li>
+                <li class="forum-panel-dropdown-subli">
+                    <a href="#" class="forum-panel-order-control " id="forum-panel-order-label" value="<?= MESSAGE_SHOW_LABEL; ?>">
+                        Labels
+                    </a>
+                </li>
+                <li class="divider"></li>
+                
+                <!-- ======================================== -->
+                <!-- Poll
+                <!-- ======================================== -->
                 <li>
-                    <a class="btn btn-link" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">
+                    <a href="#" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">
                         Start a Poll
                     </a>
                 </li>
-                <!--
-                <li><a href="#">Choice2</a></li>
-                <li><a href="#">Choice3</a></li>
-                <li class="divider"></li>
-                <li><a href="#">Choice..</a></li>
-                -->
+                
             </ul>
         </div>
         

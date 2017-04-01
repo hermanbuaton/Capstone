@@ -38,26 +38,31 @@
             <div class="" id="home-login-student">
                 <!-- Input area -->
                 <form id="login-form" method="POST" action="<?php echo site_url('User/login'); ?>">
-
+                    
+                    <br/>
+                    
                     Username:
                     <input class="form-control" type="text" name="username" id="username" placeholder="Username"></input>
                     <br/>
-
+                    
+                    <!--
                     Password:
                     <input class="form-control" type="password" name="password" id="password" placeholder="Password"></input>
                     <br/>
-
+                    -->
+                    
                     Course:
-                    <input class="form-control" type="text" name="course" id="course" placeholder="Course Code"></input>
+                    <input class="form-control" type="text" name="course" id="course" value="<?= $lecture; ?>" placeholder="Course Code"></input>
                     <br/>
                     
                     <!-- user type -->
-                    <input class="form-control" type="hidden" name="usertype" id="usertype" value="1" placeholder="Username"></input>
+                    <input class="form-control" type="hidden" name="usertype" id="usertype" value="<?= USER_TYPE_STUDENT; ?>" placeholder="Username"></input>
                     <br/>
                     
                     <div id="login-submit">
                         <button class="btn btn-primary" type="submit" id="login-submit-btn">Login</button>
                     </div>
+                    <br/>
                 </form>
             </div>
             
@@ -73,10 +78,9 @@
                     Password:
                     <input class="form-control" type="password" name="password" id="password" placeholder="Password"></input>
                     <br/>
-                    <br/>
                     
                     <!-- user type -->
-                    <input class="form-control" type="hidden" name="usertype" id="usertype" value="11" placeholder="Username"></input>
+                    <input class="form-control" type="hidden" name="usertype" id="usertype" value="<?= USER_TYPE_INSTRUCTOR; ?>" placeholder="Username"></input>
                     <br/>
                     
                     <div id="login-submit">

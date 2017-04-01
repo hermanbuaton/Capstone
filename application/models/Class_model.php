@@ -59,7 +59,6 @@ class Class_model extends CI_Model {
      */
     public function load_class($user)
     {
-        
         // get all classes
         $query = $this->db
                     ->select([
@@ -84,6 +83,7 @@ class Class_model extends CI_Model {
                     ->join('user AS u', 'cl.own_id = u.u_id')
                     ->where('cl.own_id', $user);
         $row = $query->get()->result_array();
+        
         
         // get lectures of classes
         $out = [];
