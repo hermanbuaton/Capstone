@@ -38,7 +38,8 @@ class Thread extends CI_Controller {
         
         // load model & get data
         $this->load->model('Thread_model');
-        $out['row'] = $this->Thread_model->load_message($thread);
+        $user = $this->session->userdata('user_id');
+        $out['row'] = $this->Thread_model->load_message($user,$thread);
         
         // return
         $this->load->view('view_thread/view_thread_message',$out);

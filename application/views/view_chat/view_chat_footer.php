@@ -26,9 +26,18 @@
     
     <script>
         
+        /** ========================================
+        *   Initialize
+        *   ======================================== */
+        
         var socket = io.connect("<?php echo base_url_port(); ?>");
         var subject = "<?= $subject; ?>";
         var order = "<?= MESSAGE_SHOW_CHRONO; ?>";
+        var role = parseInt("<?= $this->session->userdata('user_type'); ?>");
+        
+        const user = "<?= $this->session->userdata('user_id'); ?>";
+        const USER_ROLE_INSTRUCTOR = "<?= USER_TYPE_INSTRUCTOR; ?>";
+        const USER_ROLE_STUDENT = "<?= USER_TYPE_STUDENT; ?>";
         
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             var recognition = new webkitSpeechRecognition();
@@ -87,6 +96,10 @@
 
                 var final = '';
                 
+                //  CUSTOM: buttons to control dictation
+                $('#respond-voice-start').addClass('hidden');
+                $('#respond-voice-stop').removeClass('hidden');
+                
                 recognition.continuous = true;
                 recognition.interimResults = true;
 
@@ -134,6 +147,8 @@
         
         function stopDictation() {
             recognition.stop();
+            $('#respond-voice-stop').addClass('hidden');
+            $('#respond-voice-start').removeClass('hidden');
         }
         
         
@@ -159,6 +174,14 @@
             // TODO: on respond, add button to view respond
         });
         
+        //  delegate respond
+        socket.on('delegate respond', function(data) {
+            if (parseInt(data['user']) == user)
+                promptRespond(data);
+            else
+                return false;
+        });
+        
         //  update vote
         socket.on('vote', function(data) {
             
@@ -169,6 +192,23 @@
             
             // get DOM element
             var control = 'vote-count[' + m + ']';
+            var count = parseInt(document.getElementById(control).innerHTML);
+            
+            // set counter
+            document.getElementById(control).innerHTML = count + v;
+            
+        });
+        
+        //  update vote
+        socket.on('hand', function(data) {
+            
+            // extract json
+            var vote = JSON.parse(data);
+            var m = parseInt(vote['m']);
+            var v = parseInt(vote['v']);
+            
+            // get DOM element
+            var control = 'hand-count[' + m + ']';
             var count = parseInt(document.getElementById(control).innerHTML);
             
             // set counter
@@ -206,7 +246,7 @@
             // load messages again
             load();
             
-            $(':focus').blur()
+            $(':focus').blur();
             return false;
             
         });
@@ -249,7 +289,20 @@
         //  submit vote
         $("#forum-list-view").on("submit", ".forum-thread-vote-form", function() {
             submitVote2($(this));
-            $(':focus').blur()
+            $(':focus').blur();
+            return false;
+        });
+        
+        
+        
+        /** ========================================
+        *   Message Raise Hand
+        *   ======================================== */
+        
+        //  submit vote
+        $("#forum-list-view").on("submit", ".forum-thread-hand-form", function() {
+            submitHand2($(this));
+            $(':focus').blur();
             return false;
         });
         
@@ -263,27 +316,60 @@
         $("#forum-list-view").on("click", ".forum-message", function(e) {
             
             // if click on VOTE button
-            if($(e.target).is('.forum-thread-vote-input')
-              || $(e.target).parent.is('.forum-thread-vote-input')){
+            if ($(e.target).is('.forum-social-control')
+              || $(e.target).is('.forum-social-control-fade')
+              || $(e.target).is('.forum-social-content')) {
                 return;     // do nothing
             }
             
-            // clear previous poll data
-            $('#thread-question-head').html('');
-            $('#respond-body').val('');
-            $('#respond-textarea').val('');
+            // if user is student
+            if (role == USER_ROLE_STUDENT) {
+                setThreadModal($(this).attr('value'));
+                $('#thread-full').modal('toggle');
+                return false;
+            }
             
-            // open modal
-            $('#thread-respond').modal('toggle');
-            $('#thread-question-head').append(
-                $('<h2/>').text($(this).find('.forum-thread-head').text())
-            );
-            $('#respond-id').val($(this).find('.forum-thread-vote-message').val());
+            // if user is instructor
+            if (role == USER_ROLE_INSTRUCTOR) {
+                
+                // set modal
+                setRespondModal(this);
+                setSocialModal($(this).attr('value'));
+                
+                // open modal
+                $('#thread-respond').modal('toggle');
+                startDictation();
+                
+                // return
+                return false;
+                
+            }
             
-            startDictation();
-            
+        });
+        
+        //  show hands up list
+        $('#thread-question-hand').on("click", function(e) {
+            stopDictation();
+            $('#thread-social').modal('toggle');
+        });
+        
+        //  select students to answer
+        $("#thread-social").on("submit", ".social-item-select-form", function(e) {
+            e.preventDefault();
+            selectRespond($(this));
+            $(':focus').blur();
             return false;
         });
+        
+        //  start recording btn
+        $('#respond-voice-start').on("click", function(e) {
+            startDictation();
+        })
+        
+        //  stop recording btn
+        $('#respond-voice-stop').on("click", function(e) {
+            stopDictation();
+        })
         
         //  end respond on modal close
         $('#thread-respond').on("hidden.bs.modal", function(e) {
@@ -367,7 +453,6 @@
             });
             
         }
-        
         
         
         //  submit message
@@ -458,6 +543,146 @@
         }
         
         
+        //  submit vote
+        function submitHand2(form) {
+            
+            /* get input */
+            var field = form.children(".forum-thread-hand-value");
+            var input = form.children(".forum-thread-hand-input");
+            
+            // set VALUE field
+            // if found "+", set to +1, else to -1
+            field.val( 
+                input.hasClass("forum-social-control-fade") ? 1 : -1 
+            );
+            
+            // (1) to database
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/hand"); ?>",
+                data: $(form).serialize(),
+
+                success: function(data) {
+                    // (2) to socket server
+                    socket.emit('hand', data);
+                    
+                    // set vote button
+                    if (field.val() == 1) {
+                        input.removeClass("forum-social-control-fade");
+                        input.addClass("forum-social-control");
+                    } else {
+                        input.removeClass("forum-social-control");
+                        input.addClass("forum-social-control-fade");
+                    }
+                }
+            });
+            
+        }
+        
+        
+        //  set thread full modal
+        function setThreadModal(m) {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/thread"); ?>" + "/" + m;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    $('#thread-full-view').html(data);
+                }
+            });
+            
+        }
+        
+        
+        //  set respond modal
+        function setRespondModal(control) {
+            
+            // clear previous message data
+            $('#thread-question-head').html('');
+            $('#thread-question-body').html('');
+            $('#respond-body').val('');
+            $('#respond-textarea').val('');
+            $('#respond-voice-start').addClass('hidden');
+            $('#respond-voice-stop').removeClass('hidden');
+
+
+            // set text
+            $('#thread-question-head').append(
+                $('<h2/>').text($(control).find('.forum-thread-head').text())
+            );
+            $('#thread-question-body').append(
+                $('<p/>').text($(control).find('.forum-thread-body').text())
+            );
+            $('#respond-modal-vote-count').text(
+                $(control).find('.forum-thread-vote-count').text()
+            );
+            $('#respond-modal-hand-count').text(
+                $(control).find('.forum-thread-hand-count').text()
+            );
+            $('#respond-id').val($(control).attr('value'));
+            
+        }
+        
+        
+        //  get list of students raise their hands
+        function setSocialModal(m) {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/get_hands"); ?>" + "/" + m;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    $('#thread-social-list').html(data);
+                }
+            });
+            
+        }
+        
+        
+        //  select students to respond
+        function selectRespond(form) {
+            
+            // get data
+            var message = form.children('.social-item-select-message').val();
+            var user = form.children('.social-item-select-user').val();
+            
+            // emit to socket
+            var out = {"room": subject, "user": user, "message": message};
+            socket.emit('delegate respond', out);
+            
+        }
+        
+        
+        //  prompt modal to allow student respond to question
+        function promptRespond(data) {
+            
+            // get message data
+            var container = 
+                document.getElementById('forum-message-view[' + data['message'] + ']');
+            
+            // set modal
+            setRespondModal(container);
+            setSocialModal($(container).attr('value'));
+            
+            // open modal
+            $('#thread-respond').modal('toggle');
+            startDictation();
+            
+            // return
+            return false;
+            
+        }
+        
+        
         //  submit thread
         function submitRespond() {
             
@@ -476,6 +701,7 @@
                     // TODO: on respond, add button to view respond
                 }
             });
+            
         }
         
         

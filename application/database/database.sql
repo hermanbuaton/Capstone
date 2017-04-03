@@ -70,6 +70,15 @@ CREATE TABLE vote
     vote TINYINT
 );
 
+CREATE TABLE hand
+(
+	h_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    m_id INT(11),
+    u_id INT(11),
+    h_time DATETIME,
+    hand TINYINT
+);
+
 CREATE TABLE poll_opt
 (
 	opt_id INT(11) AUTO_INCREMENT PRIMARY KEY,
@@ -118,7 +127,7 @@ CREATE TABLE user
     sch_id INT(11)
 );
 
-CREATE TABLE class_use
+CREATE TABLE class_user
 (
 	id INT(11) AUTO_INCREMENT PRIMARY KEY,
     class_id INT(11),

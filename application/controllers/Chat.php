@@ -73,10 +73,13 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_header');
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_panel');
+        $this->load->view('view_chat/view_chat_login');
+        $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_poll_create');
         $this->load->view('view_chat/view_chat_poll_vote');
         $this->load->view('view_chat/view_chat_poll_result');
-        $this->load->view('view_chat/view_chat_modal');
+        $this->load->view('view_chat/view_chat_respond');
+        $this->load->view('view_chat/view_chat_social_list');
         $this->load->view('view_chat/view_chat_footer');
         
         return;
@@ -100,6 +103,23 @@ class Chat extends CI_Controller {
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Load FULL thread
+     *  ============================================================
+     */
+    public function thread($message)
+    {
+        // load model & get data
+        $user = $this->session->userdata('user_id');
+        $out['row'] = $this->Thread_model->load_message($user,$message);
+        
+        // return
+        $this->load->view('view_thread/view_thread_message',$out);
     }
     
     
@@ -220,6 +240,50 @@ class Chat extends CI_Controller {
         $out['m'] = $data['m_id'];
         $out['v'] = $data['vote'];
         echo json_encode($out);
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  RAISE HAND for messages
+     *  ============================================================
+     */
+    public function hand()
+    {
+        // process vote
+        $post = $_POST;
+        $data['m_id'] = $post['hand-message'];
+        $data['u_id'] = $this->getUserID();
+        $data['hand'] = $post['hand-value'];
+        $data['h_time'] = $this->getTimeString();
+        
+        // TODO: get user data
+        
+        // send to MODEL
+        $this->Thread_model->insert_hand($data);
+        
+        // return
+        $out['m'] = $data['m_id'];
+        $out['v'] = $data['hand'];
+        echo json_encode($out);
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  GET users RAISED HAND for messages
+     *  ============================================================
+     */
+    public function get_hands($message)
+    {
+        // request from MODEL
+        $hands = $this->Thread_model->load_hands($message);
+        
+        // return
+        $data['row'] = $hands;
+        $this->load->view('view_chat/view_chat_social_item',$data);
     }
     
     

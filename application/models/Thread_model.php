@@ -44,14 +44,24 @@ class Thread_model extends CI_Model {
         return $id;
     }
     
+    public function insert_hand($data)
+    {
+        $this->db->insert('hand',$data);
+        $id = $this->db->insert_id();
+        
+        return $id;
+    }
+    
     public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO)
     {
         $query = $this->db
-                    ->select(['m.*', 'sum_vote', 'user_vote'])
+                    ->select(['m.*', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
                     ->from('message AS m')
                     ->join('thread AS t', 'm.t_id = t.t_id')
                     ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
                     ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(hand) AS sum_hand FROM hand GROUP BY m_id) AS h", 'm.m_id = h.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(hand) AS user_hand FROM hand WHERE u_id = $user GROUP BY m_id) AS uh", 'm.m_id = uh.m_id', 'left')
                     ->join('lecture AS lect', 't.lect_id = lect.lect_id')
                     ->where('m.m_type', MESSAGE_TYPE_OPENER)
                     ->where('lect.lect_ref', $lecture);
@@ -62,7 +72,7 @@ class Thread_model extends CI_Model {
                 $query = $this->db->order_by('m.m_time');
                 break;
             case MESSAGE_SHOW_VOTE:
-                $query = $this->db->order_by('sum_vote');
+                $query = $this->db->order_by('sum_vote, m.m_time');
                 break;
             case MESSAGE_SHOW_LABEL:
                 // TODO: show tags only
@@ -82,16 +92,30 @@ class Thread_model extends CI_Model {
         return $out;
     }
     
-    public function load_message($thread)
+    public function load_message($user,$message)
     {
         // TODO: set query WHERE thread == thread id
+        /*
         $query = $this->db
                     ->select('m.*, SUM(v.vote) AS vote')
-                    ->from('(SELECT t_id FROM message WHERE m_id ='.$thread.') AS t')
+                    ->from('(SELECT t_id FROM message WHERE m_id ='.$message.') AS t')
                     ->from('message AS m')
                     ->join('vote AS v', 'm.m_id = v.m_id', 'left')
                     ->where('m.t_id = t.t_id')
                     ->group_by('m.m_id');
+        $row = $query->get()->result_array();
+        */
+        
+        $query = $this->db
+                    ->select(['m.*', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
+                    ->from('message AS m')
+                    ->join('(SELECT m.t_id, t.lect_id FROM message AS m JOIN thread AS t ON m.t_id = t.t_id WHERE m_id = '.$message.') AS t', 'm.t_id = t.t_id')
+                    ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(hand) AS sum_hand FROM hand GROUP BY m_id) AS h", 'm.m_id = h.m_id', 'left')
+                    ->join("(SELECT m_id, SUM(hand) AS user_hand FROM hand WHERE u_id = $user GROUP BY m_id) AS uh", 'm.m_id = uh.m_id', 'left')
+                    ->join('lecture AS lect', 't.lect_id = lect.lect_id')
+                    ->where('m.t_id = t.t_id');
         $row = $query->get()->result_array();
         
         return $row;
@@ -111,6 +135,26 @@ class Thread_model extends CI_Model {
                     ->select('*')
                     ->from('label')
                     ->where('m_id',$m);
+        $result = $query->get()->result_array();
+        
+        return $result;
+    }
+    
+    
+    
+    /**
+     *  Load upped hands of $message
+     *
+     *  @param  $m      message id
+     *  @return $result array of users
+     */
+    public function load_hands($m)
+    {
+        $query = $this->db
+                    ->select(['u.u_name', 'sh.*'])
+                    ->from("(SELECT m_id, u_id, SUM(hand) AS sum_hand FROM hand WHERE m_id = $m GROUP BY u_id) AS sh")
+                    ->join('user_log AS u', 'sh.u_id = u.log_id')
+                    ->where('sum_hand > 0');
         $result = $query->get()->result_array();
         
         return $result;

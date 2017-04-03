@@ -56,6 +56,25 @@ io.on('connection', function(socket){
     socket.on('vote', function(data){
         io.emit('vote', data);
     });
+    
+    // hand
+    socket.on('hand', function(data){
+        io.emit('hand', data);
+    });
+    
+    // respond
+    socket.on('respond', function(data){
+        io.emit('respond', data);
+    });
+    
+    // delegate respond
+    socket.on('delegate respond', function(data){
+        var r = data['room'];
+        var d = { "user": data['user'], "message": data['message'] };
+        io.sockets.in(r).emit('delegate respond', data);
+    });
+    
+    // depreciated
     socket.on('live vote', function(data){
         io.emit('live vote', data);
     });

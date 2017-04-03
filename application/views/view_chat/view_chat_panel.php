@@ -46,6 +46,16 @@
                         Start a Poll
                     </a>
                 </li>
+                <li class="divider"></li>
+                
+                <!-- ======================================== -->
+                <!-- Show QR Code
+                <!-- ======================================== -->
+                <li>
+                    <a href="#" id="login-show-toggle" data-toggle="modal" data-target="#login-show">
+                        Show QR Code
+                    </a>
+                </li>
                 
             </ul>
         </div>
