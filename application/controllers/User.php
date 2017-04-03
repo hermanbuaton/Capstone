@@ -134,7 +134,6 @@ class User extends CI_Controller {
         /* TODO: set cookies timeout */
         $this->storeSession($id,$type,$username);
         
-        
         // redirect
         if ($type == USER_TYPE_INSTRUCTOR) {
             // teacher
@@ -156,6 +155,24 @@ class User extends CI_Controller {
 	{
 		$this->unsetSession();
         redirect();
+	}
+    
+    
+    
+    /**
+     *  ============================================================
+     *  
+     *  Store user info in cookies
+     *  
+     *  @param  $name   [str]   username
+     *  @return
+     *  
+     *  ============================================================
+     **/
+    private function storeCookie($name)
+	{
+        if ($_COOKIE['user_name'] !== $name)
+            $_COOKIE['user_name'] = $name;
 	}
     
     
