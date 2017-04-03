@@ -116,3 +116,16 @@ defined('MESSAGE_TYPE_POLL') OR define('MESSAGE_TYPE_POLL', 99);
  */
 defined('MESSAGE_ANONYMOUS_YES') OR define('MESSAGE_ANONYMOUS_YES', 1);
 defined('MESSAGE_ANONYMOUS_NO') OR define('MESSAGE_ANONYMOUS_NO', 0);
+
+
+
+/**
+ *  Teacher settings
+ */
+defined('SET_ANONYMOUS_DEFAULT') OR define('SET_ANONYMOUS_DEFAULT', 1);
+defined('SET_ANONYMOUS_YES') OR define('SET_ANONYMOUS_YES', 1);
+defined('SET_ANONYMOUS_NO') OR define('SET_ANONYMOUS_NO', 0);
+
+defined('SET_DISCUSSION_DEFAULT') OR define('SET_DISCUSSION_DEFAULT', 1);
+defined('SET_DISCUSSION_YES') OR define('SET_DISCUSSION_YES', 1);
+defined('SET_DISCUSSION_NO') OR define('SET_DISCUSSION_NO', 0);

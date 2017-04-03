@@ -19,6 +19,15 @@
             
         </div>
         
+        <div class="modal-footer">
+            <!-- Form button -->
+            <div id="thread-social-control">
+            <div class="pull-right">    
+                <button type="button" class="btn btn-danger" id="respond-cancel" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        
     </div>
     <!-- Modal content END -->
         

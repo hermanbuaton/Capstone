@@ -74,6 +74,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_panel');
         $this->load->view('view_chat/view_chat_login');
+        $this->load->view('view_chat/view_chat_settings');
         $this->load->view('view_chat/view_chat_modal');
         $this->load->view('view_chat/view_chat_poll_create');
         $this->load->view('view_chat/view_chat_poll_vote');
@@ -391,6 +392,75 @@ class Chat extends CI_Controller {
         // return
         echo json_encode($out);
         return;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  
+     *  Save settings of a lecture
+     *  
+     *  @param  $set        field to be set
+     *  @param  $val        new value of field
+     *  
+     *  ============================================================
+     */
+    public function settings($lect,$set,$val=true)
+    {
+        // load model
+        $this->load->model('Lecture_model');
+        
+        
+        // process inputting data
+        switch ($set) {
+                
+            case 'anonymous':
+                $set = 'set_anonymous';
+                if ($val === "true") {
+                    $val = SET_ANONYMOUS_YES;
+                } else {
+                    $val = SET_ANONYMOUS_NO;
+                }
+                
+                break;
+            
+            case 'discussion':
+                $set = 'set_discussion';
+                if ($val === "true") {
+                    $val = SET_DISCUSSION_YES;
+                } else {
+                    $val = SET_DISCUSSION_NO;
+                }
+                
+                break;
+            
+            default:
+                return false;
+                
+        }
+        
+        
+        // send to model
+        $this->Lecture_model->set_settings($lect,$set,$val);
+        return true;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  GET instructors' settings of a lecture
+     *  ============================================================
+     */
+    public function get_settings($lect)
+    {
+        // request from MODEL
+        $this->load->model('Lecture_model');
+        $data = $this->Lecture_model->get_settings($lect);
+        
+        // return
+        echo json_encode($data);
     }
     
     

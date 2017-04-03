@@ -162,24 +162,6 @@ class User extends CI_Controller {
     /**
      *  ============================================================
      *  
-     *  Store user info in cookies
-     *  
-     *  @param  $name   [str]   username
-     *  @return
-     *  
-     *  ============================================================
-     **/
-    private function storeCookie($name)
-	{
-        if ($_COOKIE['user_name'] !== $name)
-            $_COOKIE['user_name'] = $name;
-	}
-    
-    
-    
-    /**
-     *  ============================================================
-     *  
      *  Store user info in session data
      *  
      *  @param  $name   [str]   username

@@ -67,6 +67,7 @@
         
         $(window).load(function() {
             load();
+            setSettingsModal();
         });
         
         
@@ -423,6 +424,24 @@
         $("#poll-vote-form").on("click", ".poll-vote-input", function() {
             console.log(this.value);
             respondPoll(this.value);
+            return false;
+        });
+        
+        
+        
+        /** ========================================
+        *   Settings
+        *   ======================================== */
+        
+        //  submit anonymous settings
+        $("#set-anonymous").on("change", function() {
+            updateSettings('anonymous',this.checked);
+            return false;
+        });
+        
+        //  submit discussion settings
+        $("#set-discussion").on("change", function() {
+            updateSettings('discussion',this.checked);
             return false;
         });
         
@@ -867,6 +886,74 @@
             
             // open modal
             $('#poll-result').modal('toggle');
+            
+        }
+        
+        
+        //  update settings
+        function updateSettings(field,value) {
+            
+            var dest = "<?php echo site_url("Chat/settings"); ?>"
+                    + "/" + subject
+                    + "/" + field
+                    + "/" + value;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    // (2) to socket server
+                    console.log(data);
+                    /*
+                    var d = $.parseJSON(data);
+                    if (d.message=="Already Vote") { return false; }
+                    
+                    var out = {"room": subject, "data": d.opt};
+                    socket.emit('poll vote', out);
+                    
+                    reviewPoll(data);
+                    */
+                }
+            });
+            
+            return false;
+            
+        }
+        
+        
+        //  set settings modal
+        function setSettingsModal() {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/get_settings"); ?>" + "/" + subject;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    
+                    var d = JSON.parse(data);
+                    
+                    // set anonymous
+                    if (d.set_anonymous == <?= SET_ANONYMOUS_YES; ?>) {
+                        document.getElementById('set-anonymous').checked = true;
+                    } else if (d.set_anonymous == <?= SET_ANONYMOUS_NO; ?>) {
+                        document.getElementById('set-anonymous').checked = false;
+                    }
+                    
+                    // set discussion
+                    if (d.set_discussion == <?= SET_DISCUSSION_YES; ?>) {
+                        document.getElementById('set-discussion').checked = true;
+                    } else if (d.set_discussion == <?= SET_DISCUSSION_NO; ?>) {
+                        document.getElementById('set-discussion').checked = false;
+                    }
+                    
+                }
+            });
             
         }
         

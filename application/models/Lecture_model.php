@@ -40,6 +40,37 @@ class Lecture_model extends CI_Model {
     
     
     /**
+     *  Set settings
+     */
+    public function set_settings($lect,$set,$val)
+    {
+        $query = $this->db
+                    ->set($set, $val)
+                    ->where('lect_ref', $lect)
+                    ->update('lecture');
+        
+        return true;
+    }
+    
+    
+    
+    /**
+     *  Get settings
+     */
+    public function get_settings($ref)
+    {
+        $result = $this->db
+                    ->select(['set_anonymous','set_discussion'])
+                    ->from('lecture')
+                    ->where('lect_ref', $ref)
+                    ->get()->row();
+        
+        return $result;
+    }
+    
+    
+    
+    /**
      *  return Lect ID from Lect Ref
      */
     public function get_lectid($ref)
