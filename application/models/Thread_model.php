@@ -55,9 +55,10 @@ class Thread_model extends CI_Model {
     public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO)
     {
         $query = $this->db
-                    ->select(['m.*', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
+                    ->select(['m.*', 'u_name', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
                     ->from('message AS m')
                     ->join('thread AS t', 'm.t_id = t.t_id')
+                    ->join('user_log AS u', 'm.u_id = u.log_id')
                     ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
                     ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
                     ->join("(SELECT m_id, SUM(hand) AS sum_hand FROM hand GROUP BY m_id) AS h", 'm.m_id = h.m_id', 'left')
@@ -107,8 +108,9 @@ class Thread_model extends CI_Model {
         */
         
         $query = $this->db
-                    ->select(['m.*', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
+                    ->select(['m.*', 'u_name', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
                     ->from('message AS m')
+                    ->join('user_log AS u', 'm.u_id = u.log_id')
                     ->join('(SELECT m.t_id, t.lect_id FROM message AS m JOIN thread AS t ON m.t_id = t.t_id WHERE m_id = '.$message.') AS t', 'm.t_id = t.t_id')
                     ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
                     ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
@@ -119,6 +121,26 @@ class Thread_model extends CI_Model {
         $row = $query->get()->result_array();
         
         return $row;
+    }
+    
+    
+    
+    /**
+     *  Return Thread ID only
+     *
+     *  @param  $m      message id
+     *  @return $id     thread id
+     */
+    public function load_author($m)
+    {
+        $result = $this->db
+                    ->select('u.u_name')
+                    ->from('message AS m')
+                    ->join('user_log AS u', 'm.u_id = u.log_id')
+                    ->where('m_id', $m)
+                    ->get()->row();
+        
+        return $result->u_name;
     }
     
     
@@ -178,5 +200,7 @@ class Thread_model extends CI_Model {
         
         return $result->t_id;
     }
+    
+    
 
 }

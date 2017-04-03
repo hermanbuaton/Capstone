@@ -22,6 +22,16 @@
             </div>
             <div id="thread-question-social">
                 
+                <!-- author -->
+                <div class="forum-thread-author respond-modal-social-control" id="thread-question-author" >
+                    <span class="forum-social-content" id="respond-modal-author-text">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <span class="forum-thread-author-name forum-social-content" id="respond-modal-author-name">
+                        <!-- set by js on toggle -->
+                    </span>
+                </div>
+                
                 <!-- vote button -->
                 <button class="btn btn-default respond-modal-social-control disabled" id="thread-question-vote" >
                     <span class="forum-social-content" id="respond-modal-vote-text">

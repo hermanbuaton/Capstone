@@ -33,11 +33,17 @@
         var socket = io.connect("<?php echo base_url_port(); ?>");
         var subject = "<?= $subject; ?>";
         var order = "<?= MESSAGE_SHOW_CHRONO; ?>";
-        var role = parseInt("<?= $this->session->userdata('user_type'); ?>");
         
         const user = "<?= $this->session->userdata('user_id'); ?>";
+        const role = parseInt("<?= $this->session->userdata('user_type'); ?>");
         const USER_ROLE_INSTRUCTOR = "<?= USER_TYPE_INSTRUCTOR; ?>";
         const USER_ROLE_STUDENT = "<?= USER_TYPE_STUDENT; ?>";
+        const MESSAGE_ANONYMOUS_YES = "<?= MESSAGE_ANONYMOUS_YES; ?>";
+        const MESSAGE_ANONYMOUS_NO = "<?= MESSAGE_ANONYMOUS_NO; ?>";
+        const SET_ANONYMOUS_YES = "<?= SET_ANONYMOUS_YES; ?>";
+        const SET_ANONYMOUS_NO = "<?= SET_ANONYMOUS_NO; ?>";
+        const SET_DISCUSSION_YES = "<?= SET_DISCUSSION_YES; ?>";
+        const SET_DISCUSSION_NO = "<?= SET_DISCUSSION_NO; ?>";
         
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             var recognition = new webkitSpeechRecognition();
@@ -67,7 +73,7 @@
         
         $(window).load(function() {
             load();
-            setSettingsModal();
+            loadSettings();
         });
         
         
@@ -164,6 +170,11 @@
             socket.emit('room', subject);
         });
         
+        //  update settings
+        socket.on('settings', function(data) {
+            applySettings(data);
+        });
+        
         //  receive message
         socket.on('thread', function(data) {
             $('#forum-list-view').append(data);
@@ -255,6 +266,30 @@
         
         
         /** ========================================
+        *   Start input
+        *   ======================================== */
+        
+        //  on open input modal
+        $("#input-full").on("shown.bs.modal", function() {
+            $('#input-message-head').focus();
+        });
+        
+        //  anonymous checkbox
+        $("#input-anonymous").on("change", function() {
+            
+            if (this.checked == true) {
+                $("#input-message-anonymous").val(MESSAGE_ANONYMOUS_YES);
+            } else {
+                $("#input-message-anonymous").val(MESSAGE_ANONYMOUS_NO);
+            }
+            
+            return;
+            
+        });
+        
+        
+        
+        /** ========================================
         *   Message Submit
         *   ======================================== */
         
@@ -271,7 +306,10 @@
         
         //  submit message
         $('#forum-quick-input').submit(function(){
-            submitInput2();
+            var action = submitInput2();
+            console.log(action);
+            if (action == true)
+                $('#input-full').modal('toggle');
             return false;
         });
 
@@ -346,6 +384,12 @@
                 
             }
             
+        });
+        
+        //  show actual author name
+        $('#thread-question-author').on("click", function(e) {
+            var m = $('#respond-id').val();
+            setAuthorName(m, $(this));
         });
         
         //  show hands up list
@@ -505,11 +549,13 @@
             else if (ht.length > 0 || bt.length > 0)
             {
                 // do something
+                console.log("pass");
+                
                 return false;
             }
             
             cancelInput();
-            return false;
+            return true;
             
         }
         
@@ -637,6 +683,9 @@
             $('#thread-question-body').append(
                 $('<p/>').text($(control).find('.forum-thread-body').text())
             );
+            $('#respond-modal-author-name').text(
+                $(control).find('.forum-thread-author').text()
+            );
             $('#respond-modal-vote-count').text(
                 $(control).find('.forum-thread-vote-count').text()
             );
@@ -644,6 +693,36 @@
                 $(control).find('.forum-thread-hand-count').text()
             );
             $('#respond-id').val($(control).attr('value'));
+            
+        }
+        
+        
+        //  get author name
+        //  for instructors only, regardless of anonymous settings
+        function setAuthorName(m, control) {
+            
+            //  validate user type
+            if (role != USER_ROLE_INSTRUCTOR) {
+                return false;
+            }
+            
+            /* TODO: show author nickname on click div */
+            if ($(control).find('.forum-thread-author-name').text() == "Anonymous") {
+                
+                var dest = "<?php echo site_url("Chat/get_author"); ?>" + "/" + m;
+                
+                $.ajax({
+                    type: "GET",
+                    url: dest,
+
+                    success: function(data) {
+                        $(control).find('.forum-thread-author-name').text(data);
+                    }
+                });
+                
+            } else {
+                $(control).find('.forum-thread-author-name').text("Anonymous");
+            }
             
         }
         
@@ -923,8 +1002,8 @@
         }
         
         
-        //  set settings modal
-        function setSettingsModal() {
+        //  load settings from db
+        function loadSettings() {
             
             // set url
             var dest = "<?php echo site_url("Chat/get_settings"); ?>" + "/" + subject;
@@ -935,25 +1014,50 @@
                 url: dest,
 
                 success: function(data) {
+                    applySettings(data);
                     
-                    var d = JSON.parse(data);
-                    
-                    // set anonymous
-                    if (d.set_anonymous == <?= SET_ANONYMOUS_YES; ?>) {
-                        document.getElementById('set-anonymous').checked = true;
-                    } else if (d.set_anonymous == <?= SET_ANONYMOUS_NO; ?>) {
-                        document.getElementById('set-anonymous').checked = false;
-                    }
-                    
-                    // set discussion
-                    if (d.set_discussion == <?= SET_DISCUSSION_YES; ?>) {
-                        document.getElementById('set-discussion').checked = true;
-                    } else if (d.set_discussion == <?= SET_DISCUSSION_NO; ?>) {
-                        document.getElementById('set-discussion').checked = false;
-                    }
-                    
+                    var out = {"room": subject, "settings": data};
+                    socket.emit('settings',out);
                 }
             });
+            
+        }
+        
+        
+        //  apply settings of lecture
+        function applySettings(data) {
+
+            var d = JSON.parse(data);
+
+            // set anonymous
+            if (d.set_anonymous == <?= SET_ANONYMOUS_YES; ?>) {
+                
+                // settings modal
+                document.getElementById('set-anonymous').checked = true;
+
+                // input modal
+                $('#input-message-anonymous').val(MESSAGE_ANONYMOUS_YES);
+                $("#input-anonymous").removeClass('disabled');
+                document.getElementById('input-anonymous').checked = true;
+
+            } else if (d.set_anonymous == <?= SET_ANONYMOUS_NO; ?>) {
+                
+                // settings modal
+                document.getElementById('set-anonymous').checked = false;
+
+                // input modal
+                $('#input-message-anonymous').val(MESSAGE_ANONYMOUS_NO);
+                $("#input-anonymous").addClass('disabled');
+                document.getElementById('input-anonymous').checked = false;
+                
+            }
+
+            // set discussion
+            if (d.set_discussion == <?= SET_DISCUSSION_YES; ?>) {
+                document.getElementById('set-discussion').checked = true;
+            } else if (d.set_discussion == <?= SET_DISCUSSION_NO; ?>) {
+                document.getElementById('set-discussion').checked = false;
+            }
             
         }
         

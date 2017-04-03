@@ -17,7 +17,7 @@
                 
                 <div class="settings-item-view" id="set-anonymous-view">
                     <label>
-                        <input class="form-check-input" type="checkbox" name="set-anonymous" id="set-anonymous" value="" autocomplete="off"></input>
+                        <input type="checkbox" class="form-check-input" name="set-anonymous" id="set-anonymous" value="" autocomplete="off"></input>
                         <span class="settings-item-text">
                             Allow students ask anonymously
                         </span>
@@ -26,9 +26,9 @@
                 
                 <div class="settings-item-view" id="set-discussion-view">
                     <label>
-                        <input class="form-check-input" type="checkbox" name="set-discussion" id="set-discussion" value="" autocomplete="off"></input>
+                        <input type="checkbox" class="form-check-input" name="set-discussion" id="set-discussion" value="" autocomplete="off"></input>
                         <span class="settings-item-text">
-                            Allow students discuss online during lecture
+                            Allow real-time online discussion (in thread)
                         </span>
                     </label>
                 </div>

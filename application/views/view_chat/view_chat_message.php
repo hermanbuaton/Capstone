@@ -57,6 +57,11 @@
         
     </div>
 
+    <!-- Thread AUTHOR -->
+    <div class="forum-thread-author hidden" id="forum-thread-author-view[<?= $data['m_id']; ?>]">
+        <?php echo ($data['u_show'] == MESSAGE_ANONYMOUS_YES ? "Anonymous" : $data['u_name']); ?>
+    </div>
+    
     <!-- Thread HEAD -->
     <div class="forum-thread-head" id="forum-thread-head-view[<?= $data['m_id']; ?>]">
         <?php echo $data['m_head']; ?>

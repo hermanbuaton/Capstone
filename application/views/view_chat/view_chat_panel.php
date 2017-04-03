@@ -80,35 +80,22 @@
         </div>
 
         <!-- Input area -->
-        <form class="" id="forum-quick-input" action="">
-            <div class="pull-bottom-left" id="forum-quick-input-data-view">
+        <div class="pull-bottom-left" id="forum-quick-input-data-view">
+            <textarea class="form-control" name="input-message-body" id="input-message-toggle" placeholder="Question" data-toggle="modal" data-target="#input-full" autocomplete="off" ></textarea>
+        </div>
+        
+        <!--
+        <div class="pull-bottom-right" id="forum-quick-input-control-view">
+            <button class="btn btn-primary forum-quick-input-control" id="forum-quick-input-submit">
+                Send
+            </button>
+            <button class="btn btn-danger forum-quick-input-control" id="forum-quick-input-cancel">
+                Cancel
+            </button>
+        </div>
+        -->
 
-                <!-- Thread Head -->
-                <textarea class="form-control" name="input-message-head" id="input-message-head" placeholder="Question" autocomplete="off" ></textarea>
-
-                <!-- Thread Body -->
-                <textarea class="form-control" name="input-message-body" id="input-message-body" placeholder="Furtherer Explanation" autocomplete="off" ></textarea>
-
-                <!-- Other fields -->
-                <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
-                <!-- class id -->
-                <input class="form-control" type="hidden" name="input-message-class" id="input-message-class" value="<?= /* TODO: NEED REVIEW: Class ID here. */ $subject; ?>" autocomplete="off"></input>
-                <!-- lect id -->
-                <input class="form-control" type="hidden" name="input-message-lect" id="input-message-lect" value="<?= $subject; ?>" autocomplete="off"></input>
-
-            </div>
-
-            <div class="pull-bottom-right" id="forum-quick-input-control-view">
-                <button class="btn btn-primary forum-quick-input-control" id="forum-quick-input-submit">
-                    Send
-                </button>
-                <button class="btn btn-danger forum-quick-input-control" id="forum-quick-input-cancel">
-                    Cancel
-                </button>
-            </div>
-
-            </div>
-        </form>
+        </div>
 
     </div>
 

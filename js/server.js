@@ -45,6 +45,13 @@ io.on('connection', function(socket){
      *  Real Work
      *  ======================================== */
     
+    // settings
+    socket.on('settings', function(data){
+        var r = data['room'];
+        var d = data['settings'];
+        io.sockets.in(r).emit('settings', d);
+    });
+    
     // message
     socket.on('thread', function(data){
         var r = data['room'];

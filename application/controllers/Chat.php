@@ -73,6 +73,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_header');
         $this->load->view('view_chat/view_chat_front');
         $this->load->view('view_chat/view_chat_panel');
+        $this->load->view('view_chat/view_chat_input');
         $this->load->view('view_chat/view_chat_login');
         $this->load->view('view_chat/view_chat_settings');
         $this->load->view('view_chat/view_chat_modal');
@@ -127,6 +128,22 @@ class Chat extends CI_Controller {
     
     /**
      *  ============================================================
+     *  Load author of a message
+     *  ============================================================
+     */
+    public function get_author($message)
+    {
+        // load model & get data
+        $author = $this->Thread_model->load_author($message);
+        
+        // return
+        echo $author;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
      *  process NEW MESSAGE
      *  ============================================================
      */
@@ -152,6 +169,9 @@ class Chat extends CI_Controller {
         $message['m_head'] = $post['input-message-head'];
         $message['m_body'] = $post['input-message-body'];
         $data = $this->Thread_model->insert_message($message);
+        
+        // get user name
+        $data['u_name'] = $this->session->userdata('username');
         
         // text mining
         $text = $post['input-message-head'] . ' \n ' . $post['input-message-body'];
@@ -203,7 +223,7 @@ class Chat extends CI_Controller {
         $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
         $message['m_type'] = MESSAGE_TYPE_RESPOND;
         $message['u_id'] = $this->getUserID();
-        $message['u_show'] = 1;
+        $message['u_show'] = MESSAGE_ANONYMOUS_NO;
         $message['m_time'] = $this->getTimeString();
         $message['m_body'] = $post['respond-body'];
         
@@ -511,6 +531,23 @@ class Chat extends CI_Controller {
         }
         
         return true;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Check if user already login
+     *  ============================================================
+     */
+    private function checkUserRole($target)
+    {
+        // check if logined already
+        if($this->session->userdata('user_type') == $target) {
+            return true;
+        }
+        
+        return false;
     }
     
     

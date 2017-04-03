@@ -69,6 +69,14 @@
     display: inline-block;
     width: 15%;
 }
+.form-check-input {
+    margin-left: 2px;
+    zoom: 1.3;
+    -moz-transform: scale(1.3); /* FF */
+    /* -webkit-transform: scale(1.3); /* Safari and Chrome */
+    /* -o-transform: scale(1.3); /* Opera */
+    /* -ms-transform: scale(1.3); /* IE */
+}
 .form-datetime-span {
     display: inline-block;
     margin: 15px 0px 15px 0px;
@@ -221,7 +229,8 @@
     overflow-y: scroll;
 }
 #forum-list-view {
-    height: calc(100% - 50px - 120px - 15px - 15px);
+    height: calc(100% - 120px - 15px - 15px);
+    /* 20170402: calc(100% - 50px - 120px - 15px - 15px) */
 }
 .forum-message {
     min-height: 85px;
@@ -270,16 +279,10 @@
     overflow-y: hidden;
 }
 #forum-quick-input-data-view {
-    width: calc(100% - 90px - 15px);
+    width: calc(100% - 20px);    /* 20170402: calc(100% - 90px - 15px) */
     margin-right: 90px;
 }
-#input-message-head {
-    max-width: 9999px;
-    height: 36px;
-    word-wrap: break-word;
-    resize: none;
-}
-#input-message-body {
+#input-message-toggle {
     max-width: 9999px;
     height: 64px;
     word-wrap: break-word;
@@ -290,7 +293,7 @@
 }
 .forum-quick-input-control {
     width: 70px;
-    height: 50px;
+    height: 32px;   /* 20170402: 50px */
     padding: 5px;
 }
 /* End of CSS for Chat Room */
@@ -414,6 +417,9 @@
     margin-bottom: 20px;
 }
 
+div > .respond-modal-social-control {
+    width: auto;
+}
 .respond-modal-social-control {
     display: inline-block;
     width: 44px;
@@ -550,12 +556,11 @@
     }
 }
 .settings-item-view {
-    height: 30px;
+    height: 36px;
     border-bottom: 1px solid #f0f0f0;
     margin-bottom: 10px;
 }
 .settings-item-view:last-child {
-    height: 30px;
     border-bottom: none;
     margin-bottom: 0px;
 }
@@ -564,4 +569,54 @@
 }
 
 
+
+/* Input Modal */
+.input-modal > .modal-dialog {
+    position: absolute;
+    width: 70%;
+    max-height: 60%;
+    margin-left: 10%;
+    margin-top: 15%;
+}
+@media (max-width: 767px) {
+    .input-modal > .modal-dialog {
+        position: absolute;
+        width: 80%;
+        max-height: 80%;
+        left: 50%;
+        top: 50%;
+        margin-left: -40%;
+        margin-top: -50%;   /* -50% got better results than -40% */
+    }
+}
+.input-modal > .modal-dialog > .modal-content > .modal-body {
+    height: 240px;
+    height: 240px;
+    overflow-y: scroll;
+}
+#input-modal-data-view {
+    width: 100%;
+    margin-right: 90px;
+}
+#input-message-head {
+    width: 100%;
+    height: 64px;
+    word-wrap: break-word;
+    resize: none;
+}
+#input-message-body {
+    width: 100%;
+    height: 144px;
+    word-wrap: break-word;
+    resize: none;
+}
+#input-modal-control-view {
+    /* margin-top: 15px; */
+}
+.input-modal-input-control {
+    display: inline-block;
+    width: 70px;
+    height: 54px;
+    padding: 5px;
+}
 
