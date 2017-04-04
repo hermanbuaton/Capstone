@@ -466,7 +466,7 @@ class Chat extends CI_Controller {
         
         // send to model
         $this->Lecture_model->set_settings($lect,$set,$val);
-        return true;
+        $this->get_settings($lect);
     }
     
     

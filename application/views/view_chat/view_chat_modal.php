@@ -17,6 +17,32 @@
                 <!-- Display Thread Body by js -->
             </div>
             
+            <div>
+            <!-- Input area -->
+            <form class="" id="thread-quick-reply" action="">
+                <div class="pull-left" id="thread-quick-reply-data-view">
+                    
+                    <!-- Thread Body -->
+                    <textarea class="form-control thread-quick-reply-control" name="input-message-body" id="thread-quick-input-body" placeholder="Reply" autocomplete="off" ></textarea>
+                    
+                    <!-- Other fields -->
+                    <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
+                    <!-- message id -->
+                    <input class="form-control" type="hidden" name="input-message-id" id="thread-quick-input-id" value="" autocomplete="off"></input>
+
+                </div>
+
+                <div class="pull-right" id="forum-quick-input-control-view">
+                    <button type="submit" class="btn btn-primary forum-quick-input-control" id="thread-quick-input-submit">
+                        Send
+                    </button>
+                    <button type="reset" class="btn btn-danger forum-quick-input-control" id="thread-quick-input-cancel">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+            </div>
+            
         </div>
         
         <div class="modal-footer">

@@ -54,8 +54,8 @@ class Thread extends CI_Controller {
         $post = $_POST;
         $data['t_id'] = $this->Thread_model->get_thread($post['input-message-id']);
         $data['m_type'] = MESSAGE_TYPE_REPLY;
-        // $data['u_id'] = $this->getUserID();
-        $data['u_show'] = $post['input-message-anonymous'];
+        $data['u_id'] = $this->getUserID();
+        $data['u_show'] = MESSAGE_ANONYMOUS_YES; /* $post['input-message-anonymous'] */
         $data['m_time'] = $this->getTimeString();
         $data['m_body'] = $post['input-message-body'];
         
@@ -115,6 +115,11 @@ class Thread extends CI_Controller {
         }
         
         return true;
+    }
+    
+    private function getUserID()
+    {
+        return $this->session->userdata('user_id');
     }
     
     private function getTimeString()

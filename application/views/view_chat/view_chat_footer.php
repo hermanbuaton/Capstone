@@ -315,7 +315,7 @@
 
         //  clear message <form>
         $('#forum-quick-input-cancel').click(function(){
-            cancelInput();
+            cancelInput($('#forum-quick-input'));
             return false;
         });
         
@@ -465,6 +465,30 @@
         
         
         /** ========================================
+        *   Message Submit
+        *   ======================================== */
+        
+        //  press enter to submit message
+        $("#forum-quick-input-body").keydown(function(e) {
+            e = e || event;
+            if (e.keyCode === 13) {
+                if (!e.shiftKey && !e.ctrlKey) {
+                    e.preventDefault();
+                    $('#thread-quick-reply').submit();
+                }
+            }
+        });
+        
+        //  submit message
+        $('#thread-quick-reply').submit(function(e){
+            e.preventDefault();
+            submitReply2();
+            return false;
+        });
+        
+        
+        
+        /** ========================================
         *   Poll Create
         *   ======================================== */
         
@@ -581,19 +605,48 @@
                 return false;
             }
             
-            cancelInput();
+            cancelInput($('#forum-quick-input'));
             return true;
             
         }
         
         
-        //  clear message <form>
-        function cancelInput() {
-            $('#input-message-head').val().replace(/\n/g, '');
-            $('#input-message-head').val('');
-            $('#input-message-body').val().replace(/\n/g, '');
-            $('#input-message-body').val('');
+        //  submit message
+        function submitReply2() {
             
+            // for m_body validation
+            var bv = $('#thread-quick-input-body').val();
+            var bt = bv.trim();
+            
+            // if ALL fields have content
+            if (bt.length > 0)
+            {
+                // (1) to database
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url("Thread/message"); ?>",
+                    data: $('#thread-quick-reply').serialize(),
+                    
+                    success: function(data) {
+                        // do nothing
+                        console.log(data);
+                    }
+                });
+                
+            } else {
+                // do nothing
+                return false;
+            }
+            
+            cancelInput($('#thread-quick-reply'));
+            return false;
+            
+        }
+        
+        
+        //  clear message <form>
+        function cancelInput(form) {
+            $(form).trigger('reset');
             return false;
         }
         
@@ -684,7 +737,9 @@
                 url: dest,
 
                 success: function(data) {
+                    console.log("loading from " + dest);
                     $('#thread-full-view').html(data);
+                    $('#thread-quick-input-id').val(m);
                 }
             });
             
@@ -1010,17 +1065,11 @@
                 url: dest,
 
                 success: function(data) {
+                    console.log("update -> " + data);
+                    
                     // (2) to socket server
-                    console.log(data);
-                    /*
-                    var d = $.parseJSON(data);
-                    if (d.message=="Already Vote") { return false; }
-                    
-                    var out = {"room": subject, "data": d.opt};
-                    socket.emit('poll vote', out);
-                    
-                    reviewPoll(data);
-                    */
+                    var out = {"room": subject, "settings": data};
+                    socket.emit('settings',out);
                 }
             });
             
@@ -1042,9 +1091,6 @@
 
                 success: function(data) {
                     applySettings(data);
-                    
-                    var out = {"room": subject, "settings": data};
-                    socket.emit('settings',out);
                 }
             });
             
@@ -1055,6 +1101,9 @@
         function applySettings(data) {
 
             var d = JSON.parse(data);
+            console.log('apply new settings');
+            console.log('d = ' + d);
+            console.log('data = ' + data);
 
             // set anonymous
             if (d.set_anonymous == <?= SET_ANONYMOUS_YES; ?>) {
@@ -1064,7 +1113,7 @@
 
                 // input modal
                 $('#input-message-anonymous').val(MESSAGE_ANONYMOUS_YES);
-                $("#input-anonymous").removeClass('disabled');
+                $("#input-anonymous").removeAttr('disabled');
                 document.getElementById('input-anonymous').checked = true;
 
             } else if (d.set_anonymous == <?= SET_ANONYMOUS_NO; ?>) {
@@ -1074,16 +1123,30 @@
 
                 // input modal
                 $('#input-message-anonymous').val(MESSAGE_ANONYMOUS_NO);
-                $("#input-anonymous").addClass('disabled');
+                $("#input-anonymous").attr('disabled',true);
                 document.getElementById('input-anonymous').checked = false;
                 
             }
 
             // set discussion
             if (d.set_discussion == <?= SET_DISCUSSION_YES; ?>) {
+                
+                // settings modal
                 document.getElementById('set-discussion').checked = true;
+                
+                // reply modal
+                $("#thread-quick-reply :input").prop('readonly', false);
+                $('#thread-quick-input-body').attr('placeholder', "Reply");
+                
             } else if (d.set_discussion == <?= SET_DISCUSSION_NO; ?>) {
+                
+                // settings modal
                 document.getElementById('set-discussion').checked = false;
+                
+                // reply modal
+                $("#thread-quick-reply :input").prop('readonly', true);
+                $('#thread-quick-input-body').attr('placeholder', "Reply is disabled by your instructor");
+                
             }
             
         }

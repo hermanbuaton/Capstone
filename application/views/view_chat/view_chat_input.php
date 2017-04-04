@@ -46,7 +46,7 @@
                 <!-- Anonymous -->
                 <label>
                     <!-- Checkbox -->
-                    <input type="checkbox" class="form-check-input" name="input-anonymous" id="input-anonymous" value="" autocomplete="off"></input>
+                    <input type="checkbox" class="form-check-input" name="input-anonymous" id="input-anonymous" value="" disabled="" autocomplete="off"></input>
                     <!-- Hidden: set using jQuery -->
                     <input class="form-control" type="hidden" name="input-message-anonymous" id="input-message-anonymous" value="" autocomplete="off"></input>
                     <span>

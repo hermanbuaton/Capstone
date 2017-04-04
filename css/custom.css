@@ -281,7 +281,7 @@
 .forum-thread-head {
     min-height: 45px;
 }
-.fourm-full-thread-head {
+.forum-full-thread-head {
     margin-left: 15px;
 }
 .forum-full-thread-head > h3 {
@@ -354,6 +354,12 @@
     display: inline-block;
     margin-top: 25px;
     margin-bottom: 50px;
+}
+
+#thread-quick-input-body {
+    height: 64px;
+    width: calc(100% - 15px);
+    margin-left: 15px;
 }
 
 #thread-quick-reply-data-view {
