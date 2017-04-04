@@ -442,6 +442,30 @@
         
         
         /** ========================================
+        *   Label Expand
+        *   ======================================== */
+        
+        //  start respond on modal start
+        $("#forum-list-view").on("click", ".forum-label", function(e) {
+            
+            // if click on VOTE button
+            if ($(e.target).is('.forum-social-control')
+              || $(e.target).is('.forum-social-control-fade')
+              || $(e.target).is('.forum-social-content')) {
+                return;     // do nothing
+            }
+            
+            e.preventDefault();
+            
+            console.log($(this).attr('value'));
+            order = "<?= MESSAGE_SHOW_VOTE; ?>";
+            load($(this).attr('value'));
+            
+        });
+        
+        
+        
+        /** ========================================
         *   Poll Create
         *   ======================================== */
         
@@ -496,11 +520,15 @@
         *   ======================================== */
         
         //  load
-        function load() {
+        function load(label) {
             
             var loadURL = "<?php echo site_url("Chat/load"); ?>";
             loadURL += "/" + subject;
             loadURL += "/" + order;
+            
+            if (label !== undefined && label !== 'NaN') {
+                loadURL += "/" + label;
+            }
             
             $.ajax({
                 type: "GET",

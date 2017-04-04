@@ -1,5 +1,6 @@
 <?php
     // FOR loop start
+    if ($order !== MESSAGE_SHOW_LABEL) {
     foreach ($row as $data) {
 ?>
 
@@ -8,7 +9,7 @@
 
 <div class="forum-message" id="forum-message-view[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>">
     <!-- Vote btn & counter -->
-    <div class="forum-thread-vote pull-left">
+    <div class="forum-thread-social pull-left">
         
         
         <!-- Vote form -->
@@ -89,6 +90,67 @@
 </div>
 
 <?php
-   // FOR loop end
-   }
+    // FOR loop end
+    }
+    }
+    else if ($order == MESSAGE_SHOW_LABEL) {
+    foreach ($row as $data) {
+?>
+
+
+<!-- ** Messages here ** -->
+<!-- ** Change div CLASS & ID in view_chat_footer script ** -->
+
+<div class="forum-label" id="forum-label-view[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>">
+    <!-- Vote btn & counter -->
+    <div class="forum-label-social">
+            
+        <!-- no of questions: DISABLED -->
+        <button class="btn btn-default form-control forum-thread-asked-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="asked-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
+            <span class="forum-social-content" id="asked-text[<?= $data['m_id']; ?>]">
+                <i class="fa fa-question"></i>
+            </span>
+            <span class="forum-thread-asked-count forum-social-content" id="asked-count[<?= $data['m_id']; ?>]">
+                <?php echo ($data['sum_asked'] !== null ? $data['sum_asked'] : "0"); ?>
+            </span>
+        </button>
+        
+        
+        <!-- vote button: DISABLED -->
+        <button class="btn btn-default form-control forum-thread-vote-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
+            <span class="forum-social-content" id="vote-text[<?= $data['m_id']; ?>]">
+                <i class="fa fa-plus-square"></i>
+            </span>
+            <span class="forum-thread-vote-count forum-social-content" id="vote-count[<?= $data['m_id']; ?>]">
+                <?php echo ($data['sum_vote'] !== null ? $data['sum_vote'] : "0"); ?>
+            </span>
+        </button>
+        
+        
+        <!-- hand button: DISABLED -->
+        <button class="btn btn-default form-control forum-thread-hand-input <?php echo ($data['user_hand'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="hand-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
+            <span class="forum-social-content" id="hand-text[<?= $data['m_id']; ?>]">
+                <i class="fa fa-hand-paper-o"></i>
+            </span>
+            <span class="forum-thread-hand-count forum-social-content" id="hand-count[<?= $data['m_id']; ?>]">
+                <?php echo ($data['sum_hand'] !== null ? $data['sum_hand'] : "0"); ?>
+            </span>
+        </button>
+        
+        
+    </div>
+
+    <!-- Label Text -->
+    <div class="forum-label-text" id="forum-label-text-view[<?= $data['m_id']; ?>]">
+        <a href=""><span class="badge forum-thread-label-badge">
+            <?php echo $data['m_head']; ?>
+        </span></a>
+    </div>
+    
+</div>
+
+
+<?php
+    }
+    }
 ?>

@@ -238,9 +238,22 @@
     margin-bottom: 8px;
     border-bottom: 1px solid #f0f0f0;
 }
+.forum-label {
+    min-height: 44px;
+    padding: 3px 3px 12px 3px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid #f0f0f0;
+}
+.forum-thread-social,
+.forum-label-social {
+    max-width: 50%;
+}
+.forum-label-social {
+    display: inline-block;
+}
 .forum-social-control,
 .forum-social-control-fade {
-    display: block;
+    display: inline-block;
     width: 44px;
     padding: 0px;
     border: none;
@@ -277,6 +290,10 @@
 .forum-thread-label {
     height: 40px;
     overflow-y: hidden;
+}
+.forum-label-text {
+    display: inline-block;
+    margin-left: 15px;
 }
 #forum-quick-input-data-view {
     width: calc(100% - 20px);    /* 20170402: calc(100% - 90px - 15px) */

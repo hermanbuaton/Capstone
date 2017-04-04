@@ -94,14 +94,16 @@ class Chat extends CI_Controller {
      *  Load previous messages
      *  ============================================================
      */
-    public function load($lecture='',$order=MESSAGE_SHOW_CHRONO)
+    public function load($lecture='',$order=MESSAGE_SHOW_CHRONO,$label='')
     {
         // validation
         $this->checkLecture($lecture);
         
         // load model & get data
         $user = $this->session->userdata('user_id');
-        $out['row'] = $this->Thread_model->load_thread($user,$lecture,$order);
+        $order = intval($order);
+        $out['row'] = $this->Thread_model->load_thread($user,$lecture,$order,$label);
+        $out['order'] = $order;
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
@@ -180,6 +182,7 @@ class Chat extends CI_Controller {
         
         // on return put data into $out
         $out['row'] = array($data);
+        $out['order'] = MESSAGE_SHOW_LABEL;
         $this->load->view('view_chat/view_chat_message',$out);
     }
     

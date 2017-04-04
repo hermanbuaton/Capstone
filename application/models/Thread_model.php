@@ -52,36 +52,74 @@ class Thread_model extends CI_Model {
         return $id;
     }
     
-    public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO)
+    public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO,$label='')
     {
+        // get specified label text
+        if ($label !== null && $label !== '') {
+            $query2 = $this->db
+                        ->select('label')
+                        ->from('label')
+                        ->where('l_id',$label)
+                        ->get_compiled_select();
+        }
+        
+        
+        // prepare query
         $query = $this->db
                     ->select(['m.*', 'u_name', 'sum_vote', 'user_vote', 'sum_hand', 'user_hand'])
                     ->from('message AS m')
                     ->join('thread AS t', 'm.t_id = t.t_id')
                     ->join('user_log AS u', 'm.u_id = u.log_id')
+                    ->join('lecture AS lect', 't.lect_id = lect.lect_id')
                     ->join("(SELECT m_id, SUM(vote) AS sum_vote FROM vote GROUP BY m_id) AS v", 'm.m_id = v.m_id', 'left')
                     ->join("(SELECT m_id, SUM(vote) AS user_vote FROM vote WHERE u_id = $user GROUP BY m_id) AS uv", 'm.m_id = uv.m_id', 'left')
                     ->join("(SELECT m_id, SUM(hand) AS sum_hand FROM hand GROUP BY m_id) AS h", 'm.m_id = h.m_id', 'left')
-                    ->join("(SELECT m_id, SUM(hand) AS user_hand FROM hand WHERE u_id = $user GROUP BY m_id) AS uh", 'm.m_id = uh.m_id', 'left')
-                    ->join('lecture AS lect', 't.lect_id = lect.lect_id')
+                    ->join("(SELECT m_id, SUM(hand) AS user_hand FROM hand WHERE u_id = $user GROUP BY m_id) AS uh", 'm.m_id = uh.m_id', 'left');
+        
+        
+        // fliter by label
+        if ($label !== null && $label !== '') {
+            $query = $this->db->join("label AS l", "l.m_id = m.m_id", "left");
+            $query = $this->db->where("l.label in ($query2)",null,false);
+        }
+        
+        
+        // fliter by message type: get OPENER only
+        // fliter by lecture ref
+        $query = $this->db
                     ->where('m.m_type', MESSAGE_TYPE_OPENER)
                     ->where('lect.lect_ref', $lecture);
+        
         
         // order by user preference
         switch ($order) {
             case MESSAGE_SHOW_CHRONO:
                 $query = $this->db->order_by('m.m_time');
+                $row = $query->get()->result_array();
                 break;
             case MESSAGE_SHOW_VOTE:
                 $query = $this->db->order_by('sum_vote, m.m_time');
+                $row = $query->get()->result_array();
                 break;
             case MESSAGE_SHOW_LABEL:
-                // TODO: show tags only
-                break;
+                $query = $this->db->get_compiled_select();
+                $query2 = $this->db
+                            ->select([  'DISTINCT(l.label) AS m_head', 
+                                        'COUNT(DISTINCT(l.m_id)) AS sum_asked', 
+                                        'AVG(l.l_score) AS score',
+                                        'MIN(l.l_id) AS m_id',
+                                        'SUM(sum_vote) AS sum_vote',
+                                        'SUM(sum_hand) AS sum_hand'
+                                    ])
+                            ->from('label AS l')
+                            ->join("($query) AS q", "l.m_id = q.m_id")
+                            ->group_by('label')
+                            ->order_by('sum_vote')
+                            ->order_by('score');
+                $row = $this->db->get()->result_array();
+                return $row;
         }
         
-        // retrieve
-        $row = $query->get()->result_array();
         
         // get labels of messages
         $out = array();
@@ -90,6 +128,8 @@ class Thread_model extends CI_Model {
             array_push($out, $message);
         }
         
+        
+        // return
         return $out;
     }
     

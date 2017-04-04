@@ -15,7 +15,7 @@
                 Menu
                 <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" id="panel-dropdown">
                 
                 <!-- ======================================== -->
                 <!-- Message order
