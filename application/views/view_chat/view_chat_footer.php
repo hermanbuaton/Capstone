@@ -457,7 +457,6 @@
             
             e.preventDefault();
             
-            console.log($(this).attr('value'));
             order = "<?= MESSAGE_SHOW_VOTE; ?>";
             load($(this).attr('value'));
             
