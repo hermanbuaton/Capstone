@@ -24,7 +24,7 @@
             <!-- vote button -->
             <button class="btn btn-default form-control forum-thread-vote-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?>" type="submit" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
                 <span class="forum-social-content" id="vote-text[<?= $data['m_id']; ?>]">
-                    <i class="fa fa-plus-square"></i>
+                    <i class="fa fa-plus-square forum-social-content"></i>
                 </span>
                 <span class="forum-thread-vote-count forum-social-content" id="vote-count[<?= $data['m_id']; ?>]">
                     <?php echo ($data['sum_vote'] !== null ? $data['sum_vote'] : "0"); ?>
@@ -46,7 +46,7 @@
             <!-- raise hand button -->
             <button class="btn btn-default form-control forum-thread-hand-input <?php echo ($data['user_hand'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?>" type="submit" id="hand-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
                 <span class="forum-social-content" id="hand-text[<?= $data['m_id']; ?>]">
-                    <i class="fa fa-hand-paper-o"></i>
+                    <i class="fa fa-hand-paper-o forum-social-content"></i>
                 </span>
                 <span class="forum-thread-hand-count forum-social-content" id="hand-count[<?= $data['m_id']; ?>]">
                     <?php echo ($data['sum_hand'] !== null ? $data['sum_hand'] : "0"); ?>
@@ -107,7 +107,7 @@
             
         <!-- no of questions: DISABLED -->
         <button class="btn btn-default form-control forum-thread-asked-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="asked-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
-            <span class="forum-social-content" id="asked-text[<?= $data['m_id']; ?>]">
+            <span class="forum-social-content forum-social-content" id="asked-text[<?= $data['m_id']; ?>]">
                 <i class="fa fa-question"></i>
             </span>
             <span class="forum-thread-asked-count forum-social-content" id="asked-count[<?= $data['m_id']; ?>]">
@@ -119,7 +119,7 @@
         <!-- vote button: DISABLED -->
         <button class="btn btn-default form-control forum-thread-vote-input <?php echo ($data['user_vote'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="vote-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
             <span class="forum-social-content" id="vote-text[<?= $data['m_id']; ?>]">
-                <i class="fa fa-plus-square"></i>
+                <i class="fa fa-plus-square forum-social-content"></i>
             </span>
             <span class="forum-thread-vote-count forum-social-content" id="vote-count[<?= $data['m_id']; ?>]">
                 <?php echo ($data['sum_vote'] !== null ? $data['sum_vote'] : "0"); ?>
@@ -130,7 +130,7 @@
         <!-- hand button: DISABLED -->
         <button class="btn btn-default form-control forum-thread-hand-input <?php echo ($data['user_hand'] > 0 ? 'forum-social-control' : 'forum-social-control-fade'); ?> disabled" type="submit" id="hand-input[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>" >
             <span class="forum-social-content" id="hand-text[<?= $data['m_id']; ?>]">
-                <i class="fa fa-hand-paper-o"></i>
+                <i class="fa fa-hand-paper-o forum-social-content"></i>
             </span>
             <span class="forum-thread-hand-count forum-social-content" id="hand-count[<?= $data['m_id']; ?>]">
                 <?php echo ($data['sum_hand'] !== null ? $data['sum_hand'] : "0"); ?>

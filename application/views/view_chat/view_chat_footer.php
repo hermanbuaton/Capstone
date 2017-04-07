@@ -16,6 +16,9 @@
     <script src="<?php echo base_url(); ?>js/jquery.js"></script>
     <!--<script src="http://code.jquery.com/jquery-1.11.1.js"></script>-->
     
+    <!-- Google -->
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
     <!-- Bootstrap Core JavaScript -->
     <script src="<?php echo base_url(); ?>js/bootstrap.min.js"></script>
 
@@ -48,6 +51,9 @@
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             var recognition = new webkitSpeechRecognition();
         }
+        
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
         
         
         
@@ -156,6 +162,35 @@
             recognition.stop();
             $('#respond-voice-stop').addClass('hidden');
             $('#respond-voice-start').removeClass('hidden');
+        }
+        
+        
+        
+        /** ========================================
+        *   socket
+        *   ======================================== */
+        
+        function drawChart() {
+
+            var data = google.visualization.arrayToDataTable([
+                                ['Task', 'Hours per Day'],
+                                ['Work',     11],
+                                ['Eat',      2],
+                                ['Commute',  2],
+                                ['Watch TV', 2],
+                                ['Sleep',    7]
+                           ]);
+
+            var options = {
+                            title: 'My Daily Activities'
+                          };
+
+            var chart = new google.visualization.PieChart(
+                                document.getElementById('piechart')
+                            );
+
+            chart.draw(data, options);
+            
         }
         
         
@@ -558,7 +593,21 @@
                 url: loadURL,
                 
                 success: function(data) {
-                    // $('#forum-list-view').append($('<div class="thread-message" id="main-chat-view-msg">').html(data));
+                    
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
+                    // put on screen
                     console.log("loading from " + loadURL);
                     $('#forum-list-view').html(data);
                     $("#forum-list-view").animate({scrollTop: 0}, 10);
@@ -589,6 +638,20 @@
                     data: $('#forum-quick-input').serialize(),
                     
                     success: function(data) {
+                        
+                        // see if there is error message
+                        try {
+                            var d = $.parseJSON(data);
+
+                            // do nothing if user not instructor
+                            if (d['message'] !== null
+                               && d['message'] !== undefined) {
+                                // redirect
+                                processRedirect(data);
+                                return false;
+                            }
+                        } catch(e) { /* donothing */ }
+
                         // (2) to socket server
                         var out = {"room": subject, "html": data};
                         socket.emit('thread', out);
@@ -599,9 +662,7 @@
             // if ONLY EITHER ONE field have content
             else if (ht.length > 0 || bt.length > 0)
             {
-                // do something
-                console.log("pass");
-                
+                // do nothing
                 return false;
             }
             
@@ -628,7 +689,20 @@
                     data: $('#thread-quick-reply').serialize(),
                     
                     success: function(data) {
-                        // do nothing
+                        // see if there is error message
+                        try {
+                            var d = $.parseJSON(data);
+
+                            // do nothing if user not instructor
+                            if (d['message'] !== null
+                               && d['message'] !== undefined) {
+                                // redirect
+                                processRedirect(data);
+                                return false;
+                            }
+                        } catch(e) { /* donothing */ }
+
+                        // TODO: broadcast to refresh thread
                         console.log(data);
                     }
                 });
@@ -671,6 +745,20 @@
                 data: $(form).serialize(),
 
                 success: function(data) {
+                    
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     // (2) to socket server
                     socket.emit('vote', data);
                     
@@ -682,6 +770,7 @@
                         input.removeClass("forum-social-control");
                         input.addClass("forum-social-control-fade");
                     }
+                    
                 }
             });
             
@@ -706,8 +795,22 @@
                 type: "POST",
                 url: "<?php echo site_url("Chat/hand"); ?>",
                 data: $(form).serialize(),
-
+                
                 success: function(data) {
+                    
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     // (2) to socket server
                     socket.emit('hand', data);
                     
@@ -719,6 +822,7 @@
                         input.removeClass("forum-social-control");
                         input.addClass("forum-social-control-fade");
                     }
+                    
                 }
             });
             
@@ -737,6 +841,19 @@
                 url: dest,
 
                 success: function(data) {
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     console.log("loading from " + dest);
                     $('#thread-full-view').html(data);
                     $('#thread-quick-input-id').val(m);
@@ -809,8 +926,12 @@
                     if ($(control).find('.forum-thread-author-name').text() 
                             == "Anonymous")
                     {
+                        // display name
                         $(control).find('.forum-thread-author-name').text(d['u_name']);
-                    } else {
+                    } 
+                    else if (d['u_show'] == MESSAGE_ANONYMOUS_YES)
+                    {
+                        // display "anonymous" if u_show allow anonymous
                         $(control).find('.forum-thread-author-name').text("Anonymous");
                     }
 
@@ -885,11 +1006,26 @@
                 data: $('#respond-form').serialize(),
 
                 success: function(data) {
+                    
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     // (2) to socket server
                     // var out = {"room": subject, "html": data};
                     console.log(data);
                     
                     // TODO: on respond, add button to view respond
+                    
                 }
             });
             
@@ -909,9 +1045,23 @@
                 data: $(form).serialize(),
 
                 success: function(data) {
+                    
+                    try {
+                        var d = $.parseJSON(data);
+
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     // (2) to socket server
                     var out = {"room": subject, "data": data};
                     socket.emit('poll start', out);
+                    
                 }
             });
             
@@ -972,6 +1122,7 @@
                 data: {"opt": opt},
 
                 success: function(data) {
+                    
                     // (2) to socket server
                     var d = $.parseJSON(data);
                     if (d.message=="Already Vote") { return false; }
@@ -980,6 +1131,7 @@
                     socket.emit('poll vote', out);
                     
                     reviewPoll(data);
+                    
                 }
             });
             
@@ -1076,14 +1228,20 @@
                 url: dest,
 
                 success: function(data) {
-                    console.log("update -> " + data);
                     
-                    // do nothing if user not instructor
-                    if (d['message'] !== null
-                       && d['message'] !== undefined) {
-                        return false; // do nothing
-                    }
+                    // see if there is error message
+                    try {
+                        var d = $.parseJSON(data);
 
+                        // do nothing if user not instructor
+                        if (d['message'] !== null
+                           && d['message'] !== undefined) {
+                            // redirect
+                            processRedirect(data);
+                            return false;
+                        }
+                    } catch(e) { /* donothing */ }
+                    
                     // (2) to socket server
                     var out = {"room": subject, "settings": data};
                     socket.emit('settings',out);
@@ -1166,6 +1324,16 @@
                 
             }
             
+        }
+        
+        
+        //  process AJAX redirect request
+        //  typically because of session timeout
+        function processRedirect(data) {
+            var d = $.parseJSON(data);
+            
+            var dest = "<?php echo base_url(); ?>" + "/" + d['location'];
+            window.location.replace(dest);
         }
         
         

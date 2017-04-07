@@ -232,9 +232,10 @@ class Thread_model extends CI_Model {
     public function get_lect($m)
     {
         $result = $this->db
-                    ->select('t.lect_ref AS lect_ref')
+                    ->select('l.lect_ref AS lect_ref')
                     ->from('message AS m')
                     ->join('thread AS t', 'm.m_id = t.m_id')
+                    ->join('lecture AS l', 't.lect_id = l.lect_id')
                     ->where('m_id', $m)
                     ->get()->row();
         

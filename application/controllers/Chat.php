@@ -99,14 +99,14 @@ class Chat extends CI_Controller {
         // validate lecture ref
         if (!$this->checkLecture($lecture)) {
             $this->session->set_flashdata('error','Incorrect lecture assess code.');
-            redirect("");
+            $this->echo_redirect("invalid lecture code", "");
         }
         
         // validate user
         if (!$this->checkLogin()) {
             $this->session->set_flashdata('error','Input a nickname to continue.');
             $this->session->set_flashdata('lecture',$lecture);
-            redirect("");
+            $this->echo_redirect("session timeout", "");
         }
         
         // load model & get data
@@ -130,13 +130,13 @@ class Chat extends CI_Controller {
     {
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($message)
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // load model & get data
@@ -158,13 +158,13 @@ class Chat extends CI_Controller {
     {
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($message)
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // validate user role
@@ -194,11 +194,11 @@ class Chat extends CI_Controller {
     {
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata('lecture',$post['input-message-lect']);
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // load model
@@ -271,19 +271,21 @@ class Chat extends CI_Controller {
      */
     public function respond()
     {   
+        // get POST
+        $post = $_POST;
+        
         // validate user
         if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
+                    'lecture',$this->Thread_model->get_lect($post['respond-id'])
                 );
-            $this->session->set_flashdata(
-                    'lecture',$this->Thread_model->get_lect($message)
-                );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // process message
-        $post = $_POST;
         $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
         $message['m_type'] = MESSAGE_TYPE_RESPOND;
         $message['u_id'] = $this->getUserID();
@@ -314,13 +316,13 @@ class Chat extends CI_Controller {
         
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($post['vote-message'])
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // process vote
@@ -352,13 +354,13 @@ class Chat extends CI_Controller {
         
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($post['hand-message'])
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // process vote
@@ -389,13 +391,13 @@ class Chat extends CI_Controller {
     {
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($message)
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // request from MODEL
@@ -417,24 +419,23 @@ class Chat extends CI_Controller {
     {
         // load model
         $this->load->model('Poll_model');
+        $this->load->model('Lecture_model');
         
         // process message
         $post = $_POST;
         
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
-            $this->session->set_flashdata(
-                    'lecture',$this->Thread_model->get_lect($post['input-message-lect'])
-                );
-            redirect("");
+            $this->session->set_flashdata('error','Session timeout. Login again.');
+            $this->session->set_flashdata('lecture',$post['input-message-lect']);
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         // insert thread
         $thread['class_id'] = $post['input-message-class'];
-        $thread['lect_id'] = $this->Thread_modal->get_lect($post['input-message-lect']);
+        $thread['lect_id'] = $this->Lecture_model->get_lectid($post['input-message-lect']);
         $message = $this->Thread_model->insert_thread($thread);
         
         // insert message
@@ -483,8 +484,6 @@ class Chat extends CI_Controller {
      */
     public function poll_vote()
     {
-        // TODO: record vote for polling
-        
         // load model
         $this->load->model('Poll_model');
         
@@ -540,13 +539,13 @@ class Chat extends CI_Controller {
         
         // validate user
         if (!$this->checkLogin()) {
-            $this->session->set_flashdata(
-                    'error','Session timeout. Login again.'
-                );
+            $this->session->set_flashdata('error','Session timeout. Login again.');
             $this->session->set_flashdata(
                     'lecture',$this->Thread_model->get_lect($message)
                 );
-            redirect("");
+            
+            $this->echo_redirect("session timeout", "");
+            return;
         }
         
         
@@ -701,6 +700,22 @@ class Chat extends CI_Controller {
     {
         return date(DATE_RFC3339);
     }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Respond to AJAX request with error message
+     *  ============================================================
+     */
+    private function echo_redirect($message, $location)
+    {
+        $out = array("message" => $message, "location" => $location);
+        echo json_encode($out);
+        
+        return;
+    }
+    
 
     
     
