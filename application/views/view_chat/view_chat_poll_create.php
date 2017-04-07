@@ -20,7 +20,8 @@
 
                 <!-- Thread Body -->
                 <textarea class="form-control" name="input-message-body" id="input-message-body" placeholder="Poll Question" autocomplete="off" ></textarea>
-
+                <br/>
+                
                 <div>
                     <!-- Poll Option -->
                     <!-- (1) -->
@@ -32,8 +33,8 @@
                     <!-- (4) -->
                     <input class="form-control input-poll-opt" type="text" name="input-poll-opt[]" id="input-poll-opt-4" placeholder="Option #4" autocomplete="off"></input>
                 </div>
-
-
+                <br/>
+                
                 <!-- Other fields -->
                 <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
                 <!-- class id -->

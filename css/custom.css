@@ -506,20 +506,21 @@ div > .respond-modal-social-control {
 .poll-modal > .modal-dialog {
     position: absolute;
     width: 80%;
-    height: 70%;
     margin-left: 10%;
-    margin-top: 15%;
+    margin-top: 20%;
 }
 @media (max-width: 767px) {
     .poll-modal > .modal-dialog {
         position: absolute;
         width: 80%;
-        height: 70%;
-        left: 50%;
-        top: 50%;
-        margin-left: -40%;
-        margin-top: -35%;
+        margin-left: 10%;
+        margin-top: 20%;
     }
+}
+.poll-modal > .modal-dialog > .modal-content > .modal-body {
+    height: 420px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #poll-vote-body > h2 {

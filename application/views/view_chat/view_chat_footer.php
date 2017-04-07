@@ -53,7 +53,7 @@
         }
         
         google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
+        // google.charts.setOnLoadCallback(drawChart);
         
         
         
@@ -170,26 +170,29 @@
         *   socket
         *   ======================================== */
         
-        function drawChart() {
-
-            var data = google.visualization.arrayToDataTable([
-                                ['Task', 'Hours per Day'],
-                                ['Work',     11],
-                                ['Eat',      2],
-                                ['Commute',  2],
-                                ['Watch TV', 2],
-                                ['Sleep',    7]
-                           ]);
-
+        function drawChart(raw, element) {
+            
+            var process = [];
+            process.push(["Choice", "Count"]);
+            
+            // raw = $.parseJSON(raw);
+            raw.forEach(function(choice) {
+                process.push([choice.opt_txt, parseInt(choice.vote)]);
+            });
+            
+            var data = google.visualization.arrayToDataTable(process);
+            
             var options = {
-                            title: 'My Daily Activities'
+                            height: 400,
+                            chartArea: {top: 30, left: '3%', height: 300},
+                            pieHole: 0.4,
+                            legend: {position: 'bottom', 
+                                     alignment: 'start'}
                           };
-
-            var chart = new google.visualization.PieChart(
-                                document.getElementById('piechart')
-                            );
-
-            chart.draw(data, options);
+            
+            var chart = new google.visualization.PieChart(element);
+            chart.draw(data,options);
+            // chart.draw(data, options);
             
         }
         
@@ -1144,6 +1147,8 @@
         function updatePoll(d) {
             console.log("update");
             console.log(d);
+                        
+            drawChart(d, document.getElementById('poll-result-chart'));
             
             d.forEach(function(row) {
                 

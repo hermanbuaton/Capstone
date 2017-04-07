@@ -41,21 +41,33 @@
                 <!-- ======================================== -->
                 <!-- Poll
                 <!-- ======================================== -->
-                <li>
-                    <a href="#" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">
-                        Start a Poll
-                    </a>
-                </li>
-                <li class="divider"></li>
+                <?php 
+                    if ($this->session->userdata('user_type') == USER_TYPE_INSTRUCTOR) :
+                ?>
+                    <li>
+                        <a href="#" id="poll-create-toggle" data-toggle="modal" data-target="#poll-input">
+                            Start a Poll
+                        </a>
+                    </li>
+                    <li class="divider"></li>
+                <?php
+                    endif;
+                ?>
                 
                 <!-- ======================================== -->
                 <!-- Others
                 <!-- ======================================== -->
-                <li>
-                    <a href="#" id="settings-show-toggle" data-toggle="modal" data-target="#settings-show">
-                        Settings
-                    </a>
-                </li>
+                <?php 
+                    if ($this->session->userdata('user_type') == USER_TYPE_INSTRUCTOR) :
+                ?>
+                    <li>
+                        <a href="#" id="settings-show-toggle" data-toggle="modal" data-target="#settings-show">
+                            Settings
+                        </a>
+                    </li>
+                <?php 
+                    endif;
+                ?>
                 <li>
                     <a href="#" id="login-show-toggle" data-toggle="modal" data-target="#login-show">
                         Show QR Code

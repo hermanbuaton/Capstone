@@ -15,10 +15,13 @@
             <div id="poll-result-body">
                 <!-- Display Body by js -->
             </div>
+            
+            <div class="hidden" id="poll-result-count">
+                <!-- Display Body by js -->
+            </div>
 
             <!-- TODO: Graphical Representation -->
-            <div id="poll-result-count">
-                <!-- Display Option by js -->
+            <div id="poll-result-chart">
             </div>
             
         </div>
