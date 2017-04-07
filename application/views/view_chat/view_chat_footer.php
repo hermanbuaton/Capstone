@@ -789,22 +789,33 @@
             }
             
             /* TODO: show author nickname on click div */
-            if ($(control).find('.forum-thread-author-name').text() == "Anonymous") {
-                
-                var dest = "<?php echo site_url("Chat/get_author"); ?>" + "/" + m;
-                
-                $.ajax({
-                    type: "GET",
-                    url: dest,
+            var dest = "<?php echo site_url("Chat/get_author"); ?>" + "/" + m;
 
-                    success: function(data) {
-                        $(control).find('.forum-thread-author-name').text(data);
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+
+                    var d = $.parseJSON(data);
+
+                    // do nothing if user not instructor
+                    if (d['message'] !== null
+                       && d['message'] !== undefined) {
+                        return false; // do nothing
                     }
-                });
-                
-            } else {
-                $(control).find('.forum-thread-author-name').text("Anonymous");
-            }
+
+                    // set author name if user is authenticated
+                    if ($(control).find('.forum-thread-author-name').text() 
+                            == "Anonymous")
+                    {
+                        $(control).find('.forum-thread-author-name').text(d['u_name']);
+                    } else {
+                        $(control).find('.forum-thread-author-name').text("Anonymous");
+                    }
+
+                }
+            });
             
         }
         
@@ -1067,6 +1078,12 @@
                 success: function(data) {
                     console.log("update -> " + data);
                     
+                    // do nothing if user not instructor
+                    if (d['message'] !== null
+                       && d['message'] !== undefined) {
+                        return false; // do nothing
+                    }
+
                     // (2) to socket server
                     var out = {"room": subject, "settings": data};
                     socket.emit('settings',out);

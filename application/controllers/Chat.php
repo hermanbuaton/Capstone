@@ -96,8 +96,18 @@ class Chat extends CI_Controller {
      */
     public function load($lecture='',$order=MESSAGE_SHOW_CHRONO,$label='')
     {
-        // validation
-        $this->checkLecture($lecture);
+        // validate lecture ref
+        if (!$this->checkLecture($lecture)) {
+            $this->session->set_flashdata('error','Incorrect lecture assess code.');
+            redirect("");
+        }
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Input a nickname to continue.');
+            $this->session->set_flashdata('lecture',$lecture);
+            redirect("");
+        }
         
         // load model & get data
         $user = $this->session->userdata('user_id');
@@ -118,6 +128,17 @@ class Chat extends CI_Controller {
      */
     public function thread($message)
     {
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            redirect("");
+        }
+        
         // load model & get data
         $user = $this->session->userdata('user_id');
         $out['row'] = $this->Thread_model->load_message($user,$message);
@@ -135,11 +156,31 @@ class Chat extends CI_Controller {
      */
     public function get_author($message)
     {
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            redirect("");
+        }
+        
+        // validate user role
+        if (!$this->checkUserRole(USER_TYPE_INSTRUCTOR)) {
+            $out = array(
+                            "message" => "Invalid user role. Login to instructor account to carry out the action."
+                        );
+            echo json_encode($out);
+            return;
+        }
+        
         // load model & get data
-        $author = $this->Thread_model->load_author($message);
+        $author = $this->Thread_model->get_author($message);
         
         // return
-        echo $author;
+        echo json_encode($author);
     }
     
     
@@ -151,6 +192,15 @@ class Chat extends CI_Controller {
      */
     public function message()
     {
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata('lecture',$post['input-message-lect']);
+            redirect("");
+        }
+        
         // load model
         $this->load->model('Lecture_model');
         $this->load->model('Rake_model');
@@ -221,6 +271,17 @@ class Chat extends CI_Controller {
      */
     public function respond()
     {   
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            redirect("");
+        }
+        
         // process message
         $post = $_POST;
         $message['t_id'] = $this->Thread_model->get_thread($post['respond-id']);
@@ -248,14 +309,25 @@ class Chat extends CI_Controller {
      */
     public function vote()
     {
-        // process vote
+        // get POST
         $post = $_POST;
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($post['vote-message'])
+                );
+            redirect("");
+        }
+        
+        // process vote
         $data['m_id'] = $post['vote-message'];
         $data['u_id'] = $this->getUserID();
         $data['vote'] = $post['vote-value'];
         $data['v_time'] = $this->getTimeString();
-        
-        // TODO: get user data
         
         // send to MODEL
         $this->Thread_model->insert_vote($data);
@@ -275,8 +347,21 @@ class Chat extends CI_Controller {
      */
     public function hand()
     {
+        // get POST
+        $post = $_POST:
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($post['hand-message'])
+                );
+            redirect("");
+        }
+        
         // process vote
-        $post = $_POST;
         $data['m_id'] = $post['hand-message'];
         $data['u_id'] = $this->getUserID();
         $data['hand'] = $post['hand-value'];
@@ -302,6 +387,17 @@ class Chat extends CI_Controller {
      */
     public function get_hands($message)
     {
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            redirect("");
+        }
+        
         // request from MODEL
         $hands = $this->Thread_model->load_hands($message);
         
@@ -325,12 +421,21 @@ class Chat extends CI_Controller {
         // process message
         $post = $_POST;
         
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($post['input-message-lect'])
+                );
+            redirect("");
+        }
         
         // insert thread
         $thread['class_id'] = $post['input-message-class'];
-        $thread['lect_id'] = $post['input-message-lect'];
+        $thread['lect_id'] = $this->Thread_modal->get_lect($post['input-message-lect']);
         $message = $this->Thread_model->insert_thread($thread);
-        
         
         // insert message
         $message['m_type'] = MESSAGE_TYPE_POLL;
@@ -340,7 +445,6 @@ class Chat extends CI_Controller {
         // $message['m_head'] = $post['input-message-head'];
         $message['m_body'] = $post['input-message-body'];
         $row = $this->Thread_model->insert_message($message);
-        
         
         // validate & insert poll option
         $max_opt = 4;
@@ -358,7 +462,6 @@ class Chat extends CI_Controller {
         
         $poll['m_id'] = $row['m_id'];
         $result = $this->Poll_model->insert_opt($poll);
-        
         
         // TODO: organize output
         $out['id'] = $row['m_id'];
@@ -433,6 +536,28 @@ class Chat extends CI_Controller {
     {
         // load model
         $this->load->model('Lecture_model');
+        
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata(
+                    'error','Session timeout. Login again.'
+                );
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            redirect("");
+        }
+        
+        
+        // validate user role
+        if (!$this->checkUserRole(USER_TYPE_INSTRUCTOR)) {
+            $out = array(
+                            "message" => "Invalid user role. Login to instructor account to carry out the action."
+                        );
+            echo json_encode($out);
+            return;
+        }
         
         
         // process inputting data
@@ -546,11 +671,11 @@ class Chat extends CI_Controller {
     private function checkUserRole($target)
     {
         // check if logined already
-        if($this->session->userdata('user_type') == $target) {
-            return true;
+        if(intval($this->session->userdata('user_type')) !== $target) {
+            return false;
         }
         
-        return false;
+        return true;
     }
     
     

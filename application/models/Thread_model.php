@@ -166,26 +166,6 @@ class Thread_model extends CI_Model {
     
     
     /**
-     *  Return Thread ID only
-     *
-     *  @param  $m      message id
-     *  @return $id     thread id
-     */
-    public function load_author($m)
-    {
-        $result = $this->db
-                    ->select('u.u_name')
-                    ->from('message AS m')
-                    ->join('user_log AS u', 'm.u_id = u.log_id')
-                    ->where('m_id', $m)
-                    ->get()->row();
-        
-        return $result->u_name;
-    }
-    
-    
-    
-    /**
      *  Load Labels of $message
      *
      *  @param  $m      message id
@@ -242,5 +222,45 @@ class Thread_model extends CI_Model {
     }
     
     
-
+    
+    /**
+     *  Return Lecture Thread only
+     *
+     *  @param  $m      message id
+     *  @return $id     thread id
+     */
+    public function get_lect($m)
+    {
+        $result = $this->db
+                    ->select('t.lect_ref AS lect_ref')
+                    ->from('message AS m')
+                    ->join('thread AS t', 'm.m_id = t.m_id')
+                    ->where('m_id', $m)
+                    ->get()->row();
+        
+        return $result->lect_ref;
+    }
+    
+    
+    
+    /**
+     *  Return Author name, and anonymous settings
+     *
+     *  @param  $m      message id
+     *  @return $id     thread id
+     */
+    public function get_author($m)
+    {
+        $result = $this->db
+                    ->select(['u.u_name', 'm.u_show'])
+                    ->from('message AS m')
+                    ->join('user_log AS u', 'm.u_id = u.log_id')
+                    ->where('m_id', $m)
+                    ->get()->row();
+        
+        return $result;
+    }
+    
+    
+    
 }
