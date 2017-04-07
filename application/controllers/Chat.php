@@ -348,7 +348,7 @@ class Chat extends CI_Controller {
     public function hand()
     {
         // get POST
-        $post = $_POST:
+        $post = $_POST;
         
         // validate user
         if (!$this->checkLogin()) {
