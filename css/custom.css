@@ -498,6 +498,8 @@ div > .respond-modal-social-control {
 }
 .social-item-content {
     padding: 8px 0px;
+    height: 30px;
+    overflow-y: hidden;
 }
 
 
@@ -506,19 +508,21 @@ div > .respond-modal-social-control {
 .poll-modal > .modal-dialog {
     position: absolute;
     width: 80%;
-    margin-left: 10%;
+    left: 50%;
+    margin-left: -40%;
     margin-top: 20%;
 }
 @media (max-width: 767px) {
     .poll-modal > .modal-dialog {
         position: absolute;
         width: 80%;
-        margin-left: 10%;
+        left: 50%;
+        margin-left: -40%;
         margin-top: 20%;
     }
 }
 .poll-modal > .modal-dialog > .modal-content > .modal-body {
-    height: 420px;
+    max-height: 440px;
     overflow-x: hidden;
     overflow-y: scroll;
 }
@@ -529,11 +533,134 @@ div > .respond-modal-social-control {
 }
 
 #poll-vote-opt > .poll-vote-input {
-    height: 74px;
+    display: inline-block;
+    min-height: 74px;
+    margin: 5px;
     padding-top: 15px;
     padding-bottom: 15px;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.1;
+    white-space: normal;
     vertical-align: middle;
-    overflow-y: hidden;
+    overflow-y: visible;
+}
+.poll-vote-input.col-xs-12,
+.poll-vote-input.col-sm-12,
+.poll-vote-input.col-md-12,
+.poll-vote-input.col-lg-12 {
+    width: calc(100% - 10px);
+}
+.poll-vote-input.col-xs-11,
+.poll-vote-input.col-sm-11,
+.poll-vote-input.col-md-11,
+.poll-vote-input.col-lg-11 {
+    width: calc(100% / 12 * 11 - 10px);
+}
+.poll-vote-input.col-xs-10,
+.poll-vote-input.col-sm-10,
+.poll-vote-input.col-md-10,
+.poll-vote-input.col-lg-10 {
+    width: calc(100% / 12 * 10 - 10px);
+}
+.poll-vote-input.col-xs-9,
+.poll-vote-input.col-sm-9,
+.poll-vote-input.col-md-9,
+.poll-vote-input.col-lg-9 {
+    width: calc(100% / 12 * 9 - 10px);
+}
+.poll-vote-input.col-xs-8,
+.poll-vote-input.col-sm-8,
+.poll-vote-input.col-md-8,
+.poll-vote-input.col-lg-8 {
+    width: calc(100% / 12 * 8 - 10px);
+}
+.poll-vote-input.col-xs-7,
+.poll-vote-input.col-sm-7,
+.poll-vote-input.col-md-7,
+.poll-vote-input.col-lg-7 {
+    width: calc(100% / 12 * 7 - 10px);
+}
+.poll-vote-input.col-xs-6,
+.poll-vote-input.col-sm-6,
+.poll-vote-input.col-md-6,
+.poll-vote-input.col-lg-6 {
+    width: calc(100% / 12 * 6 - 10px);
+}
+.poll-vote-input.col-xs-5,
+.poll-vote-input.col-sm-5,
+.poll-vote-input.col-md-5,
+.poll-vote-input.col-lg-5 {
+    width: calc(100% / 12 * 5 - 10px);
+}
+.poll-vote-input.col-xs-4,
+.poll-vote-input.col-sm-4,
+.poll-vote-input.col-md-4,
+.poll-vote-input.col-lg-4 {
+    width: calc(100% / 12 * 4 - 10px);
+}
+.poll-vote-input.col-xs-3,
+.poll-vote-input.col-sm-3,
+.poll-vote-input.col-md-3,
+.poll-vote-input.col-lg-3 {
+    width: calc(100% / 12 * 3 - 10px);
+}
+.poll-vote-input.col-xs-2,
+.poll-vote-input.col-sm-2,
+.poll-vote-input.col-md-2,
+.poll-vote-input.col-lg-2 {
+    width: calc(100% / 12 * 2 - 10px);
+}
+.poll-vote-input.col-xs-1,
+.poll-vote-input.col-sm-1,
+.poll-vote-input.col-md-1,
+.poll-vote-input.col-lg-1 {
+    width: calc(100% / 12 * 1 - 10px);
+}
+#poll-vote-opt > .poll-vote-input:nth-child(1) {
+    background-color: #337AB7;
+    color: #FFF;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(2) {
+    background-color: #5CB85C;
+    color: #FFF;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(3) {
+    background-color: #F0AD4E;
+    color: #FFF;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(4) {
+    background-color: #09534F;
+    color: #FFF;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(5) {
+    background-color: #DFF0D8;
+    color: #3C763D;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(6) {
+    background-color: #D9EDF7;
+    color: #31708F;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(7) {
+    background-color: #FCF8E3;
+    color: #8A6D3B;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(8) {
+    background-color: #F2DEDE;
+    color: #A94442;
+}
+#poll-vote-opt > .poll-vote-input:nth-child(9) {
+    background-color: #F5F5F5;
+    color: #333;
+}
+.poll-item {
+    height: 45px;
+    border-bottom: 1px solid #f0f0f0;
+    margin-bottom: 10px;
+}
+.poll-item:last-child {
+    border-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 
