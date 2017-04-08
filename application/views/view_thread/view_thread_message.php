@@ -26,7 +26,8 @@
 <!-- ** Messages START ** -->
 <?php 
     if ($data['m_type'] == MESSAGE_TYPE_OPENER || 
-        $data['m_type'] == MESSAGE_TYPE_REPLY):
+        $data['m_type'] == MESSAGE_TYPE_REPLY ||
+        $data['m_type'] == MESSAGE_TYPE_RESPOND):
 ?>
     <div class="forum-message" id="forum-message-view[<?= $data['m_id']; ?>]" value="<?= $data['m_id']; ?>">
         <!-- Vote btn & counter -->
@@ -96,7 +97,7 @@
 <?php 
     if ($data['m_type'] == MESSAGE_TYPE_OPENER):
 ?>
-    <!-- Thread HEAD -->
+    <!-- Number of Respond -->
     <div class="thread-reply-head" id="thread-reply-head-view">
         <div class="" id="">
             <!-- TODO: Count no. of reply -->
