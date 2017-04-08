@@ -22,6 +22,7 @@
                 <textarea class="form-control" name="input-message-body" id="input-message-body" placeholder="Poll Question" autocomplete="off" ></textarea>
                 <br/>
                 
+                
                 <div>
                     <!-- Poll Option -->
                     <!-- (1) -->
@@ -33,7 +34,7 @@
                     <!-- (4) -->
                     <input class="form-control input-poll-opt" type="text" name="input-poll-opt[]" id="input-poll-opt-4" placeholder="Option #4" autocomplete="off"></input>
                 </div>
-                <br/>
+                
                 
                 <!-- Other fields -->
                 <!-- HIDDEN: AUTO COMPLETE BY JS / PHP -->
@@ -41,8 +42,29 @@
                 <input class="form-control" type="hidden" name="input-message-class" id="input-message-class" value="<?= /* TODO: NEED REVIEW: Class ID here. */ $subject; ?>" autocomplete="off"></input>
                 <!-- lect id -->
                 <input class="form-control" type="hidden" name="input-message-lect" id="input-message-lect" value="<?= $subject; ?>" autocomplete="off"></input>
-
-
+                
+                <!-- Start Time -->
+                <div style="height: 50px; padding-top: 15px; padding-bottom: 15px;">
+                    <!-- Anonymous -->
+                    <label class="col-xs-4 col-sm-3 col-md-2 col-lg-2" style="padding-left: 5px;">
+                        <!-- Start NOW -->
+                        <input type="radio" class="form-check-input" name="input-poll-type" id="input-poll-start" value="<?= MESSAGE_TYPE_POLL_START; ?>" autocomplete="off" checked></input>
+                        <span>
+                            Start Now
+                        </span>
+                    </label>
+                    <!-- Anonymous -->
+                    <label class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+                        <!-- Start NOW -->
+                        <input type="radio" class="form-check-input" name="input-poll-type" id="input-poll-save" value="<?= MESSAGE_TYPE_POLL_SAVE; ?>" autocomplete="off"></input>
+                        <span>
+                            Save &amp; Start Later
+                        </span>
+                    </label>
+                </div>
+                <br/>
+                
+                
                 <div>
                     <button class="btn btn-primary forum-quick-input-control" id="poll-create-submit">
                         Create

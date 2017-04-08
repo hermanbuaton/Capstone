@@ -4,12 +4,14 @@
 
     <!-- Modal content START -->
     <div class="modal-content">
-
+        
+        
         <div class="modal-header">
             <button type="button" class="close" id="poll-vote-close" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">Polling</h4>
         </div>
-
+        
+        
         <div class="modal-body">
             
             <form id="poll-vote-form">
@@ -23,13 +25,36 @@
             </form>
             
         </div>
+        
+        
+        <?php 
+            if ($this->session->userdata('user_type') == USER_TYPE_INSTRUCTOR):
+        ?>
+            <div class="modal-footer">
+                
+                <!-- Start / End Polling -->
+                <div class="pull-left">
+                    <button type="button" class="btn btn-danger poll-instructor-control hidden" id="poll-vote-start" value="-1">
+                        Start Polling
+                    </button>
+                    <button type="button" class="btn btn-danger poll-instructor-control" id="poll-vote-stop" value="-1">
+                        End Polling
+                    </button>
+                </div>
 
-        <!--
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        </div>
-        -->
+                <!-- View Result -->
+                <div class="pull-right">
+                    <button type="button" class="btn btn-link poll-instructor-control" id="poll-vote-switch" value="-1">
+                        &nbsp; View Result &nbsp;<i class="fa fa-arrow-right"></i>
+                    </button>
+                </div>
 
+            </div>
+        <?php
+            endif;
+        ?>
+        
+        
     </div>
     <!-- Modal content END -->
         

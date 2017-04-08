@@ -41,6 +41,9 @@
         const role = parseInt("<?= $this->session->userdata('user_type'); ?>");
         const USER_ROLE_INSTRUCTOR = "<?= USER_TYPE_INSTRUCTOR; ?>";
         const USER_ROLE_STUDENT = "<?= USER_TYPE_STUDENT; ?>";
+        const MESSAGE_TYPE_POLL_START = "<?= MESSAGE_TYPE_POLL_START; ?>";
+        const MESSAGE_TYPE_POLL_SAVE = "<?= MESSAGE_TYPE_POLL_SAVE; ?>";
+        const MESSAGE_TYPE_POLL_STOP = "<?= MESSAGE_TYPE_POLL_STOP; ?>";
         const MESSAGE_ANONYMOUS_YES = "<?= MESSAGE_ANONYMOUS_YES; ?>";
         const MESSAGE_ANONYMOUS_NO = "<?= MESSAGE_ANONYMOUS_NO; ?>";
         const SET_ANONYMOUS_YES = "<?= SET_ANONYMOUS_YES; ?>";
@@ -53,7 +56,6 @@
         }
         
         google.charts.load('current', {'packages':['corechart']});
-        // google.charts.setOnLoadCallback(drawChart);
         
         
         
@@ -140,7 +142,8 @@
                             hide = final;
                         } else {
                             interim += e.results[i][0].transcript;
-                            if (i%4 == 0) show += interim;
+                            if (i%4 == 0) 
+                                show += interim;
                             hide += interim;
                         }
                         
@@ -454,26 +457,30 @@
             stopDictation();
         })
         
+        // respond submit
+        $('#respond-submit').on("click", function(e) {
+            
+            // get response
+            var re = $('#respond-textarea').val();
+            console.log(re);
+
+            // submit if length > 0
+            if (re.length > 0) {
+                submitRespond();
+                $('#thread-respond').modal('hide');
+            }
+            
+            // return
+            return false;
+            
+        });
+        
         //  end respond on modal close
         $('#thread-respond').on("hidden.bs.modal", function(e) {
-            
             // stop speech recognition
             stopDictation();
             
-            // if click on SUBMIT button
-            if($(e.target).is('#respond-submit')){
-                
-                // get response
-                var re = $('#respond-body').val();
-
-                // submit if length > 0
-                if (re.length > 0)
-                    submitRespond();
-                
-            } else {
-                return false;
-            }
-            
+            // return
             return false;
         });
         
@@ -551,10 +558,93 @@
         
         //  submit vote
         $("#poll-vote-form").on("click", ".poll-vote-input", function() {
-            console.log(this.value);
             respondPoll(this.value);
             return false;
         });
+        
+        
+        
+        /** ========================================
+        *   View All Polls
+        *   ======================================== */
+        
+        //  open modal
+        $("#poll-view").on('shown.bs.modal', function() {
+            setPollListModal();
+            return false;
+        });
+        
+        //  click on div
+        //  start respond on modal start
+        $("#poll-list").on("click", ".poll-item", function(e) {
+            
+            // close modal
+            $('#poll-view').modal('hide');
+            
+            if (role == USER_ROLE_STUDENT
+                && $(this).find('.poll-item-status').attr('value') > 0) {
+                
+                // if voted, go to result
+                setPollReviewModal($(this).attr('value'));
+                
+            }
+            else if (role == USER_ROLE_INSTRUCTOR
+                || $(this).find('.poll-item-status').attr('value') == 0) {
+                
+                // if not voted || teacher, go to vote
+                setPollVoteModal($(this).attr('value'));
+                
+            }
+            
+            return false;
+        });
+        
+        
+        //  START polling
+        $('#poll-vote-start').on("click", function(e) {
+            startPoll($(this).attr('value'));
+            return false;
+        });
+        $('#poll-result-start').on("click", function(e) {
+            startPoll($(this).attr('value'));
+            return false;
+        });
+        
+        //  END polling
+        $('#poll-vote-stop').on("click", function(e) {
+            endPoll($(this).attr('value'));
+            return false;
+        });
+        $('#poll-result-stop').on("click", function(e) {
+            endPoll($(this).attr('value'));
+            return false;
+        });
+        
+        
+        //  switch
+        //  FROM vote modal
+        //  TO result modal
+        $('#poll-vote-switch').on("click", function(e) {
+            $('#poll-vote').modal('hide');
+            setPollReviewModal($(this).attr('value'));
+            return false;
+        });
+        
+        //  switch
+        //  FROM result modal
+        //  TO vote modal
+        $('#poll-result-switch').on("click", function(e) {
+            $('#poll-result').modal('hide');
+            setPollVoteModal($(this).attr('value'));
+            return false;
+        });
+        
+        
+        // poll result on close
+        $('#poll-result').on("hidden.bs.modal", function(e) {
+            $('#poll-result-error').removeClass('hidden');
+            $('#poll-result-error').addClass('hidden');
+        })
         
         
         
@@ -876,8 +966,8 @@
             $('#respond-textarea').val('');
             $('#respond-voice-start').addClass('hidden');
             $('#respond-voice-stop').removeClass('hidden');
-
-
+            
+            
             // set text
             $('#thread-question-head').append(
                 $('<h2/>').text($(control).find('.forum-thread-head').text())
@@ -1038,9 +1128,6 @@
         //  submit poll
         function createPoll(form) {
             
-            /* get input */
-            console.log($(form).serialize());
-            
             // (1) to database
             $.ajax({
                 type: "POST",
@@ -1049,27 +1136,29 @@
 
                 success: function(data) {
                     
-                    try {
-                        var d = $.parseJSON(data);
-
-                        // do nothing if user not instructor
-                        if (d['message'] !== null
-                           && d['message'] !== undefined) {
-                            // redirect
-                            processRedirect(data);
-                            return false;
-                        }
-                    } catch(e) { /* donothing */ }
+                    var d = $.parseJSON(data);
                     
-                    // (2) to socket server
-                    var out = {"room": subject, "data": data};
-                    socket.emit('poll start', out);
+                    // redirect if user not instructor
+                    if (d['message'] !== null
+                       && d['message'] !== undefined) {
+                        // redirect
+                        processRedirect(data);
+                        return false;
+                    }
+                    
+                    // broadcast poll if m_type == MESSAGE_TYPE_POLL_START
+                    if (parseInt(d['type']) == parseInt(MESSAGE_TYPE_POLL_START)) {
+                        // (2) to socket server
+                        var out = {"room": subject, "data": data};
+                        socket.emit('poll start', out);
+                    }
                     
                 }
             });
             
             cancelPoll();
             return false;
+            
         }
         
         
@@ -1086,20 +1175,55 @@
         function promptPoll(d) {
             
             var data = $.parseJSON(d);
+            var id = data.id;
+            var type = data.type;
             var opt = data.opt;
             var count = 1;
+            var arrange = "";
             
             // clear previous poll data
             $('#poll-vote-body').html('');
             $('#poll-vote-opt').html('');
+            try {
+                $('#poll-vote-start').removeClass('hidden');
+                $('#poll-vote-stop').removeClass('hidden');
+            } catch(e) { /* do nothing */ }
+            
+            // define choice btn arrangement
+            if (opt.length % 2 !== 0
+                && opt.length <= 4) {
+                arrange = "btn poll-vote-input col-xs-12 col-sm-12 col-md-12 col-lg-12";
+            }
+            else {
+                arrange = "btn poll-vote-input col-xs-12 col-sm-6 col-md-6 col-lg-6";
+            }
+            
+            // control
+            try {
+                $('#poll-vote-start').attr('value', id);
+                $('#poll-vote-stop').attr('value', id);
+                $('#poll-vote-switch').attr('value', id);
+                
+                if (type == MESSAGE_TYPE_POLL_START) {
+                    $('#poll-vote-start').addClass('hidden');
+                }
+                else if (type == MESSAGE_TYPE_POLL_SAVE) {
+                    $('#poll-vote-stop').addClass('hidden');
+                }
+                else if (type == MESSAGE_TYPE_POLL_STOP) {
+                    $('#poll-vote-start').addClass('hidden');
+                    $('#poll-vote-stop').addClass('hidden');
+                }
+            } catch(e) { /* do nothing */ }
             
             // set text on screen
             $('#poll-vote-body').append($('<h2/>').text(data.body));
             
+            // display choices
             opt.forEach(function(row) {
                 count++;
                 var b = $('<button/>', {
-                            class: "form-control poll-vote-input",
+                            class: arrange,
                             id: "poll-vote-input[" + count + "]",
                             value: row.opt_id
                         });
@@ -1126,14 +1250,19 @@
 
                 success: function(data) {
                     
-                    // (2) to socket server
                     var d = $.parseJSON(data);
-                    if (d.message=="Already Vote") { return false; }
-                    
-                    var out = {"room": subject, "data": d.opt};
-                    socket.emit('poll vote', out);
-                    
                     reviewPoll(data);
+                    
+                    // if already vote, DO NOT broadcast
+                    if (d.message !== "Success") { 
+                        $('#poll-result-error').removeClass('hidden');
+                        $('#poll-result-error').html(d.message);
+                        return false; 
+                    }
+                    
+                    // (2) to socket server
+                    var out = {"room": subject, "data": data};
+                    socket.emit('poll vote', out);
                     
                 }
             });
@@ -1144,54 +1273,43 @@
         
         
         //  update poll result
-        function updatePoll(d) {
-            console.log("update");
-            console.log(d);
-                        
-            drawChart(d, document.getElementById('poll-result-chart'));
+        function updatePoll(data) {
+            var raw = $.parseJSON(data);
+            var m = raw.poll;
             
-            d.forEach(function(row) {
-                
-                /**
-                 *  NOTES:
-                 *  for some reason jQuery not working here
-                 *  *** use document.getElementbyId ***
-                 */
-                var c = 'poll-result-opt[' + row.opt_id + ']';
-                var ct = document.getElementById(c);
-                ct.innerHTML = row.opt_txt + "  Vote: " + row.vote;
-                
-            });
+            if (parseInt($('#poll-result-id').attr("value")) == parseInt(m.m_id)) {
+            
+                var d = raw.opt;
+
+                // textual representation
+                d.forEach(function(row) {
+
+                    /**
+                     *  NOTES:
+                     *  for some reason jQuery not working here
+                     *  *** use document.getElementbyId ***
+                     */
+                    var c = 'poll-result-opt[' + row.opt_id + ']';
+                    var ct = document.getElementById(c);
+                    ct.innerHTML = row.opt_txt + "  Vote: " + row.vote;
+
+                });
+
+                // chart representation
+                drawChart(d, document.getElementById('poll-result-chart'));
+            
+            }
+            
+            return false;
         }
         
         
         //  poll result
         function reviewPoll(d) {
             
-            var id = parseInt(d) || -1;
-            
-            if (id != -1) {
-                // TODO: ajax to get poll data
-                console.log("no poll data yet");
-                
-                /*
-                // TODO: retrieve from database
-                $.ajax({
-                    type: "POST",
-                    url: "<?php echo site_url("Chat/poll_result"); ?>",
-                    data: {"id": id},
-
-                    success: function(data) {
-                        // TODO: set interface
-                    }
-                });
-                */
-                
-            } else {
-                console.log("contains data");
-            }
-            
             var data = $.parseJSON(d);
+            var id = data.id;
+            var type = data.type;
             var poll = data.poll;
             var opt = data.opt;
             var count = 1;
@@ -1199,10 +1317,37 @@
             $('#poll-result-id').html('');
             $('#poll-result-body').html('');
             $('#poll-result-count').html('');
+            try {
+                $('#poll-result-start').removeClass('hidden');
+                $('#poll-result-stop').removeClass('hidden');
+            } catch(e) { /* do nothing */ }
+            
+            
+            // control
+            try {
+                $('#poll-result-start').attr('value', id);
+                $('#poll-result-stop').attr('value', id);
+                $('#poll-result-switch').attr('value', id);
+                
+                if (type == MESSAGE_TYPE_POLL_START) {
+                    $('#poll-result-start').addClass('hidden');
+                }
+                else if (type == MESSAGE_TYPE_POLL_SAVE) {
+                    $('#poll-result-stop').addClass('hidden');
+                }
+                else if (type == MESSAGE_TYPE_POLL_STOP) {
+                    $('#poll-result-start').addClass('hidden');
+                    $('#poll-result-stop').addClass('hidden');
+                }
+            } catch(e) { /* do nothing */ }
             
             // set text on screen
             $('#poll-result-body').append($('<h2/>').text(poll.m_body));
             
+            // draw chart on screen
+            drawChart(opt, document.getElementById('poll-result-chart'));
+            
+            // textual representation of result
             opt.forEach(function(row) {
                 count++;
                 var b = $('<p/>', {
@@ -1215,6 +1360,132 @@
             
             // open modal
             $('#poll-result').modal('toggle');
+            
+        }
+        
+        
+        //  get list of polls
+        function setPollListModal() {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/load_poll"); ?>" + "/" + subject;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    $('#poll-list').html(data);
+                }
+            });
+            
+        }
+        
+        
+        //  get text of polls
+        function setPollVoteModal(m) {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/poll_get"); ?>" + "/" + m;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    promptPoll(data);
+                }
+            });
+            
+        }
+        
+        
+        //  get result of polls
+        function setPollReviewModal(m) {
+            
+            // set url
+            var dest = "<?php echo site_url("Chat/poll_result"); ?>" + "/" + m;
+            
+            // (1) to database
+            $.ajax({
+                type: "GET",
+                url: dest,
+
+                success: function(data) {
+                    reviewPoll(data);
+                }
+            });
+            
+        }
+        
+        
+        //  start a saved poll
+        function startPoll(m) {
+            
+            // (1) to database
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/poll_update"); ?>",
+                data: {"id": m, "status": MESSAGE_TYPE_POLL_START},
+
+                success: function(data) {
+                    
+                    var d = $.parseJSON(data);
+                    
+                    // redirect if user not instructor
+                    if (d['message'] !== null
+                       && d['message'] !== undefined) {
+                        // redirect
+                        processRedirect(data);
+                        return false;
+                    }
+                    
+                    // broadcast poll if m_type == MESSAGE_TYPE_POLL_START
+                    if (parseInt(d['type']) == parseInt(MESSAGE_TYPE_POLL_START)) {
+                        // (2) to socket server
+                        var out = {"room": subject, "data": data};
+                        socket.emit('poll start', out);
+                    }
+                    
+                }
+            });
+            
+            return false;
+            
+        }
+        
+        
+        //  start a saved poll
+        function endPoll(m) {
+            
+            // (1) to database
+            $.ajax({
+                type: "POST",
+                url: "<?php echo site_url("Chat/poll_update"); ?>",
+                data: {"m_id": m, "status": MESSAGE_TYPE_POLL_STOP},
+
+                success: function(data) {
+                    
+                    var d = $.parseJSON(data);
+                    
+                    // redirect if user not instructor
+                    if (d['message'] !== null
+                       && d['message'] !== undefined) {
+                        // redirect
+                        processRedirect(data);
+                        return false;
+                    }
+                    
+                    // do nothing
+                    $('#poll-vote-stop').addClass('hidden');
+                    $('#poll-result-stop').addClass('hidden');
+                    
+                }
+            });
+            
+            return false;
             
         }
         

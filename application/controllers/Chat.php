@@ -77,6 +77,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_login');
         $this->load->view('view_chat/view_chat_settings');
         $this->load->view('view_chat/view_chat_modal');
+        $this->load->view('view_chat/view_chat_poll_list');
         $this->load->view('view_chat/view_chat_poll_create');
         $this->load->view('view_chat/view_chat_poll_vote');
         $this->load->view('view_chat/view_chat_poll_result');
@@ -117,6 +118,39 @@ class Chat extends CI_Controller {
         
         // return
         $this->load->view('view_chat/view_chat_message',$out);
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Load ALL polls
+     *  ============================================================
+     */
+    public function load_poll($lecture='')
+    {
+        // load modal
+        $this->load->model('Poll_model');
+        
+        // validate lecture ref
+        if (!$this->checkLecture($lecture)) {
+            $this->session->set_flashdata('error','Incorrect lecture assess code.');
+            $this->echo_redirect("invalid lecture code", "");
+        }
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Input a nickname to continue.');
+            $this->session->set_flashdata('lecture',$lecture);
+            $this->echo_redirect("session timeout", "");
+        }
+        
+        // load model & get data
+        $user = $this->session->userdata('user_id');
+        $out['row'] = $this->Poll_model->load_poll($user,$lecture);
+        
+        // return
+        $this->load->view('view_chat/view_chat_poll_item',$out);
     }
     
     
@@ -291,7 +325,7 @@ class Chat extends CI_Controller {
         $message['u_id'] = $this->getUserID();
         $message['u_show'] = MESSAGE_ANONYMOUS_NO;
         $message['m_time'] = $this->getTimeString();
-        $message['m_body'] = $post['respond-body'];
+        $message['m_body'] = $post['respond-textarea'];
         
         // send to MODEL
         // on return put data into $out
@@ -397,7 +431,7 @@ class Chat extends CI_Controller {
                 );
             
             $this->echo_redirect("session timeout", "");
-            return;
+            return false;
         }
         
         // request from MODEL
@@ -439,7 +473,7 @@ class Chat extends CI_Controller {
         $message = $this->Thread_model->insert_thread($thread);
         
         // insert message
-        $message['m_type'] = MESSAGE_TYPE_POLL;
+        $message['m_type'] = $post['input-poll-type'];
         $message['u_id'] = $this->getUserID();
         $message['u_show'] = $post['input-message-anonymous'];
         $message['m_time'] = $this->getTimeString();
@@ -447,7 +481,7 @@ class Chat extends CI_Controller {
         $message['m_body'] = $post['input-message-body'];
         $row = $this->Thread_model->insert_message($message);
         
-        // validate & insert poll option
+        // validate poll option
         $max_opt = 4;
         $count = 0;
         for ($i=0; $i<$max_opt; $i++) {
@@ -461,18 +495,53 @@ class Chat extends CI_Controller {
             }
         }   // end FOR loop
         
+        // send to model, insert options
         $poll['m_id'] = $row['m_id'];
         $result = $this->Poll_model->insert_opt($poll);
         
-        // TODO: organize output
+        // organize output
         $out['id'] = $row['m_id'];
         $out['body'] = $row['m_body'];
+        $out['type'] = $row['m_type'];
         $out['time'] = $row['m_time'];
         $out['opt'] = $result;
         
         // return
         echo json_encode($out);
         return;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  Update existing Poll
+     *  ============================================================
+     */
+    public function poll_update()
+    {
+        // load model
+        $this->load->model('Poll_model');
+        
+        // process message
+        $post = $_POST;
+        $id = $post['id'];
+        $type = $post['status'];
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Session timeout. Login again.');
+            $this->session->set_flashdata('lecture',$post['input-message-lect']);
+            
+            $this->echo_redirect("session timeout", "");
+            return;
+        }
+        
+        // if update success
+        // -> get poll data & output
+        if ($this->Poll_model->update_type($id, $type) === TRUE) {
+            $this->poll_get(id);
+        }
     }
     
     
@@ -494,25 +563,113 @@ class Chat extends CI_Controller {
         $data['p_time'] = $this->getTimeString();
         $data['opt_id'] = $post['opt'];
         
-        // verify if User already vote
-        if ($this->Poll_model->validateUser($data['u_id'],$data['opt_id']) === true) {
+        $u_pass = $this->Poll_model->validateUser($data['u_id'],$data['opt_id']);
+        $p_pass = $this->Poll_model->validatePoll($data['opt_id']);
+        
+        if ($u_pass === TRUE && $p_pass === TRUE) {
             
             // valid to vote -> record vote
             $re = $this->Poll_model->insert_vote($data);
-            
-            // organize output
-            $poll = $this->Poll_model->get_poll($data['opt_id']);
-            $out['poll'] = $poll['poll'];
-            $out['opt'] = $poll['opt'];
-            $out['vote'] = $data['opt_id'];
             $out['message'] = 'Success';
             
-        } else {
+        } elseif ($u_pass === FALSE) {
             
             // voted already -> return error
-            $out['message'] = 'Already Vote';
+            $out['message'] = 'You have already voted.';
+            
+        } elseif ($p_pass === FALSE) {
+            
+            // poll closed -> return error
+            $out['message'] = 'Poll closed or not yet started.';
             
         }
+        
+        // organize output
+        $m = $this->Poll_model->get_pollid($data['opt_id']);
+        $poll = $this->Poll_model->get_poll($m);
+        $out['id'] = $poll['id'];
+        $out['type'] = $poll['type'];
+        $out['poll'] = $poll['poll'];
+        $out['opt'] = $poll['opt'];
+        $out['vote'] = $data['opt_id'];
+        
+        // return
+        echo json_encode($out);
+        return;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  get body & opt of a SINGLE poll
+     *  ============================================================
+     */
+    public function poll_get($m)
+    {
+        // load model
+        $this->load->model('Poll_model');
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Session timeout. Login again.');
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            
+            $this->echo_redirect("session timeout", "");
+            return;
+        }
+        
+        // get results from model
+        $poll = $this->Poll_model->get_poll($m);
+        $row = $poll['poll'];
+        
+        // organize output
+        $out['id'] = $row->m_id;
+        $out['body'] = $row->m_body;
+        $out['type'] = $row->m_type;
+        $out['time'] = $row->m_time;
+        $out['opt'] = $poll['opt'];
+        
+        // return
+        echo json_encode($out);
+        return;
+    }
+    
+    
+    
+    /**
+     *  ============================================================
+     *  get result of a SINGLE poll
+     *  ============================================================
+     */
+    public function poll_result($m)
+    {
+        // load model
+        $this->load->model('Poll_model');
+        
+        // validate user
+        if (!$this->checkLogin()) {
+            $this->session->set_flashdata('error','Session timeout. Login again.');
+            $this->session->set_flashdata(
+                    'lecture',$this->Thread_model->get_lect($message)
+                );
+            
+            $this->echo_redirect("session timeout", "");
+            return;
+        }
+        
+        // get results from model
+        $poll = $this->Poll_model->get_poll($m);
+        
+        // organize output
+        $out['id'] = $poll['id'];
+        $out['type'] = $poll['type'];
+        $out['poll'] = $poll['poll'];
+        $out['opt'] = $poll['opt'];
+        $out['vote'] = $data['opt_id'];
+        $out['message'] = 'Success';
         
         // return
         echo json_encode($out);
@@ -710,7 +867,10 @@ class Chat extends CI_Controller {
      */
     private function echo_redirect($message, $location)
     {
-        $out = array("message" => $message, "location" => $location);
+        $out = array(   "auth" => "failed", 
+                        "message" => $message, 
+                        "location" => $location
+                    );
         echo json_encode($out);
         
         return;

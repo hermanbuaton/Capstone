@@ -49,10 +49,15 @@
                             Start a Poll
                         </a>
                     </li>
-                    <li class="divider"></li>
                 <?php
                     endif;
                 ?>
+                <li>
+                    <a href="#" id="poll-list-toggle" data-toggle="modal" data-target="#poll-view">
+                        View all Polls
+                    </a>
+                </li>
+                <li class="divider"></li>
                 
                 <!-- ======================================== -->
                 <!-- Others

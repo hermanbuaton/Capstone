@@ -109,7 +109,10 @@ defined('USER_TYPE_STUDENT') OR define('USER_TYPE_STUDENT', 1);
 defined('MESSAGE_TYPE_OPENER') OR define('MESSAGE_TYPE_OPENER', 0);
 defined('MESSAGE_TYPE_REPLY') OR define('MESSAGE_TYPE_REPLY', 1);
 defined('MESSAGE_TYPE_RESPOND') OR define('MESSAGE_TYPE_RESPOND', 10);
-defined('MESSAGE_TYPE_POLL') OR define('MESSAGE_TYPE_POLL', 99);
+defined('MESSAGE_TYPE_POLL') OR define('MESSAGE_TYPE_POLL', 99);    /* depreciated */
+defined('MESSAGE_TYPE_POLL_SAVE') OR define('MESSAGE_TYPE_POLL_SAVE', 98);
+defined('MESSAGE_TYPE_POLL_START') OR define('MESSAGE_TYPE_POLL_START', 99);
+defined('MESSAGE_TYPE_POLL_STOP') OR define('MESSAGE_TYPE_POLL_STOP', 90);
 
 /**
  *  Message Anonymous

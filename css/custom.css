@@ -527,6 +527,19 @@ div > .respond-modal-social-control {
     overflow-y: scroll;
 }
 
+.poll-instructor-control {
+    margin: 0px;
+    width: 110px;
+    vertical-align: middle;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+#poll-vote-switch,
+#poll-result-switch {
+    padding: 6px;
+    text-align: right;
+}
+
 #poll-vote-body > h2 {
     margin-top: 0;
     margin-bottom: 20px;

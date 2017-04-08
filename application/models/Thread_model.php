@@ -1,12 +1,16 @@
 <?php
 
 class Thread_model extends CI_Model {
-
+    
+    
+    
     public function __construct()
     {
             parent::__construct();
             // Your own constructor code
     }
+    
+    
     
     public function insert_thread($data)
     {   
@@ -19,6 +23,8 @@ class Thread_model extends CI_Model {
         return $out;
     }
     
+    
+    
     public function insert_message($data)
     {
         // insert
@@ -29,12 +35,16 @@ class Thread_model extends CI_Model {
         return $data;
     }
     
+    
+    
     public function insert_labels($data)
     {
         $this->db->insert_batch('label',$data);
         
         return $data;
     }
+    
+    
     
     public function insert_vote($data)
     {
@@ -44,6 +54,8 @@ class Thread_model extends CI_Model {
         return $id;
     }
     
+    
+    
     public function insert_hand($data)
     {
         $this->db->insert('hand',$data);
@@ -51,6 +63,8 @@ class Thread_model extends CI_Model {
         
         return $id;
     }
+    
+    
     
     public function load_thread($user,$lecture,$order=MESSAGE_SHOW_CHRONO,$label='')
     {
@@ -132,6 +146,8 @@ class Thread_model extends CI_Model {
         // return
         return $out;
     }
+    
+    
     
     public function load_message($user,$message)
     {
@@ -234,7 +250,7 @@ class Thread_model extends CI_Model {
         $result = $this->db
                     ->select('l.lect_ref AS lect_ref')
                     ->from('message AS m')
-                    ->join('thread AS t', 'm.m_id = t.m_id')
+                    ->join('thread AS t', 'm.t_id = t.t_id')
                     ->join('lecture AS l', 't.lect_id = l.lect_id')
                     ->where('m_id', $m)
                     ->get()->row();

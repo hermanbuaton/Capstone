@@ -13,7 +13,7 @@
     <div class="social-item-select pull-right">
         
         <!-- Vote form -->
-        <form class="social-item-select-form" id="select-form[<?= $data['u_id']; ?>]" action="">
+        <form class="social-item-select-form" id="social-select-form[<?= $data['u_id']; ?>]" action="">
             
             <!-- message id -->
             <input class="form-control social-item-select-message" type="hidden" name="select-message" id="select-message[<?= $data['u_id']; ?>]" value="<?= $data['m_id']; ?>" autocomplete="off"></input>

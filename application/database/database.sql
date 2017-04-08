@@ -48,6 +48,7 @@ CREATE TABLE message
     u_id INT(11),
     u_show TINYINT,
     m_time DATETIME,
+    m_lastmod DATETIME,
     m_head TEXT,
     m_body TEXT
 );

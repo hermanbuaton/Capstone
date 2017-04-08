@@ -17,6 +17,12 @@
                 <!-- Display Thread Body by js -->
             </div>
             
+            <!-- Title of Reply Form -->
+            <div class="thread-reply-head" id="thread-reply-head-view">
+                <div class="" id="">
+                    <h5>Have your say</h5>
+                </div>
+            </div>
             <div>
             <!-- Input area -->
             <form class="" id="thread-quick-reply" action="">
