@@ -96,6 +96,7 @@ class User extends CI_Controller {
         
         // load model
         $this->load->model('User_model');
+        $this->load->model('Lecture_model');
         
         
         // process message
@@ -125,7 +126,7 @@ class User extends CI_Controller {
         // log user action
         $log['u_id'] = $user;
         $log['u_name'] = $username;
-        $log['class_id'] = $class;
+        $log['class_id'] = $this->Lecture_model->get_lectid($class);
         $log['signin_time'] = $time;
         $id = $this->User_model->record_signin($log);
         

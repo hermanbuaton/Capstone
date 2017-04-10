@@ -101,7 +101,7 @@ CREATE TABLE lecture
 	lect_id INT(11) AUTO_INCREMENT PRIMARY KEY,
 	lect_ref VARCHAR(11), 
     class_id INT(11),
-    lect_name INT(11),
+    lect_name VARCHAR(255),
     lect_start DATETIME,
     lect_end DATETIME,
     set_anonymous TINYINT DEFAULT 0, 
@@ -115,7 +115,7 @@ CREATE TABLE user_log
     u_id INT(11),
     u_name VARCHAR(40),
     u_nick VARCHAR(40),
-    class_id INT(11),
+    class_id INT(11),   /* should be lect_id */
     signin_time DATETIME,
     signout_time DATETIME
 );
@@ -124,7 +124,7 @@ CREATE TABLE user
 (
 	u_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     u_name VARCHAR(40),
-    u_nick VARCHAR(40),
+    u_nick VARCHAR(255),
     u_type INT(3),
     u_pass VARCHAR(40),
     sch_id INT(11)
