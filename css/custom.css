@@ -131,6 +131,20 @@
 
 
 
+/* Front */
+.front-col {
+    top: 3%;
+    height: 95%;
+    padding: 0 0 0 0;
+    overflow-y: hidden;
+}
+#front-doc-viewer {
+    width: calc(100% - 15px - 15px);
+    height: 100%;
+}
+
+
+
 /* Home */
 #home-login {
     top: 20%;
@@ -500,6 +514,11 @@ div > .respond-modal-social-control {
     padding: 8px 0px;
     height: 30px;
     overflow-y: hidden;
+}
+.social-item-score {
+    display: inline-block;
+    color: #ACACAC;
+    font-weight: 700;
 }
 
 

@@ -87,6 +87,16 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 /**
+ *  INTERNAL USE
+ *  output method for PHP function
+ */
+defined('FUNC_OUT_METHOD_DEFAULT') OR define('FUNC_OUT_METHOD_DEFAULT', 33);
+defined('FUNC_OUT_METHOD_VIEW') OR define('FUNC_OUT_METHOD_VIEW', 33);
+defined('FUNC_OUT_METHOD_JSON') OR define('FUNC_OUT_METHOD_JSON', 44);
+
+
+
+/**
  *  Chat display preference
  */
 defined('MESSAGE_SHOW_CHRONO') OR define('MESSAGE_SHOW_CHRONO', 0);
@@ -132,3 +142,7 @@ defined('SET_ANONYMOUS_NO') OR define('SET_ANONYMOUS_NO', 0);
 defined('SET_DISCUSSION_DEFAULT') OR define('SET_DISCUSSION_DEFAULT', 1);
 defined('SET_DISCUSSION_YES') OR define('SET_DISCUSSION_YES', 1);
 defined('SET_DISCUSSION_NO') OR define('SET_DISCUSSION_NO', 0);
+
+defined('SET_MULTIRESPONSE_DEFAULT') OR define('SET_MULTIRESPONSE_DEFAULT', 0);
+defined('SET_MULTIRESPONSE_YES') OR define('SET_MULTIRESPONSE_YES', 1);
+defined('SET_MULTIRESPONSE_NO') OR define('SET_MULTIRESPONSE_NO', 0);

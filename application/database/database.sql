@@ -106,6 +106,7 @@ CREATE TABLE lecture
     lect_end DATETIME,
     set_anonymous TINYINT DEFAULT 0, 
     set_discussion TINYINT DEFAULT 0, 
+    set_multiresponse TINYINT DEFAULT 0, 
     own_id INT(11)
 );
 

@@ -11,7 +11,7 @@
         </div>
         
         <div class="btn-group panel-dropdown pull-right">
-            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            <a class="btn dropdown-toggle" id="panel-menu-toggle" data-toggle="dropdown" href="#">
                 Menu
                 <span class="caret"></span>
             </a>

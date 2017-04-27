@@ -1,6 +1,8 @@
 <?php
-    // FOR loop start
+    // IF start
     if ($order !== MESSAGE_SHOW_LABEL) {
+    
+    // FOR loop start
     foreach ($row as $data) {
 ?>
 

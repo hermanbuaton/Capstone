@@ -206,13 +206,26 @@ class Thread_model extends CI_Model {
      *  @param  $m      message id
      *  @return $result array of users
      */
-    public function load_hands($m)
+    public function load_hands($m, $l)
     {
         $query = $this->db
-                    ->select(['u.u_name', 'sh.*'])
-                    ->from("(SELECT m_id, u_id, SUM(hand) AS sum_hand FROM hand WHERE m_id = $m GROUP BY u_id) AS sh")
+                    ->select(['u.u_name', 'sh.*', 'sm.sum_re'])
+                    ->from("(   SELECT m_id, u_id, SUM(hand) AS sum_hand 
+                                FROM hand 
+                                WHERE m_id = $m 
+                                GROUP BY u_id
+                            ) AS sh")
+                    ->join("(   SELECT lect_ref, u_id, COUNT(m_id) AS sum_re
+                                FROM message AS m
+                                JOIN thread AS t ON m.t_id = t.t_id
+                                JOIN lecture AS l ON t.lect_id = l.lect_id
+                                WHERE m_type = 10
+                                    AND l.lect_ref = '$l'
+                                GROUP BY lect_ref, u_id
+                            ) AS sm", "sm.u_id = sh.u_id", "left")
                     ->join('user_log AS u', 'sh.u_id = u.log_id')
-                    ->where('sum_hand > 0');
+                    ->where('sum_hand > 0')
+                    ->order_by('sum_re');
         $result = $query->get()->result_array();
         
         return $result;
@@ -240,7 +253,7 @@ class Thread_model extends CI_Model {
     
     
     /**
-     *  Return Lecture Thread only
+     *  Return Lecture Ref only
      *
      *  @param  $m      message id
      *  @return $id     thread id

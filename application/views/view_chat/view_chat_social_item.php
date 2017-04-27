@@ -6,7 +6,7 @@
 <!-- ** Messages here ** -->
 <!-- ** Change div CLASS & ID in view_chat_footer script ** -->
 
-<div class="social-item" id="social-item-view" value="<?= $data['u_id']; ?>">
+<div class="social-item" name="social-item-view" id="social-item-view" value="<?= $data['u_id']; ?>">
     
     
     <!-- Select btn -->
@@ -21,13 +21,13 @@
             <!-- vote value : +1 | -1 -->
             <input class="form-control social-item-select-user" type="hidden" name="select-user" id="select-user[<?= $data['u_id']; ?>]" value="<?= $data['u_id']; ?>" autocomplete="off"></input>
             
-            <!-- vote button -->
-            <button class="btn btn-default form-control forum-thread-vote-input" type="submit" id="select-input[<?= $data['u_id']; ?>]">
+            <!-- Delegate button -->
+            <button class="btn btn-warning form-control forum-thread-vote-input" type="submit" id="select-input[<?= $data['u_id']; ?>]">
                 <span class="forum-social-content" id="vote-text[<?= $data['m_id']; ?>]">
-                    <i class="fa fa-user"></i>
+                    <i class="fa fa-snapchat-ghost"></i>
                 </span>
                 <span class="forum-thread-vote-count forum-social-content" id="vote-count[<?= $data['m_id']; ?>]">
-                    Select
+                    Delegate
                 </span>
             </button>
             
@@ -43,8 +43,8 @@
         </span>
 
         <!-- Thread BODY -->
-        <span class="social-item-score hidden" id="social-item-score-view[<?= $data['m_id']; ?>]">
-            <?php echo $data['u_score']; ?>
+        <span class="social-item-score" id="social-item-score-view[<?= $data['m_id']; ?>]">
+            (<span class="social-item-score-data"><?php echo ($data['sum_re'] !== null ? $data['sum_re'] : "0") ; ?></span>)
         </span>
     </div>
     

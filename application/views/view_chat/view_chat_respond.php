@@ -52,6 +52,16 @@
                     </span>
                 </button>
                 
+                <!-- Random Delegate -->
+                <button class="btn btn-warning pull-right" id="thread-question-delegate" >
+                    <span class="forum-social-content" id="respond-modal-hand-text">
+                        <i class="fa fa-snapchat-ghost"></i>
+                    </span>
+                    <span class="forum-thread-delegate forum-social-content" id="respond-modal-delegate">
+                        Random Delegate
+                    </span>
+                </button>
+                
             </div>
             
             <form id="respond-form">
@@ -66,7 +76,7 @@
                 <!-- Form button -->
                 <div id="thread-respond-control">
                 <div class="pull-left">
-                    <button type="button" class="btn btn-danger respond-control respond-control-wide hidden" id="respond-voice-start">
+                    <button type="button" class="btn btn-primary respond-control respond-control-wide hidden" id="respond-voice-start">
                         Start recording
                     </button>
                     <button type="button" class="btn btn-danger respond-control respond-control-wide" id="respond-voice-stop">

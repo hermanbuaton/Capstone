@@ -60,7 +60,7 @@ class Lecture_model extends CI_Model {
     public function get_settings($ref)
     {
         $result = $this->db
-                    ->select(['set_anonymous','set_discussion'])
+                    ->select(['set_anonymous','set_discussion','set_multiresponse'])
                     ->from('lecture')
                     ->where('lect_ref', $ref)
                     ->get()->row();

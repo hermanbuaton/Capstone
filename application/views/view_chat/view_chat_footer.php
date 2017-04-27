@@ -36,6 +36,7 @@
         var socket = io.connect("<?php echo base_url_port(); ?>");
         var subject = "<?= $subject; ?>";
         var order = "<?= MESSAGE_SHOW_CHRONO; ?>";
+        var multiresponse = "<?= SET_MULTIRESPONSE_DEFAULT; ?>";
         
         const user = "<?= $this->session->userdata('user_id'); ?>";
         const role = parseInt("<?= $this->session->userdata('user_type'); ?>");
@@ -50,6 +51,8 @@
         const SET_ANONYMOUS_NO = "<?= SET_ANONYMOUS_NO; ?>";
         const SET_DISCUSSION_YES = "<?= SET_DISCUSSION_YES; ?>";
         const SET_DISCUSSION_NO = "<?= SET_DISCUSSION_NO; ?>";
+        const SET_MULTIRESPONSE_YES = "<?= SET_MULTIRESPONSE_YES; ?>";
+        const SET_MULTIRESPONSE_NO = "<?= SET_MULTIRESPONSE_NO; ?>";
         
         if (window.hasOwnProperty('webkitSpeechRecognition')) {
             var recognition = new webkitSpeechRecognition();
@@ -300,6 +303,7 @@
             load();
             
             $(':focus').blur();
+            $('#panel-menu-toggle').click();
             return false;
             
         });
@@ -414,7 +418,6 @@
                 
                 // set modal
                 setRespondModal(this);
-                setSocialModal($(this).attr('value'));
                 
                 // open modal
                 $('#thread-respond').modal('toggle');
@@ -442,8 +445,15 @@
         //  select students to answer
         $("#thread-social").on("submit", ".social-item-select-form", function(e) {
             e.preventDefault();
-            selectRespond($(this));
+            selectDelegate($(this));
             $(':focus').blur();
+            return false;
+        });
+        
+        //  RANDOM delegate students to answer
+        $("#thread-question-delegate").on("click", function(e) {
+            e.preventDefault();
+            randomDelegate();
             return false;
         });
         
@@ -661,6 +671,12 @@
         //  submit discussion settings
         $("#set-discussion").on("change", function() {
             updateSettings('discussion',this.checked);
+            return false;
+        });
+        
+        //  submit multiresponse settings
+        $("#set-multiresponse").on("change", function() {
+            updateSettings('multiresponse',this.checked);
             return false;
         });
         
@@ -986,6 +1002,10 @@
             );
             $('#respond-id').val($(control).attr('value'));
             
+            
+            // set social modal
+            setSocialModal($(control).attr('value'));
+            
         }
         
         
@@ -1047,14 +1067,60 @@
 
                 success: function(data) {
                     $('#thread-social-list').html(data);
+                    $("#thread-social-list").animate({ scrollTop: $('#thread-social-list').prop(0)}, 100);
                 }
             });
             
         }
         
         
-        //  select students to respond
-        function selectRespond(form) {
+        //  select students to delegate respond
+        function randomDelegate() {
+            
+            // get all users who raised hands
+            var items = document.getElementsByName('social-item-view');
+            
+            
+            do {
+                
+                // randomly select one
+                var min = Math.ceil(0);
+                var max = Math.floor(items.length);
+                var ran = Math.floor(Math.random() * (max - min)) + min;
+
+                // get score
+                var content = 
+                    $(items[ran]).children('.social-item-content');
+                var score = 
+                    parseInt(
+                        $(content).children('.social-item-score').children('.social-item-score-data').html()
+                    );
+                var uname = 
+                    $(content).children('.social-item-name').html();
+            
+            } while (score != 0 || multiresponse == SET_MULTIRESPONSE_YES);
+            
+            // get user id
+            var form = 
+                $(items[ran]).children('.social-item-select').children('.social-item-select-form');
+            var message = $(form).children('.social-item-select-message').val();
+            var user = $(form).children('.social-item-select-user').val();
+            
+            // test
+            console.log(message);
+            console.log(user);
+            console.log(score);
+            console.log(uname);
+            
+            // emit to socket
+            var out = {"room": subject, "user": user, "message": message};
+            socket.emit('delegate respond', out);
+            
+        }
+        
+        
+        //  select students to delegate respond
+        function selectDelegate(form) {
             
             // get data
             var message = form.children('.social-item-select-message').val();
@@ -1076,7 +1142,6 @@
             
             // set modal
             setRespondModal(container);
-            setSocialModal($(container).attr('value'));
             
             // open modal
             $('#thread-respond').modal('toggle');

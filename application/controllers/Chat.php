@@ -266,7 +266,7 @@ class Chat extends CI_Controller {
         
         // on return put data into $out
         $out['row'] = array($data);
-        $out['order'] = MESSAGE_SHOW_LABEL;
+        $out['order'] = MESSAGE_SHOW_CHRONO;
         $this->load->view('view_chat/view_chat_message',$out);
     }
     
@@ -421,25 +421,34 @@ class Chat extends CI_Controller {
      *  GET users RAISED HAND for messages
      *  ============================================================
      */
-    public function get_hands($message)
+    public function get_hands($message, $method=FUNC_OUT_METHOD_DEFAULT)
     {
+        // get lect ref
+        $lecture = $this->Thread_model->get_lect($message);
+        
         // validate user
         if (!$this->checkLogin()) {
             $this->session->set_flashdata('error','Session timeout. Login again.');
-            $this->session->set_flashdata(
-                    'lecture',$this->Thread_model->get_lect($message)
-                );
+            $this->session->set_flashdata('lecture',$lecture);
             
             $this->echo_redirect("session timeout", "");
             return false;
         }
         
         // request from MODEL
-        $hands = $this->Thread_model->load_hands($message);
+        $hands = $this->Thread_model->load_hands($message,$lecture);
         
-        // return
-        $data['row'] = $hands;
-        $this->load->view('view_chat/view_chat_social_item',$data);
+        // return VIEW
+        if ($method == FUNC_OUT_METHOD_JSON) {
+            $data['row'] = $hands;
+            echo json_encode($data);
+        }
+        else if ($method == FUNC_OUT_METHOD_VIEW) {
+            $data['row'] = $hands;
+            $this->load->view('view_chat/view_chat_social_item',$data);
+        }
+        
+        return;
     }
     
     
@@ -735,6 +744,16 @@ class Chat extends CI_Controller {
                     $val = SET_DISCUSSION_YES;
                 } else {
                     $val = SET_DISCUSSION_NO;
+                }
+                
+                break;
+            
+            case 'multiresponse':
+                $set = 'set_multiresponse';
+                if ($val === "true") {
+                    $val = SET_MULTIRESPONSE_YES;
+                } else {
+                    $val = SET_MULTIRESPONSE_NO;
                 }
                 
                 break;

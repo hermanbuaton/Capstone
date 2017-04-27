@@ -33,6 +33,15 @@
                     </label>
                 </div>
                 
+                <div class="settings-item-view" id="set-discussion-view">
+                    <label>
+                        <input type="checkbox" class="form-check-input" name="set-discussion" id="set-multiresponse" value="" autocomplete="off"></input>
+                        <span class="settings-item-text">
+                            Exclude students from Random Delegate after having answer 1 question
+                        </span>
+                    </label>
+                </div>
+                
             </div>
             
         </div>
