@@ -1,5 +1,5 @@
 <!-- Start of Panel -->
-<div class="front-col col-xs-12 col-sm-7 col-md-8 col-lg-8 pull-left hidden-xs">
+<div class="front-col col-xs-12 col-sm-7 col-md-8 col-lg-8 pull-left hidden-xs" id="chat-front">
 
     <iframe src="../js/viewer/#../../documents/presentation.pdf" id="front-doc-viewer" allowfullscreen webkitallowfullscreen>
     </iframe>

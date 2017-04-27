@@ -1678,6 +1678,42 @@
         }
         
         
+        
+        /**
+         *  JUST FOR PRESENTATION
+         *  DELETE AFTER USE
+         *  TO BE UPGRADED WITH REAL FILE UPLAOD
+         */
+        $('#doc-final-report').click(function(e) {
+            e.preventDefault();
+            
+            // remove existing doc
+            var container = document.getElementById('chat-front');
+            var viewer = document.getElementById('front-doc-viewer');
+            container.removeChild(viewer);
+            
+            // append the new doc
+            $('#chat-front').append('<iframe src="../js/viewer/#../../documents/final-report.pdf" id="front-doc-viewer" allowfullscreen webkitallowfullscreen></iframe>');
+            
+            return false;
+        });
+        
+        $('#doc-presentation').click(function(e) {
+            e.preventDefault();
+            
+            // remove existing doc
+            var container = document.getElementById('chat-front');
+            var viewer = document.getElementById('front-doc-viewer');
+            container.removeChild(viewer);
+            
+            // append the new doc
+            $('#chat-front').append('<iframe src="../js/viewer/#../../documents/presentation.pdf" id="front-doc-viewer" allowfullscreen webkitallowfullscreen></iframe>');
+            
+            return false;
+        });
+        
+        
+        
     </script>
 
 </body>
