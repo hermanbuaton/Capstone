@@ -106,7 +106,9 @@
                     -->
                     <!-- hiding for reference -->
                     
-                    
+                <?php 
+                    if ($this->session->userdata("user_type") == USER_TYPE_INSTRUCTOR) : 
+                ?>
                     <!-- DASHBOARD start here -->
                     <li class="dropdown headbar-dropdown">
                         <a href="<?php echo site_url("/Dashboard"); ?>">
@@ -115,6 +117,9 @@
                         </a>
                     </li>
                     <!-- DASHBOARD end here -->
+                <?php
+                    endif;
+                ?>
                     
                     
                     <!-- LOGOUT start here -->

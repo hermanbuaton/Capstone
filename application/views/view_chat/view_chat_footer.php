@@ -1112,6 +1112,9 @@
             console.log(score);
             console.log(uname);
             
+            $('#delegate-content').html(uname + " is selected to respond the question");
+            $('#thread-delegate').modal('toggle');
+            
             // emit to socket
             var out = {"room": subject, "user": user, "message": message};
             socket.emit('delegate respond', out);

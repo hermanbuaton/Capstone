@@ -479,6 +479,13 @@ div > .respond-modal-social-control {
 
 
 /* Social Modal */
+#thread-delegate > .modal-dialog {
+    position: absolute;
+    width: 40%;
+    max-height: 20%;
+    margin-left: 30%;
+    margin-top: 20%;
+}
 .social-modal > .modal-dialog {
     position: absolute;
     width: 40%;

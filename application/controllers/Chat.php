@@ -83,6 +83,7 @@ class Chat extends CI_Controller {
         $this->load->view('view_chat/view_chat_poll_result');
         $this->load->view('view_chat/view_chat_respond');
         $this->load->view('view_chat/view_chat_social_list');
+        $this->load->view('view_chat/view_chat_delegate');
         $this->load->view('view_chat/view_chat_footer');
         
         return;
